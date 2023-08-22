@@ -30,7 +30,7 @@ module.exports = async (email, token) => {
         let mailOptions
         let sender = "Playgrounds Near"
         mailOptions = {
-            from: 'Playgrounds Near, <noreply@Playgrounds.app>',
+            from: 'Playgrounds Near, <noreply@playgroundsnear.app>',
             to: email,
             subject: 'New email confirmation - Playgrounds App',
             html: `<!DOCTYPE html>

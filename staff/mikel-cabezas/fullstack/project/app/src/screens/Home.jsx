@@ -51,7 +51,10 @@ export default function Home({ route, navigation, onSendViewPlaygroundsFromCity 
     const { width } = Dimensions.get('window');
 
     useEffect(() => {
-        console.log('params', params)
+
+
+
+        // console.log('params', params)
         // navigation.getParam('message', 'default value')
         const message = JSON.stringify(params)
 

@@ -24,7 +24,7 @@ const {
  */
 
 module.exports = function confirmNewEmail(userId, newEmail) {
-    validateEmail(newEmail)
+    // validateEmail(newEmail)
 
     return User.findById(userId)
         .then(user => {

@@ -23,6 +23,7 @@ export default function Login({ navigation }) {
 
     useEffect(() => {
         console.log(`Linking`, Linking);
+        console.log(`process.env.EXPO_PUPLIC_API`, process.env.EXPO_PUBLIC_API_URL);
 
         Linking.getInitialURL().then((url) => {
             console.log(`url`, url);
