@@ -11,12 +11,12 @@ export default function CreatePlayground({ key, element, handleEditElement }) {
     const assignElementAge = (age) => {
         let AGE
 
-        if (age === '+1') { AGE = ONE_YEAR }
-        if (age === '+2') { AGE = TWO_YEAR }
-        if (age === '+3') { AGE = THREE_YEAR }
-        if (age === '+4') { AGE = FOUR_YEAR }
-        if (age === '+5') { AGE = FIVE_YEAR }
-        if (age === '+6') { AGE = SIX_YEAR }
+        if (age === 1) { AGE = ONE_YEAR }
+        if (age === 2) { AGE = TWO_YEAR }
+        if (age === 3) { AGE = THREE_YEAR }
+        if (age === 4) { AGE = FOUR_YEAR }
+        if (age === 5) { AGE = FIVE_YEAR }
+        if (age === 6) { AGE = SIX_YEAR }
         return AGE
     }
 
@@ -61,7 +61,7 @@ export default function CreatePlayground({ key, element, handleEditElement }) {
         <View className="font-bold px-3 py-0.5 flex-row items-center" key={key}>
             <Image className="w-5 h-5 mr-2 object-contain" source={type} />
             <Text className={`font-bold text-center text-sm`}>{element.type}</Text>
-            {element.accessibility === 'Yes' && <View className=" flex justify-center justify-items-center p- ml-2">
+            {element.accessibility === true && <View className=" flex justify-center justify-items-center p- ml-2">
                 <Image className="h-6 w-6 object-cover" source={ACCESSIBLE} />
             </View>}
             <View className="rounded-xl bg-mainLime flex justify-center justify-items-center p-1 ml-2">

@@ -4,11 +4,10 @@ require('dotenv').config()
 const express = require('express')
 const bodyParser = require('body-parser')
 const cors = require('cors')
-const { registerUserHandler, retrieveUserHandler, authenticateUserHandler, forgotPasswordHandler, updateUserImageHandler, updateUserNameHandler, updateUserPasswordHandler, validateUserHandler, setNewPasswordHandler, recoverPasswordHandler, searchUserHandler, confirmNewUserEmailHandler, updateUserEmailHandler,
-    checkIfHasPlaygroundsNearHandler, addPlaygroundHandler, retrieveCitiesFromDatabaseHandler, retrieveCityFromSearchHandler, retrievePlaygroundsFromCityHandler, retrievePlaygroundsHandler, retrieveLikedPlaygroundsHandler, retrievePlaygroundByIdHandler, toggleLikePlaygroundHandler } = require('./handlers')
+const { serverStatusHandler,
+    registerUserHandler, retrieveUserHandler, authenticateUserHandler, forgotPasswordHandler, updateUserImageHandler, updateUserNameHandler, updateUserPasswordHandler, validateUserHandler, setNewPasswordHandler, recoverPasswordHandler, searchUserHandler, confirmNewUserEmailHandler, updateUserEmailHandler, checkLoggedInUserHandler,
+    checkIfHasPlaygroundsNearHandler, addPlaygroundHandler, retrieveCitiesFromDatabaseHandler, retrieveFromFilterHandler, retrieveCityFromSearchHandler, retrievePlaygroundsFromCityHandler, retrievePlaygroundsHandler, retrieveLikedPlaygroundsHandler, retrievePlaygroundByIdHandler, toggleLikePlaygroundHandler } = require('./handlers')
 const mongoose = require('mongoose')
-
-
 
 mongoose.connect(process.env.MONGODB_URL)
     .then(() => {
@@ -16,6 +15,10 @@ mongoose.connect(process.env.MONGODB_URL)
         const api = express()
 
         api.use(cors())
+
+        api.get('/serverStatus', serverStatusHandler)
+
+        api.get('/user/status', checkLoggedInUserHandler)
 
         api.post('/user/register', jsonBodyParser, registerUserHandler)
         api.get('/user/searchUser', searchUserHandler)
@@ -41,7 +44,8 @@ mongoose.connect(process.env.MONGODB_URL)
         api.post('/playgrounds/checkNear', jsonBodyParser, checkIfHasPlaygroundsNearHandler)
         api.get('/cities/:city', retrieveCitiesFromDatabaseHandler)
         api.get('/city/:coordinates', retrieveCityFromSearchHandler)
-        api.get('/playgrounds/:city', retrievePlaygroundsFromCityHandler)
+        api.get('/playgrounds/filter/age=:age&elements=:elements&accessible=:accessible&distance=:distance&sunExposition=:sunExposition', retrieveFromFilterHandler)
+        api.get('/playgrounds/city/:city', retrievePlaygroundsFromCityHandler)
 
         api.post(`/addPlayground`, jsonBodyParser, addPlaygroundHandler)
 

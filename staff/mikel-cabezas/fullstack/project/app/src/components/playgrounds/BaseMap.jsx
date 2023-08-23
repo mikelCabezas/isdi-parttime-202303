@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { USER_LOCATION, MY_LOCATION, WHITE_MY_LOCATION } from '../../../assets/icons';
-import { Image, TouchableOpacity, Alert } from 'react-native';
+import { Image, TouchableOpacity, Alert, Keyboard, View, Text } from 'react-native';
 import MapView, { Marker, Callout } from 'react-native-maps'
 import { useRef, useContext, useState, useEffect } from 'react';
 import { NativeWindStyleSheet } from "nativewind";
@@ -10,16 +10,22 @@ import Loader from '../../library/Loader';
 const { Provider } = AppContext
 import Context from '../../AppContext'
 import retrievePlaygrounds from "../../logic/playgrounds/retrievePlaygrounds"
+import * as Animatable from 'react-native-animatable';
 
-export default function BaseMap({ onMarkerPressed, searchResult, user }) {
+export default function BaseMap({ user, onMarkerPressed, searchResult, onHomeHandler }) {
     const mapRef = useRef(null);
     const { colorScheme, currentMarker, setCurrentMarker, origin, setOrigin, location, setLocation, currentLocation, loadCurrentLocation, setLoadCurrentLocation, TOKEN } = useContext(Context)
     const [playgrounds, setPlaygrounds] = useState()
+    const [animation, setAnimation] = useState('fadeInDown')
 
     let isDark
     if (colorScheme === 'dark') isDark = true
 
     const onMarkerPressedHandler = () => onMarkerPressed()
+
+
+    // useEffect(() => {
+    // }, [playgrounds])
 
     useEffect(() => {
         console.log('Refresh Posts -> render in useEffect')
@@ -39,6 +45,11 @@ export default function BaseMap({ onMarkerPressed, searchResult, user }) {
                 retrievePlaygrounds(TOKEN, location)
                     .then(playgrounds => {
                         setPlaygrounds(playgrounds)
+                        console.log('playgrounds[0].length', playgrounds[0].length)
+                        setAnimation('fadeInDown')
+                        setTimeout(() => {
+                            setAnimation('fadeOutUp')
+                        }, 3000);
                     })
                     .catch(error => {
                         Alert.alert('Error', `${error.message}`, [
@@ -73,6 +84,17 @@ export default function BaseMap({ onMarkerPressed, searchResult, user }) {
         }
     }, [searchResult]);
 
+    useEffect(() => {
+        if (loadCurrentLocation) {
+            const onCurrentMarkerRegion = {
+                latitude: location.latitude,
+                longitude: location.longitude,
+                latitudeDelta: 0.01,
+                longitudeDelta: 0.01,
+            }
+            mapRef.current.animateToRegion(onCurrentMarkerRegion, 1 * 1000);
+        }
+    }, [onHomeHandler])
 
     const onCurrentLocation = () => {
         const onCurrentMarkerRegion = {
@@ -122,7 +144,8 @@ export default function BaseMap({ onMarkerPressed, searchResult, user }) {
                 ref={mapRef}
                 showsUserLocation={true}
                 // followsUserLocation={true}
-
+                onPress={() => { Keyboard.dismiss(); }}
+                onRegionChange={() => { Keyboard.dismiss() }}
                 className="w-full h-[120%] top-[-10%] absolute"
                 initialRegion={{
                     // latitude: 43.228833,
@@ -132,14 +155,15 @@ export default function BaseMap({ onMarkerPressed, searchResult, user }) {
                     latitudeDelta: 4,
                     longitudeDelta: 4,
                 }} />
-            <Loader text="Loading..." details="This may be take a while. Loading current position and playgrounds..." />
+            <Loader text="Loading..." details="This may be take a while. Loading current position" />
         </>}
+
         {loadCurrentLocation && <MapView
-            // userInterfaceStyle={'dark'}
             ref={mapRef}
             showsUserLocation={true}
             // followsUserLocation={true}
-
+            onPress={() => { Keyboard.dismiss(); }}
+            onRegionChange={() => { Keyboard.dismiss(); }}
             className="w-full h-[120%] top-[-10%] absolute"
             initialRegion={{
                 // latitude: 43.228833,
@@ -161,11 +185,19 @@ export default function BaseMap({ onMarkerPressed, searchResult, user }) {
                 </Callout>
             </Marker>
 
-            {playgrounds && <Playgrounds user={user} playgrounds={playgrounds} onMarkerPressedHandler={onMarkerPressedHandler} />}
+            {!playgrounds || playgrounds[0] <= 0 && <Loader text="Loading..." details="This may be take a while. Loading playgrounds" />}
 
-        </MapView>
+            {playgrounds && <>
+                <Animatable.View animation={animation} duration={250} className=" position absolute top-[10vh] py-2 left-0 w-full flex-row justify-center">
+                    <View className="bg-white px-4 py-2 mt-24 left-0 w-auto rounded-full">
 
-        }
+                        <Text className="text-center text-lg">{playgrounds[0].length} playgrounds loaded</Text>
+                    </View>
+                </Animatable.View>
+                <Playgrounds user={user} playgrounds={playgrounds} onMarkerPressedHandler={onMarkerPressedHandler} />
+            </>}
+
+        </MapView>}
         <TouchableOpacity className="bg-white p-1 rounded-full absolute right-4 bottom-20 mb-4"
             activeOpacity={0.8}
             onPress={() => onCurrentLocation()}>

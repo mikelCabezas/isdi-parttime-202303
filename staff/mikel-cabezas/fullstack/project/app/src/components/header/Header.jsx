@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext, useRef } from "react";
-import { Keyboard, View, Image, TextInput, TouchableHighlight, Text } from 'react-native';
+import { Keyboard, View, Image, TextInput, TouchableHighlight, TouchableOpacity, Text } from 'react-native';
 
 import Context from '../../AppContext.js'
 import SearchResults from "./SearchResults.jsx";
@@ -93,10 +93,11 @@ export default function Header({ navigation, onHandleViewPlaygroundsFromCity, ha
 
 
     return <>
+
         {modal === 'simpleSearch' && data?.length > 0 && <View className="flex-1 w-full h-screen justify-center items-center">
-            <TouchableHighlight onPress={handleCloseModal}>
+            <TouchableOpacity activeOpacity={1} onPress={handleCloseModal}>
                 <View className="bg-tranparent flex-1 h-screen w-screen" />
-            </TouchableHighlight>
+            </TouchableOpacity>
             <Animatable.View animation={animation} duration={250} key={-2} className="flex w-11/12 bg-white absolute top-12 m-auto pt-8 pb-3 flex-1 rounded-[22px] text-left">
                 <View className="py-2 border-b-[1px] border-mainGray" key={-1} />
                 <SearchResults data={data} handleViewPlaygroundsFromCity={onHandleViewPlaygroundsFromCity} />
@@ -128,6 +129,7 @@ export default function Header({ navigation, onHandleViewPlaygroundsFromCity, ha
                             placeholder="Search playground in..."
                             keyboardType="default"
                             ref={clearTextInput}
+                            returnKeyType="done"
                         />
                     </TouchableHighlight>
 

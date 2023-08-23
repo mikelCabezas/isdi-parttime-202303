@@ -77,7 +77,10 @@ export default function AddElement({ onElementEdited, onCancelEditElement, eleme
                 textColor="Set accessibility"
                 selectedValue={label => { setSelectedAccessibility(label) }}
                 pickerData={['Set accessibility', 'Yes', 'No']}
-                onValueChange={label => { setSelectedAccessibility(label) }}
+                onValueChange={label => {
+                    if (label === 'Yes') setSelectedAccessibility(true)
+                    if (label === 'No') setSelectedAccessibility(false)
+                }}
             />}
         </View>}
         <View className="flex-1 bg-black60  items-center justify-center z-50 absolute w-full h-full">

@@ -1,11 +1,16 @@
 import { useEffect, useState, useContext } from "react"
 import retrieveLikedPlaygrounds from "../../../logic/playgrounds/retrieveLikedPlaygrounds"
 import LikedPlayground from "./LikedPlayground"
-import { View, ScrollView, Alert } from "react-native"
+import { View, ScrollView, Alert, Text } from "react-native"
 import retrieveUser from "../../../logic/users/retrieveUser"
+import AppContext from "../../../AppContext.js";
+const { Provider } = AppContext
+import Context from '../../../AppContext'
+
 
 export default function LikedPlaygrounds({ onMarkerPressedHandler }) {
-    const userId = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NDk0ODAwM2JmMTJmMTNmNmIxY2I4NTIiLCJpYXQiOjE2OTA5MjcxMjAsImV4cCI6MTc3NzI0MDcyMH0._fnTXb6GDqSip-kJiF_cao2b4WwVqraR_cpqsrco76k"
+    const { TOKEN } = useContext(Context)
+
     const [playgrounds, setPlaygrounds] = useState()
     const [user, setUser] = useState()
 
@@ -13,7 +18,7 @@ export default function LikedPlaygrounds({ onMarkerPressedHandler }) {
         console.log('Refresh Posts -> render in useEffect')
         try {
             console.log('   Show all Posts -> render in useEffect onLoad compo')
-            retrieveLikedPlaygrounds(userId)
+            retrieveLikedPlaygrounds(TOKEN)
                 .then(playgrounds => {
                     setPlaygrounds(playgrounds)
                 })
@@ -22,7 +27,7 @@ export default function LikedPlaygrounds({ onMarkerPressedHandler }) {
                         { text: 'OK', onPress: () => { } },
                     ]);
                 })
-            retrieveUser(userId)
+            retrieveUser(TOKEN)
                 .then(user => setUser(user))
                 .catch(error => {
                     Alert.alert('Error', `${error.message}`, [
@@ -38,18 +43,25 @@ export default function LikedPlaygrounds({ onMarkerPressedHandler }) {
 
 
     return <>
-        <View className=" flex-row relative" >
-            <ScrollView className="pr-5">
-                {playgrounds && playgrounds.map(playground => {
-                    return <View className="relative mb-3" ><LikedPlayground
-                        key={playground._id}
-                        playground={playground}
-                        user={user}
-                        onMarkerPressedHandler={onMarkerPressedHandler}
-                    />
-                    </View>
-                })}
-            </ScrollView>
+        <View className="flex-row relative h-4/6 " >
+
+            {playgrounds?.length === 0 && <View className="flex-1 justify-center items-center h-full mt-auto pr-4 pb-4">
+                <Text className="text-lg text-center">You haven't saved any playground as a favorite yet!</Text>
+            </View>
+            }
+            {playgrounds?.length > 0 &&
+                <ScrollView className="pr-5 flex-1 h-full " styles={{ alignItems: 'center', justifyContent: 'center' }}>
+                    {playgrounds.map(playground => {
+                        return <View className="relative mb-3" ><LikedPlayground
+                            key={playground._id}
+                            playground={playground}
+                            user={user}
+                            onMarkerPressedHandler={onMarkerPressedHandler}
+                        />
+                        </View>
+                    })}
+                </ScrollView>
+            }
 
         </View>
 

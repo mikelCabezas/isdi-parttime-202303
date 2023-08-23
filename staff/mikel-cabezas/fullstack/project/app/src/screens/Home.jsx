@@ -1,11 +1,9 @@
-import { View, StatusBar, Text, Alert, Dimensions, Image, TouchableOpacity, TouchableHighlight, ScrollView } from 'react-native';
+import { View, StatusBar, Alert, Dimensions, Image, TouchableHighlight } from 'react-native';
 import { useContext, useEffect, useState, useRef, useMemo, useCallback } from 'react';
 import AppContext from "../AppContext.js";
 const { Provider } = AppContext
 import Context from '../AppContext.js'
 import WelcomeMessage from '../library/WelcomeMessage'
-import * as Linking from 'expo-linking';
-
 
 import BottomSheet from '@gorhom/bottom-sheet';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -25,9 +23,10 @@ import Carousel, { Pagination, PaginationLight } from 'react-native-x-carousel';
 import LikedList from '../components/playgrounds/likedPlaygrounds/LikedList.jsx';
 import UserSettings from '../components/playgrounds/UserSettings.jsx';
 import welcomeMessage from '../logic/welcomeMessage.js';
+import checkLoggedInUser from '../logic/users/checkLoggedInUser.js';
 
 export default function Home({ route, navigation, onSendViewPlaygroundsFromCity }) {
-    const { modal, setModal, colorScheme, TOKEN, loadCurrentLocation, setCurrentView } = useContext(Context)
+    const { modal, setModal, setIsLoggedIn, colorScheme, TOKEN, loadCurrentLocation, setCurrentView } = useContext(Context)
     const [currentMarker, setCurrentMarker] = useState({})
     const [newPlaygroundStatus, setNewPlaygroundStatus] = useState(false)
     const [searchResult, setSearchResult] = useState(false)
@@ -35,28 +34,26 @@ export default function Home({ route, navigation, onSendViewPlaygroundsFromCity 
     const [singlePlaygroundImages, setSinglePlaygroundImages] = useState()
     const [modalImages, setModalImages] = useState()
     const [welcomeMessageStorage, setWelcomeMessageStorage] = useState(false)
+    const [onHomeHandler, setOnHomeHandler] = useState(null);
 
     const { params } = route;
+    const { width } = Dimensions.get('window');
+
     const bottomSheetRef = useRef();
     const snapPoints = useMemo(() => ['75%', '94%'], []);
     const snapPointsSmall = useMemo(() => ['42%', '65%'], []);
+
     let mainColor
     if (colorScheme === 'dark') {
         mainColor = 'rgb(31 41 55)'
     } else if (colorScheme === 'light') {
         mainColor = '#ffffff'
     }
-    // const snapPointsSinglePlayground = useMemo(() => ['70%', '85%'], []);
-
-    const { width } = Dimensions.get('window');
 
     useEffect(() => {
-
-
-
         // console.log('params', params)
         // navigation.getParam('message', 'default value')
-        const message = JSON.stringify(params)
+        // const message = JSON.stringify(params)
 
         if (params?.message === 'Success. New email setted') {
             Alert.alert('Success', `New email setted`, [
@@ -65,26 +62,40 @@ export default function Home({ route, navigation, onSendViewPlaygroundsFromCity 
             setModal('userSettings')
         }
 
-        retrieveUser(TOKEN)
-            .then(user => {
-                setUser(user)
-            })
+        (async () => {
+            if (TOKEN) await checkLoggedInUser(TOKEN)
+                .catch(async user => {
+                    if (!user || !user._id && user !== null) {
+                        Alert.alert('Error', `This user does not exist`, [
+                            { text: 'OK', onPress: () => { } },
+                        ]);
+                        setIsLoggedIn(false)
+                        await navigation.navigate('Login')
+                        // AsyncStorage.clear();
+                        AsyncStorage.getAllKeys()
+                            .then(keys => AsyncStorage.multiRemove(keys))
+                            .then(() => alert('success'));
+                    }
+                })
+
+        })();
+        (async () => {
+            await retrieveUser(TOKEN)
+                .then(user => {
+                    setUser(user)
+                })
+        })();
 
         if (!welcomeMessageStorage) {
             (async () => {
-
                 await AsyncStorage.getItem('@WELCOME_MESSAGE')
                     .then(state => {
-                        console.log(state)
-                        console.log(welcomeMessageStorage)
                         if (!state) {
                             setWelcomeMessageStorage(true)
                         }
                     })
             })();
         }
-
-
     }, [])
 
     useEffect(() => {
@@ -100,17 +111,12 @@ export default function Home({ route, navigation, onSendViewPlaygroundsFromCity 
         // }
     }, []);
 
-
-    const onCloseWelcomeMessage = () => {
-        welcomeMessage()
-        setWelcomeMessageStorage(false)
-    }
-
     const handleSheetChangesCreate = useCallback((index) => {
         if (newPlaygroundStatus === false && index === -1) {
             confirmCloseModal()
         }
     }, []);
+
     const handleSheetChangesSingle = useCallback((index) => {
         if (index === -1) {
             bottomSheetRef.current.close()
@@ -119,8 +125,18 @@ export default function Home({ route, navigation, onSendViewPlaygroundsFromCity 
         }
     }, []);
 
+
+    const onCloseWelcomeMessage = () => {
+        welcomeMessage()
+        setWelcomeMessageStorage(false)
+    }
+
     const onHome = () => {
         setModal('')
+        setOnHomeHandler(true)
+        setTimeout(() => {
+            setOnHomeHandler(false)
+        }, 50);
     }
     const onNearby = () => {
         setModal('nearby')
@@ -191,13 +207,13 @@ export default function Home({ route, navigation, onSendViewPlaygroundsFromCity 
         ]);
 
     const handleViewPlaygroundsFromCity = (results) => {
-        console.log('the result on HOME', results)
         setSearchResult(results)
     }
 
     const handleToggleSidebar = () => {
         setModal('sidebar')
     }
+
     const onToggleFilter = () => {
         if (modal !== 'searchFilter') {
             setModal('searchFilter')
@@ -206,41 +222,37 @@ export default function Home({ route, navigation, onSendViewPlaygroundsFromCity 
             setModal('')
         }
     }
-    const renderItem = data => (
-        <View key={data} >
-            <Image source={{ uri: data }} resizeMode="cover" style={{ width: width * .98, height: width * 0.7 }} />
-        </View>
-    );
+
     const onHandleOpenImages = () => {
         setModalImages(true)
     }
     const onMarkerPressedHandler = () => {
         setModalImages(true)
     }
+    const renderItem = data => (
+        <View key={data} >
+            <Image source={{ uri: data }} resizeMode="cover" style={{ width: width * .98, height: width * 0.7 }} />
+        </View>
+    );
 
     return <>
         <View className="flex-1 bg-white items-center justify-center">
-
             {modal === 'sidebar' && <Sidebar likedHandler={onOpenLikedFromSidebar} navigation={navigation} user={user} closeHandle={onCloseSidebar} userSettingsHandler={onUserSettingsFromSidebar} />}
-            <BaseMap user={user} className="-z-20" onMarkerPressed={markerPressedHandler} searchResult={searchResult} />
+            <BaseMap onHomeHandler={onHomeHandler} user={user} className="-z-20" onMarkerPressed={markerPressedHandler} searchResult={searchResult} />
             <Header handleToggleSidebar={handleToggleSidebar} onToggleFilter={onToggleFilter} handleCloseModals={onCloseModal} onHandleViewPlaygroundsFromCity={handleViewPlaygroundsFromCity} />
             <Footer likedHandler={onLiked} nearbyHandler={onNearby} createPlaygroundHandler={onCreatePlayground} homeHandler={onHome} />
             {modal === 'singlePlayground' && <BottomSheet
-                // style={{ backgroundColor: "transparent" }}
-                backgroundStyle={{
-                    backgroundColor: `${mainColor}`
-                }}
+                backgroundStyle={{ backgroundColor: `${mainColor}` }}
                 enablePanDownToClose
                 ref={bottomSheetRef}
                 index={0}
                 snapPoints={snapPoints}
                 onChange={handleSheetChangesSingle}>
                 <SinglePlayground className="z-[90] h-screen relative " closeHandle={onCloseModal} playground={currentMarker} setSinglePlaygroundImages={setSinglePlaygroundImages} onHandleOpenImages={onHandleOpenImages}></SinglePlayground>
-            </BottomSheet>
-            }
+            </BottomSheet>}
             {modalImages && <>
                 <View className={`absolute w-full  h-full left-0 top-0 bg-black80 items-center justify-center`}>
-                    <TouchableHighlight onPress={onCloseImages} className="absolute right-2 top-10 z-50 shadow-md shadow-black ">
+                    <TouchableHighlight onPress={onCloseImages} className="absolute right-2 top-10 z-50 shadow-md shadow-black">
                         <Image source={WHITE_CLOSE} className="w-10 h-10" />
                     </TouchableHighlight>
                     <Carousel
@@ -253,17 +265,15 @@ export default function Home({ route, navigation, onSendViewPlaygroundsFromCity 
             </>}
             {modal === 'searchFilter' && <BottomSheet
                 // style={{ backgroundColor: "transparent" }}
-                backgroundStyle={{
-                    backgroundColor: `${mainColor}`
-                }}
+                backgroundStyle={{ backgroundColor: `${mainColor}` }}
                 enablePanDownToClose
                 ref={bottomSheetRef}
                 index={1}
                 snapPoints={snapPoints}
                 onChange={handleSheetChangesSingle}>
                 <AdvancedSearch className="z-[90] h-screen relative " closeHandle={onCloseModal} />
-            </BottomSheet>
-            }
+            </BottomSheet>}
+
             {modal === 'nearby' &&
                 <BottomSheet
                     // style={{ width: '90%', marginLeft: '5%' }}
@@ -273,19 +283,18 @@ export default function Home({ route, navigation, onSendViewPlaygroundsFromCity 
                     snapPoints={snapPointsSmall}
                     onChange={handleSheetChangesSingle}>
                     <Nearby closeHandle={onCloseModal} playground={currentMarker} handleMarkerPressedHandler={markerPressedHandler}></Nearby>
-                </BottomSheet>
-            }
+                </BottomSheet>}
+
             {modal === 'liked' &&
                 <BottomSheet
-                    // style={{ width: '90%', marginLeft: '5%' }}
                     enablePanDownToClose
                     ref={bottomSheetRef}
                     index={0}
                     snapPoints={snapPointsSmall}
                     onChange={handleSheetChangesSingle}>
                     <LikedList closeHandle={onCloseModal} playground={currentMarker} handleMarkerPressedHandler={markerPressedHandler}></LikedList>
-                </BottomSheet>
-            }
+                </BottomSheet>}
+
             {modal === 'createPlayground' &&
                 <BottomSheet
                     enablePanDownToClose
@@ -294,8 +303,8 @@ export default function Home({ route, navigation, onSendViewPlaygroundsFromCity 
                     snapPoints={snapPoints}
                     onChange={handleSheetChangesCreate}>
                     <CreatePlayground closeHandle={onCloseAddPlayground} cancelAddPlayground={confirmCloseModal} />
-                </BottomSheet>
-            }
+                </BottomSheet>}
+
             {modal === 'userSettings' &&
                 <BottomSheet
                     enablePanDownToClose
@@ -304,11 +313,9 @@ export default function Home({ route, navigation, onSendViewPlaygroundsFromCity 
                     snapPoints={snapPoints}
                     onChange={handleSheetChangesSingle}>
                     <UserSettings user={user} />
-                </BottomSheet>
-            }
+                </BottomSheet>}
             <StatusBar style="auto" />
             {welcomeMessageStorage && user && loadCurrentLocation && <WelcomeMessage user={user} handleCloseWelcomeMessage={onCloseWelcomeMessage} />}
-
         </View >
     </>
 }

@@ -96,7 +96,7 @@ const element = new Schema({
         required: true
     },
     age: {
-        type: String,
+        type: Number,
         required: true
     },
     status: {
@@ -104,7 +104,7 @@ const element = new Schema({
         required: true
     },
     accessibility: {
-        type: String,
+        type: Boolean,
         required: true
     },
 })
@@ -185,6 +185,11 @@ const playground = new Schema({
     },
     sunExposition: {
         type: Object,
+        default: {
+            shady: null,
+            sunny: null,
+            partial: null,
+        }
     },
     // issues: {
     //     type: [issue],

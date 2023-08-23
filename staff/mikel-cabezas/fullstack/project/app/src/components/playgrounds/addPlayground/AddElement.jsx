@@ -15,7 +15,7 @@ export default function AddElement({ onElementCreated, onCancelAddElement, id })
             if (!selectedType || !selectedAge || !selectedStatus || !selectedAccessibility || selectedType === 'Set element' || selectedAge === 'Set age' || selectedStatus === 'Set status' || selectedAccessibility === 'Set accessibility') {
                 throw new Error('Complete all fields')
             }
-            const element = { id, type: selectedType, age: selectedAge, status: selectedStatus, accessibility: selectedAccessibility }
+            const element = { id, type: selectedType, age: Number(selectedAge), status: selectedStatus, accessibility: selectedAccessibility }
             onElementCreated(element)
         } catch (error) {
             Alert.alert('Error', `${error.message}`, [
@@ -77,8 +77,10 @@ export default function AddElement({ onElementCreated, onCancelAddElement, id })
                 textColor="Set accessibility"
                 selectedValue={label => { setSelectedAccessibility(label) }}
                 pickerData={['Set accessibility', 'Yes', 'No']}
-                onValueChange={label => { setSelectedAccessibility(label) }}
-            />}
+                onValueChange={label => {
+                    if (label === 'Yes') setSelectedAccessibility(true)
+                    if (label === 'No') setSelectedAccessibility(false)
+                }} />}
         </View>}
         <View className="flex-1 bg-black60  items-center justify-center z-50 absolute w-full h-full">
             <View className="bg-white dark:bg-gray-800 h-auto px-6 py-7 w-11/12 rounded-3xl">

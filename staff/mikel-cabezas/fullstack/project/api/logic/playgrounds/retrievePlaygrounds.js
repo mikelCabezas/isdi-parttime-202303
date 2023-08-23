@@ -33,7 +33,6 @@ module.exports = async (userId, location) => {
                 }
             }).lean()
         ])
-        console.log('playgrounds', playgrounds)
         return playgrounds
             // .then(playgrounds => [playgrounds])
             .then(playgrounds => playgrounds)

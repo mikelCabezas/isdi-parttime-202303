@@ -1,6 +1,7 @@
 module.exports = {
     retrievePlaygrounds: require('./retrievePlaygrounds'),
     retrievePlaygroundsFromCity: require('./searchPlaygrounds/retrievePlaygroundsFromCity'),
+    retrieveFromFilter: require('./searchPlaygrounds/retrieveFromFilter'),
     retrieveCitiesFromDatabase: require('./searchPlaygrounds/retrieveCitiesFromDatabase'),
     retrieveCityFromSearch: require('./searchPlaygrounds/retrieveCityFromSearch'),
     checkIfHasPlaygroundsNear: require('./checkIfHasPlaygroundsNear'),

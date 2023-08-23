@@ -6,10 +6,7 @@ import {
 } from '../../assets/icons';
 import { View, Image, TouchableHighlight, Alert } from 'react-native';
 import Context from '../AppContext.js'
-import { NativeWindStyleSheet } from "nativewind";
-NativeWindStyleSheet.setOutput({
-    default: "native",
-});
+
 
 export default function Footer({ nearbyHandler, likedHandler, createPlaygroundHandler, homeHandler }) {
     const { currentView, setCurrentView, colorScheme } = useContext(Context)
@@ -36,18 +33,15 @@ export default function Footer({ nearbyHandler, likedHandler, createPlaygroundHa
         console.log('footer status changed')
     }, [currentView])
 
-
     return <View className="z-[1]z absolute w-full justify-center flex bottom-8 content-center">
         <View className="w-11/12 h-12 p-1 bg-white dark:bg-gray-800 rounded-full left-0 m-auto flex flex-row justify-between px-5">
-
-
             <TouchableHighlight
                 className={`p-[2px]${currentView === 'home' && 'bg-[#B8F138] rounded-[10px]'}`}
                 activeOpacity={1.0}
                 underlayColor="#fff"
                 onPress={() => {
                     onHome()
-                    setCurrentView('')
+                    setCurrentView('home')
                 }}>
                 <Image
                     className={`w-8 h-8 m-auto`}

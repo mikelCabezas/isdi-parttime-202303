@@ -1,4 +1,6 @@
 module.exports = {
+    serverStatusHandler: require('./helpers/serverStatusHandler'),
+
     registerUserHandler: require('./users/registerUserHandler'),
     searchUserHandler: require('./users/searchUserHandler'),
     validateUserHandler: require('./users/validateUserHandler'),
@@ -13,12 +15,14 @@ module.exports = {
     updateUserEmailHandler: require('./users/updateUserEmailHandler'),
     updateUserImageHandler: require('./users/updateUserImageHandler'),
 
+    checkLoggedInUserHandler: require('./users/checkLoggedInUserHandler'),
 
     checkIfHasPlaygroundsNearHandler: require('./playgrounds/checkIfHasPlaygroundsNearHandler'),
     addPlaygroundHandler: require('./playgrounds/addPlaygroundHandler'),
     editPlaygroundHandler: require('./playgrounds/editPlaygroundHandler'),
     deletePlaygroundostHandler: require('./playgrounds/deletePostHandler'),
     retrievePlaygroundsHandler: require('./playgrounds/retrievePlaygroundsHandler'),
+    retrieveFromFilterHandler: require('./playgrounds/searchPlaygrounds/retrieveFromFilterHandler'),
     retrieveCitiesFromDatabaseHandler: require('./playgrounds/searchPlaygrounds/retrieveCitiesFromDatabaseHandler'),
     retrievePlaygroundsFromCityHandler: require('./playgrounds/searchPlaygrounds/retrievePlaygroundsFromCityHandler'),
     retrieveCityFromSearchHandler: require('./playgrounds/searchPlaygrounds/retrieveCityFromSearchHandler'),

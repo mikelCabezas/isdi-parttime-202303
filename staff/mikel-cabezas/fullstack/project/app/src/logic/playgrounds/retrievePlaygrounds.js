@@ -16,7 +16,6 @@ export default (token, userLocation) => {
 
         if (res.status !== 200)
             return res.json().then(({ error: message }) => { throw new Error(message) })
-
         return res.json()
     })
 }

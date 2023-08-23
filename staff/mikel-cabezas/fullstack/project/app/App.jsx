@@ -4,6 +4,8 @@ import * as Linking from 'expo-linking';
 import { NavigationContainer } from '@react-navigation/native';
 import * as Location from 'expo-location';
 import { ActionSheetProvider } from '@expo/react-native-action-sheet';
+import serverStatus from "./src/logic/helpers/serverStatus.js";
+import Loader from "./src/library/Loader.jsx";
 
 import MainStack from "./src/navigation/MainStack.jsx";
 import { StatusBar } from 'expo-status-bar';
@@ -13,7 +15,6 @@ const { Provider } = AppContext
 
 const prefix = Linking.createURL('/');
 
-
 const HideKeyboard = ({ children }) => (
   <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
     {children}
@@ -21,7 +22,7 @@ const HideKeyboard = ({ children }) => (
 );
 
 export default function App({ }) {
-  const [view, setView] = useState('home')
+  // const [view, setView] = useState('home')
   const [modal, setModal] = useState()
   const [currentView, setCurrentView] = useState()
   const [animation, setAnimation] = useState()
@@ -32,6 +33,7 @@ export default function App({ }) {
   const [origin, setOrigin] = useState({})
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
+  const [serverStatusResponse, setServerStatusResponse] = useState(null);
 
   const [loadCurrentLocation, setLoadCurrentLocation] = useState(false)
 
@@ -69,6 +71,25 @@ export default function App({ }) {
   };
 
   useEffect(() => {
+    (async () => {
+      return serverStatus()
+        .then(res => {
+          if (res === 200) {
+            setServerStatusResponse(true)
+          }
+          else {
+            serverStatus()
+            // if (res === 'This user does not exist') {
+            //   Alert.alert('Error', `Server is down, please try again later`, [
+            //     { text: 'OK', onPress: () => { } },
+            // ]);
+            // }
+          }
+        })
+    })();
+  }, [])
+
+  useEffect(() => {
     if (colorScheme === 'dark') {
       setColorPalette({ mainDark: 'rgb(31 41 55)' })
     }
@@ -92,24 +113,19 @@ export default function App({ }) {
   }, [])
 
   return (
-    <>
+    <HideKeyboard>
       <Provider value={{
         currentView, setCurrentView, currentMarker, setCurrentMarker, modal, setModal, colorScheme, animation,
-        setAnimation, TOKEN, setTOKEN, origin, setOrigin, location, setLocation, colorPalette, loadCurrentLocation, setLoadCurrentLocation, isLoggedIn, setIsLoggedIn
+        setAnimation, TOKEN, setTOKEN, origin, setOrigin, location, setLocation, loadCurrentLocation, setLoadCurrentLocation, isLoggedIn, setIsLoggedIn
       }}>
-        <HideKeyboard>
-          <ActionSheetProvider>
-
-
-            <NavigationContainer linking={linking} >
-              <MainStack />
-            </NavigationContainer>
-          </ActionSheetProvider>
-
-        </HideKeyboard>
+        {!serverStatusResponse && <Loader text="Conecting..." details="This could take depending on your internet connection." />}
+        {serverStatusResponse && <ActionSheetProvider>
+          <NavigationContainer linking={linking} >
+            <MainStack />
+          </NavigationContainer>
+        </ActionSheetProvider>}
       </Provider>
-
-    </>
+    </HideKeyboard>
   );
 }
 

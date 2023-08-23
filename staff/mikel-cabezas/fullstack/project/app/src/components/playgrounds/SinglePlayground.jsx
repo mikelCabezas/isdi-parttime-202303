@@ -65,11 +65,13 @@ export default function Nearby({ closeHandle, setSinglePlaygroundImages, onHandl
         Linking.openURL(url)
     }
 
-
-
     const handleOpenImages = () => {
         setSinglePlaygroundImages(playground.images)
         onHandleOpenImages()
+    }
+    let sunExposition = false
+    if (shady === 'bg-mainLime' || sunny === 'bg-mainLime' || partial === 'bg-mainLime') {
+        sunExposition = true
     }
 
     return <View className="h-full bg-red-500z relative flex-column justify-between items-center bg-[blue]">
@@ -100,43 +102,46 @@ export default function Nearby({ closeHandle, setSinglePlaygroundImages, onHandl
                             <Text className="font-bold text-center text-sm px-5 py-2 w-full">Go to playground</Text>
                         </View>
                     </TouchableHighlight>
-                    <View className="flex-row flex-wrap gap-3 mb-4">
-                        <Text className="dark:text-white text-lg mt-3 font-semibold w-full">Sun Exposition</Text>
-                        <Text className="dark:text-white  mt-3 font-semibold w-full">There is no info yet... Tap fer edit!</Text>
-
-                        <View
-                            className={`border border-mainLime rounded-full ${shady}`}
-                            onPress={() => { handleShady() }}>
-                            <View className="font-bold px-3 py-2 rounded-full flex-row">
-                                <Image className="w-5 h-5 mr-2" source={SHADY} />
-                                <Text className="font-bold text-center text-sm rounded-full">Shady</Text>
+                    <View className="flex-row flex-wrap  mb-4">
+                        <Text className="dark:text-white text-lg mt-3 mb-1.5 font-semibold w-full">Sun Exposition</Text>
+                        <Text className="dark:text-white mb-3 font-semibold w-full">There is no info yet... Tap fer edit!</Text>
+                        {!sunExposition && <>
+                        </>}
+                        <View className="gap-3 flex-row flex-wrap">
+                            <View
+                                className={`border border-mainLime rounded-full ${shady}`}
+                                onPress={() => { handleShady() }}>
+                                <View className="font-bold px-3 py-2 rounded-full flex-row">
+                                    <Image className="w-5 h-5 mr-2" source={SHADY} />
+                                    <Text className="font-bold text-center text-sm rounded-full">Shady</Text>
+                                </View>
                             </View>
-                        </View>
-                        <View
-                            className={`border border-mainYellow rounded-full ${sunny}`}
-                            onPress={() => { handleShady() }}>
-                            <View className="font-bold px-3 py-2 rounded-full flex-row">
-                                <Image className="w-5 h-5 mr-2" source={SUNNY} />
-                                <Text className="font-bold text-center text-sm rounded-full">Sunny</Text>
+                            <View
+                                className={`border border-mainYellow rounded-full ${sunny}`}
+                                onPress={() => { handleShady() }}>
+                                <View className="font-bold px-3 py-2 rounded-full flex-row">
+                                    <Image className="w-5 h-5 mr-2" source={SUNNY} />
+                                    <Text className="font-bold text-center text-sm rounded-full">Sunny</Text>
+                                </View>
                             </View>
-                        </View>
-                        <View
-                            className={`border border-[#38F1A3] rounded-full ${partial}`}
-                            onPress={() => { handleShady() }}>
-                            <View className="font-bold px-3 py-2 rounded-full flex-row">
-                                <Image className="w-5 h-5 mr-2" source={SUNNY} />
-                                <Text className="font-bold text-center text-sm rounded-full">Partial</Text>
+                            <View
+                                className={`border border-[#38F1A3] rounded-full ${partial}`}
+                                onPress={() => { handleShady() }}>
+                                <View className="font-bold px-3 py-2 rounded-full flex-row">
+                                    <Image className="w-5 h-5 mr-2" source={SUNNY} />
+                                    <Text className="font-bold text-center text-sm rounded-full">Partial</Text>
+                                </View>
                             </View>
                         </View>
                     </View>
-                    <View className="flex-row flex-wrap gap-3 mb-4">
-                        <Text className="dark:text-white text-lg mt-3 font-semibold w-full">Elements</Text>
+                    <View className="flex-row flex-wrap mb-4">
+                        <Text className="dark:text-white text-lg mt-3 mb-1.5 font-semibold w-full">Elements</Text>
 
                         {playground.elements.length !== 0 ? playground.elements.map((element, index) => {
                             return <SingleElement element={element} key={index} />
                         }) :
                             <View className="flex-row flex-wrap mb-">
-                                <Text className="dark:text-white font-semibold w-full">There are no elements yet...</Text>
+                                <Text className="dark:text-white mb-1.5 font-semibold w-full">There are no elements yet...</Text>
                                 <TouchableOpacity
                                     activeOpacity={0.8}
                                     className="border border-mainLime  rounded-full mb-1 mt-2 mr-2 bg-mainGray"
@@ -189,9 +194,8 @@ export default function Nearby({ closeHandle, setSinglePlaygroundImages, onHandl
 
         </>
         }
-        <View className="flex-row absolute bottom-0 bg-mainGrays w-full mx-auto justify-center z-50 pb-11">
+        <View className="flex-row  bg-mainGrays w-full mx-auto justify-center z-50 pb-40" />
 
-        </View>
 
 
     </View >

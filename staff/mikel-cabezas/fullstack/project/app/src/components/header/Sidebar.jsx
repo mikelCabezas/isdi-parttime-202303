@@ -132,7 +132,7 @@ export default function Sidebar({ navigation, closeHandle, user, likedHandler, u
                     </View>
                 </TouchableHighlight>
 
-                <TouchableHighlight
+                {/* <TouchableHighlight
                     activeOpacity={1.0}
                     underlayColor="#fff"
                     onPress={() => {
@@ -150,7 +150,7 @@ export default function Sidebar({ navigation, closeHandle, user, likedHandler, u
                             My issues
                         </Text>
                     </View>
-                </TouchableHighlight>
+                </TouchableHighlight> */}
 
                 <TouchableHighlight
                     activeOpacity={1.0}
