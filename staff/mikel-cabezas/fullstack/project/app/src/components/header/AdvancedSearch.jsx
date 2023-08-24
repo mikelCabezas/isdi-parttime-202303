@@ -12,7 +12,7 @@ import retrieveFromFilter from "../../logic/playgrounds/retrieveFromFilter";
 import * as Animatable from 'react-native-animatable';
 
 export default function AdvancedSearch({ closeHandle }) {
-    const { currentView, setCurrentView, currentMarker, setCurrentMarker, TOKEN } = useContext(Context)
+    const { currentView, setCurrentView, currentMarker, location, TOKEN } = useContext(Context)
     const [playground, setPlayground] = useState()
     const [elements, setElements] = useState([{ status: false, type: 'Slide' }, { status: false, type: 'Rider' }, { status: false, type: 'Swing' }, { status: false, type: 'Double Swing' }, { status: false, type: 'Seesaw' }, { status: false, type: 'Sandbox' }, { status: false, type: 'House' }, { status: false, type: 'Climber' }])
     const [activeAges, setActiveAges] = useState()
@@ -27,16 +27,14 @@ export default function AdvancedSearch({ closeHandle }) {
 
     const [isAccessible, setIsAccessible] = useState(false);
     const [currentLocation, setCurrentLocation] = useState(false);
-    const [showInputLocation, setShowInputLocation] = useState(false);
+    const [useUserLocation, setUseUserLocation] = useState(false);
     const [inputLocation, setInputLocation] = useState();
     const [distance, setDistance] = useState(0);
 
     enableScroll = () => this.setState({ scrollEnabled: true });
     disableScroll = () => this.setState({ scrollEnabled: false });
 
-    const toggleAccessible = () => {
-        setIsAccessible(previousState => !previousState)
-    }
+    const toggleAccessible = () => setIsAccessible(previousState => !previousState)
 
     const toggleCurrentLocation = () => {
         console.log('current location on toggle', currentLocation)
@@ -45,14 +43,14 @@ export default function AdvancedSearch({ closeHandle }) {
         switch (currentLocation) {
             case false:
                 setAnimation('')
-                setShowInputLocation(previousState => !previousState)
+                setUseUserLocation(previousState => !previousState)
                 setTimeout(() => {
                 }, 350);
 
                 break;
             case true:
                 setAnimation('')
-                setShowInputLocation(previousState => !previousState)
+                setUseUserLocation(previousState => !previousState)
                 break;
         }
     }
@@ -66,8 +64,12 @@ export default function AdvancedSearch({ closeHandle }) {
                 age: age,
                 elements: elements,
                 isAccessible: isAccessible,
+                userCoordinates: location,
+                citySearch: inputLocation,
                 distance: distance
             }
+            if (!useUserLocation) delete query.userCoordinates
+            if (useUserLocation) delete query.citySearch
             retrieveFromFilter(TOKEN, query)
                 .then(playgroundsResult => {
                     console.log(playgroundsResult)
@@ -136,7 +138,7 @@ export default function AdvancedSearch({ closeHandle }) {
                                 onValueChange={toggleCurrentLocation}
                                 value={currentLocation}
                             />
-                            {!showInputLocation && <Animatable.View animation={animation} duration={250} className="w-full ">
+                            {!useUserLocation && <Animatable.View animation={animation} duration={250} className="w-full ">
                                 <Text className="dark:text-white text-lg w-full font-bold mr-2">Search by city</Text>
                                 <TextInput
                                     label="City"
