@@ -13,7 +13,7 @@ import retrievePlaygrounds from "../../logic/playgrounds/retrievePlaygrounds.js"
 import retrievePlaygroundsCities from "../../logic/playgrounds/retrievePlaygroundsCities.js";
 
 
-export default function Header({ navigation, onHandleViewPlaygroundsFromCity, handleToggleSidebar, onToggleFilter }) {
+export default function Header({ navigation, onHandleViewPlaygroundsFromCity, handleToggleSidebar, onToggleFilter, setPlaygroundsCount }) {
 
     if (colorScheme === 'dark') isDark = true
     let isDark
@@ -27,7 +27,6 @@ export default function Header({ navigation, onHandleViewPlaygroundsFromCity, ha
     const [loading, setIsLoading] = React.useState();
     const [isTyping, setIsTyping] = React.useState([]);
     const [data, setData] = React.useState([]);
-    const [error, setError] = React.useState([]);
     const [timeoutId, setTimeoutId] = useState()
     const [animation, setAnimation] = useState('fadeInDown')
 
@@ -62,7 +61,7 @@ export default function Header({ navigation, onHandleViewPlaygroundsFromCity, ha
     }
 
     const simpleSearchRegion = (search) => {
-        console.log(search)
+        // console.log(search)
     }
 
     const handleSearch = (query) => {
@@ -94,13 +93,14 @@ export default function Header({ navigation, onHandleViewPlaygroundsFromCity, ha
 
     return <>
 
+
         {modal === 'simpleSearch' && data?.length > 0 && <View className="flex-1 w-full h-screen justify-center items-center">
             <TouchableOpacity activeOpacity={1} onPress={handleCloseModal}>
                 <View className="bg-tranparent flex-1 h-screen w-screen" />
             </TouchableOpacity>
             <Animatable.View animation={animation} duration={250} key={-2} className="flex w-11/12 bg-white absolute top-12 m-auto pt-8 pb-3 flex-1 rounded-[22px] text-left">
                 <View className="py-2 border-b-[1px] border-mainGray" key={-1} />
-                <SearchResults data={data} handleViewPlaygroundsFromCity={onHandleViewPlaygroundsFromCity} />
+                <SearchResults data={data} handleViewPlaygroundsFromCity={onHandleViewPlaygroundsFromCity} setPlaygroundsCount={setPlaygroundsCount} handleCloseModal={handleCloseModal} />
             </Animatable.View>
         </View>
         }

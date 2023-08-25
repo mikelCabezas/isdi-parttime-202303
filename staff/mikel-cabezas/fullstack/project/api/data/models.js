@@ -93,19 +93,23 @@ const location = new Schema({
 const element = new Schema({
     type: {
         type: String,
-        required: true
+        required: true,
+        default: undefined,
     },
     age: {
         type: Number,
-        required: true
+        required: true,
+        default: undefined,
     },
     status: {
         type: String,
-        required: true
+        required: true,
+        default: undefined,
     },
     accessibility: {
         type: Boolean,
-        required: true
+        required: true,
+        default: undefined
     },
 })
 const issue = new Schema({
@@ -127,6 +131,7 @@ const issue = new Schema({
     elements: {
         type: [String],
         required: true,
+        default: []
         // unique: true
     },
     isSolved: {
@@ -236,10 +241,12 @@ const post = new Schema({
 
 const User = model('User', user)
 const Playground = model('Playground', playground)
+const Element = model('Element', element)
 const Post = model('Post', post)
 
 module.exports = {
     User,
     Playground,
+    Element,
     Post
 }

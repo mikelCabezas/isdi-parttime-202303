@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
-import { Text, Image, View, ScrollView, TextInput, Switch, TouchableOpacity } from 'react-native';
+import { Text, Image, View, ScrollView, TextInput, Switch, TouchableOpacity, Alert } from 'react-native';
 
 import Slider from '@react-native-community/slider';
 
@@ -7,8 +7,10 @@ import { SHADY, LIKE, LIKE_FILLED, SUNNY, ADD } from '../../../assets/icons';
 import Context from '../../AppContext.js'
 import SingleElement from './SingleElement'
 import SingleAge from './SingleAge'
+import AutoCompleteSearchResults from './AutoCompleteSearchResults'
 import SunExposition from '../playgrounds/addPlayground/SunExposition'
 import retrieveFromFilter from "../../logic/playgrounds/retrieveFromFilter";
+import retrievePlaygroundsCities from "../../logic/playgrounds/retrievePlaygroundsCities";
 import * as Animatable from 'react-native-animatable';
 
 export default function AdvancedSearch({ closeHandle }) {
@@ -17,6 +19,10 @@ export default function AdvancedSearch({ closeHandle }) {
     const [elements, setElements] = useState([{ status: false, type: 'Slide' }, { status: false, type: 'Rider' }, { status: false, type: 'Swing' }, { status: false, type: 'Double Swing' }, { status: false, type: 'Seesaw' }, { status: false, type: 'Sandbox' }, { status: false, type: 'House' }, { status: false, type: 'Climber' }])
     const [activeAges, setActiveAges] = useState()
     const ages = [1, 2, 3, 4, 5, 6,]
+    const [searchQuery, setSearchQuery] = React.useState();
+    const [timeoutId, setTimeoutId] = useState()
+    const [retrievedCitiesList, setRetrievedCitiesList] = useState()
+
     // const [ages, setAges] = useState([{ status: false, number: '+1' }, { status: false, number: '+2' }, { status: false, number: '+3' }, { status: false, number: '+4' }, { status: false, number: '+5' }, { status: false, number: '+6' }])
 
     const [animation, setAnimation] = useState('')
@@ -29,7 +35,7 @@ export default function AdvancedSearch({ closeHandle }) {
     const [currentLocation, setCurrentLocation] = useState(false);
     const [useUserLocation, setUseUserLocation] = useState(false);
     const [inputLocation, setInputLocation] = useState();
-    const [distance, setDistance] = useState(0);
+    const [distance, setDistance] = useState(1);
 
     enableScroll = () => this.setState({ scrollEnabled: true });
     disableScroll = () => this.setState({ scrollEnabled: false });
@@ -58,7 +64,8 @@ export default function AdvancedSearch({ closeHandle }) {
     const handleQuerySearch = () => {
         try {
             let age
-            if (activeAges.length > 0) age = activeAges.length
+            if (!activeAges) age = null
+            if (activeAges?.length > 0) age = activeAges.length
             const query = {
                 sunExposition: [{ shady: playgroundShady }, { sunny: playgroundSunny }, { partial: playgroundPartial }],
                 age: age,
@@ -70,12 +77,18 @@ export default function AdvancedSearch({ closeHandle }) {
             }
             if (!useUserLocation) delete query.userCoordinates
             if (useUserLocation) delete query.citySearch
+            if (!useUserLocation && !inputLocation) {
+                throw new Error(`Set your current location or a city`)
+            }
             retrieveFromFilter(TOKEN, query)
                 .then(playgroundsResult => {
                     console.log(playgroundsResult)
                     // handleViewPlaygroundsFromCity(playgroundsResult)
                 })
         } catch (error) {
+            Alert.alert('Error', `${error.message}`, [
+                { text: 'OK', onPress: () => { } },
+            ]);
             console.log(error.message)
         }
     }
@@ -97,6 +110,34 @@ export default function AdvancedSearch({ closeHandle }) {
         if (age === 6) setActiveAges([1, 2, 3, 4, 5, 6])
     }
 
+
+    const handleSearch = (query) => {
+        setSearchQuery(query)
+
+        if (timeoutId) {
+            clearTimeout(timeoutId)
+        }
+
+        const newTimeoutId = setTimeout(async () => {
+            try {
+                if (searchQuery)
+                    await retrievePlaygroundsCities(TOKEN, searchQuery).then(data => {
+                        if (data.length > 0) {
+                            console.log('data', data)
+                            setRetrievedCitiesList(data)
+                        } else {
+                            setRetrievedCitiesList(['No results found. Try another city name.'])
+                        }
+                        // alert(data)
+                    })
+            } catch (error) {
+                console.log(error.message)
+            }
+        }, 2000);
+
+        setTimeoutId(newTimeoutId)
+    }
+
     useEffect(() => {
     }, [isAccessible, elements, activeAges])
 
@@ -106,7 +147,62 @@ export default function AdvancedSearch({ closeHandle }) {
                 <View className="pb-12 bg-white dark:bg-gray-800 z-40" >
 
                     <View className="flex-row flex-wrap mt-4 mb-5">
-                        <Text className="dark:text-white text-2xl font-semibold w-full">Advanced search</Text>
+                        <Text className="dark:text-white text-2xl font-semibold w-full mb-3">Advanced search</Text>
+                        <View className="flex-row flex-wrap items-center mb-5 w-full z-20">
+                            <View className="bg-white z-10 w-full flex-row flex-wrap items-center">
+                                <Text className="dark:text-white text-lg w-full font-bold mr-2 flex">Location</Text>
+                                <Text className="dark:text-white text-sm mr-2 flex">Use my current location</Text>
+                                <Switch
+                                    style={{ marginTop: 4, transform: [{ scaleX: .75 }, { scaleY: .75 }] }}
+                                    onValueChange={toggleCurrentLocation}
+                                    value={currentLocation}
+                                />
+                                {!useUserLocation && <Animatable.View animation={animation} duration={250} className="w-full ">
+                                    <Text className="dark:text-white text-lg w-full font-bold mr-2">Search by city</Text>
+                                    <View className="z-[100]">
+                                        <TextInput
+                                            label="City"
+                                            returnKeyType="next"
+                                            value={inputLocation}
+                                            // onChangeText={setInputLocation}
+                                            onChangeText={(query) => handleSearch(query)}
+                                            autoCompleteType="city"
+                                            placeholder="City"
+                                            className="dark:text-white border border-mainGray bg-mainGray dark:border-gray-700 dark:bg-gray-700 rounded-full mt-1 mb-0 px-3 py-2 self-start w-full z-10"
+                                            inputMode="text"
+                                            keyboardType="default"
+                                        />
+                                        {retrievedCitiesList && <Animatable.View animation={animation} duration={250} className="z-0 absolute w-full ">
+                                            <AutoCompleteSearchResults retrievedCitiesList={retrievedCitiesList} />
+                                        </Animatable.View>}
+                                    </View>
+                                </Animatable.View>}
+
+                            </View>
+                        </View>
+                        <View className="mb-5 z-10">
+                            <Text className="dark:text-white text-lg mb-1 font-semibold w-full">Distance</Text>
+                            <View className="flex-row flex-wrap items-center">
+                                <Slider
+                                    style={{ width: '60%', height: 40 }}
+                                    step={1}
+                                    minimumValue={1}
+                                    maximumValue={20}
+                                    minimumTrackTintColor="#B8F138"
+                                    maximumTrackTintColor="#ECECEC"
+                                    onValueChange={setDistance}
+                                />
+                                <Text className="ml-6">{distance} km</Text>
+                            </View>
+                        </View>
+                        <View className="flex-row items-center mb-2 w-full">
+                            <Text className="dark:text-white text-lg font-bold mr-2 flex">Accessibility</Text>
+                            <Switch
+                                style={{ marginTop: 0, transform: [{ scaleX: .75 }, { scaleY: .75 }] }}
+                                onValueChange={toggleAccessible}
+                                value={isAccessible}
+                            />
+                        </View>
                         <SunExposition playgroundShady={playgroundShady} setPlaygroundShady={setPlaygroundShady} playgroundSunny={playgroundSunny} setPlaygroundSunny={setPlaygroundSunny} playgroundPartial={playgroundPartial} setPlaygroundPartial={setPlaygroundPartial} />
                     </View>
                     <View className="flex flex-wrap flex-row mb-5">
@@ -115,60 +211,14 @@ export default function AdvancedSearch({ closeHandle }) {
                             return <SingleAge activeAges={activeAges} age={age} mainColor="mainLime" onAgePressed={handleAgePressed} />
                         })}
                     </View>
-                    <View className="flex flex-wrap flex-row mb-5">
+                    <View className="flex flex-wrap flex-row mb-6">
                         <Text className="dark:text-white text-lg font-semibold w-full">Elements</Text>
                         {elements.map((element, index) => {
                             return <SingleElement element={element} key={index} mainColor="mainLime" onElementPressed={handleElementPressed} />
                         })}
                     </View>
-                    <View className="flex-row items-center mb-5">
-                        <Text className="dark:text-white text-lg font-bold mr-2 flex">Accessibility</Text>
-                        <Switch
-                            style={{ marginTop: 4, transform: [{ scaleX: .75 }, { scaleY: .75 }] }}
-                            onValueChange={toggleAccessible}
-                            value={isAccessible}
-                        />
-                    </View>
-                    <View className="flex-row flex-wrap items-center mb-5 w-full">
-                        <View className="bg-white z-10 w-full flex-row flex-wrap items-center">
-                            <Text className="dark:text-white text-lg w-full font-bold mr-2 flex">Location</Text>
-                            <Text className="dark:text-white text-sm mr-2 flex">Use my current location</Text>
-                            <Switch
-                                style={{ marginTop: 4, transform: [{ scaleX: .75 }, { scaleY: .75 }] }}
-                                onValueChange={toggleCurrentLocation}
-                                value={currentLocation}
-                            />
-                            {!useUserLocation && <Animatable.View animation={animation} duration={250} className="w-full ">
-                                <Text className="dark:text-white text-lg w-full font-bold mr-2">Search by city</Text>
-                                <TextInput
-                                    label="City"
-                                    returnKeyType="next"
-                                    value={inputLocation}
-                                    onChangeText={setInputLocation}
-                                    autoCompleteType="city"
-                                    placeholder="City"
-                                    className="dark:text-white border border-mainGray bg-mainGray dark:border-gray-700 dark:bg-gray-700 rounded-full mt-1 mb-0 px-3 py-2 self-start w-full"
-                                    inputMode="text"
-                                    keyboardType="default"
-                                />
-                            </Animatable.View>}
-                        </View>
-                    </View>
-                    <View className="mb-5">
-                        <Text className="dark:text-white text-lg mb-1 font-semibold w-full">Distance</Text>
-                        <View className="flex-row flex-wrap items-center">
-                            <Slider
-                                style={{ width: '60%', height: 40 }}
-                                step={1}
-                                minimumValue={0}
-                                maximumValue={20}
-                                minimumTrackTintColor="#B8F138"
-                                maximumTrackTintColor="#ECECEC"
-                                onValueChange={setDistance}
-                            />
-                            <Text className="ml-6">{distance} km</Text>
-                        </View>
-                    </View>
+
+
                     <TouchableOpacity
                         underlayColor="#ffffff"
                         activeOpacity={0.8}

@@ -1,4 +1,4 @@
-import { View, StatusBar, Alert, Dimensions, Image, TouchableHighlight } from 'react-native';
+import { View, StatusBar, Alert, Dimensions, Image, TouchableHighlight, Text } from 'react-native';
 import { useContext, useEffect, useState, useRef, useMemo, useCallback } from 'react';
 import AppContext from "../AppContext.js";
 const { Provider } = AppContext
@@ -7,6 +7,7 @@ import WelcomeMessage from '../library/WelcomeMessage'
 
 import BottomSheet from '@gorhom/bottom-sheet';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as Animatable from 'react-native-animatable';
 
 import { WHITE_CLOSE, CLOSE } from '../../assets/icons';
 import Sidebar from '../components/header/Sidebar.jsx';
@@ -29,12 +30,15 @@ export default function Home({ route, navigation, onSendViewPlaygroundsFromCity 
     const { modal, setModal, setIsLoggedIn, colorScheme, TOKEN, loadCurrentLocation, setCurrentView } = useContext(Context)
     const [currentMarker, setCurrentMarker] = useState({})
     const [newPlaygroundStatus, setNewPlaygroundStatus] = useState(false)
+    const [playgroundsCount, setPlaygroundsCount] = useState()
     const [searchResult, setSearchResult] = useState(false)
     const [user, setUser] = useState()
     const [singlePlaygroundImages, setSinglePlaygroundImages] = useState()
     const [modalImages, setModalImages] = useState()
     const [welcomeMessageStorage, setWelcomeMessageStorage] = useState(false)
     const [onHomeHandler, setOnHomeHandler] = useState(null);
+    const [animation, setAnimation] = useState('fadeInDown')
+
 
     const { params } = route;
     const { width } = Dimensions.get('window');
@@ -125,6 +129,16 @@ export default function Home({ route, navigation, onSendViewPlaygroundsFromCity 
         }
     }, []);
 
+    useEffect(() => {
+        if (playgroundsCount > 0) {
+            setAnimation('fadeInDown')
+            setTimeout(() => {
+                setAnimation('fadeOutUp')
+            }, 3000);
+        }
+
+    }, [playgroundsCount])
+
 
     const onCloseWelcomeMessage = () => {
         welcomeMessage()
@@ -150,7 +164,10 @@ export default function Home({ route, navigation, onSendViewPlaygroundsFromCity 
     const onCloseModal = () => {
         if (modal === 'createPlayground') {
             confirmCloseModal()
-        } else if (modal) { bottomSheetRef.current.close() }
+        } else if (modal) {
+            bottomSheetRef.current.close()
+            setModal()
+        }
     }
     const onCloseImages = () => {
         setModalImages(false)
@@ -236,10 +253,22 @@ export default function Home({ route, navigation, onSendViewPlaygroundsFromCity 
     );
 
     return <>
+
+
+
         <View className="flex-1 bg-white items-center justify-center">
             {modal === 'sidebar' && <Sidebar likedHandler={onOpenLikedFromSidebar} navigation={navigation} user={user} closeHandle={onCloseSidebar} userSettingsHandler={onUserSettingsFromSidebar} />}
-            <BaseMap onHomeHandler={onHomeHandler} user={user} className="-z-20" onMarkerPressed={markerPressedHandler} searchResult={searchResult} />
-            <Header handleToggleSidebar={handleToggleSidebar} onToggleFilter={onToggleFilter} handleCloseModals={onCloseModal} onHandleViewPlaygroundsFromCity={handleViewPlaygroundsFromCity} />
+            <BaseMap setAnimation={setAnimation} animation={animation} setPlaygroundsCount={setPlaygroundsCount} onHomeHandler={onHomeHandler} user={user} className="-z-20" onMarkerPressed={markerPressedHandler} searchResult={searchResult} />
+
+            {playgroundsCount && <>
+                <Animatable.View animation={animation} duration={350} className="position absolute top-[10vh]">
+                    <View className=" flex-row justify-cente bg-white px-4 py-2 mt-5 left-0 w-auto rounded-full">
+                        <Text className="text-center text-r">{playgroundsCount} playgrounds loaded</Text>
+                    </View>
+                </Animatable.View>
+            </>}
+
+            <Header setPlaygroundsCount={setPlaygroundsCount} handleToggleSidebar={handleToggleSidebar} onToggleFilter={onToggleFilter} handleCloseModals={onCloseModal} onHandleViewPlaygroundsFromCity={handleViewPlaygroundsFromCity} />
             <Footer likedHandler={onLiked} nearbyHandler={onNearby} createPlaygroundHandler={onCreatePlayground} homeHandler={onHome} />
             {modal === 'singlePlayground' && <BottomSheet
                 backgroundStyle={{ backgroundColor: `${mainColor}` }}
@@ -314,6 +343,8 @@ export default function Home({ route, navigation, onSendViewPlaygroundsFromCity 
                     onChange={handleSheetChangesSingle}>
                     <UserSettings user={user} />
                 </BottomSheet>}
+
+
             <StatusBar style="auto" />
             {welcomeMessageStorage && user && loadCurrentLocation && <WelcomeMessage user={user} handleCloseWelcomeMessage={onCloseWelcomeMessage} />}
         </View >

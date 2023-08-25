@@ -11,7 +11,7 @@ import {
 import retrievePlaygroundsFromCity from "../../logic/playgrounds/retrievePlaygroundsFromCity.js";
 
 
-export default function SearchResults({ handleCloseModal, data, handleViewPlaygroundsFromCity, setPlaygroundsCount }) {
+export default function SearchResults({ handleCloseModal, retrievedCitiesList, handleViewPlaygroundsFromCity, setPlaygroundsCount }) {
 
     if (colorScheme === 'dark') isDark = true
     let isDark
@@ -21,7 +21,7 @@ export default function SearchResults({ handleCloseModal, data, handleViewPlaygr
     const [animation, setAnimation] = useState('fadeInDown')
 
     useEffect(() => {
-    }, [data]);
+    }, [retrievedCitiesList]);
 
     const onSearchPlayground = () => {
 
@@ -37,11 +37,11 @@ export default function SearchResults({ handleCloseModal, data, handleViewPlaygr
             })
     }
 
-    return <View>
-        {data.length > 0 && data.map((result, index) => {
-            return <View className="pt-3 border-mainGray" key={index} >
-                <View className="pt-3 border-mainGray" key={`${index}-0`} />
-                <TouchableOpacity activeOpacity={0.7} key={`${index}-touchable`} className="py-3 px-4" onPress={() => simpleSearchRegion(result)}>
+    return <View className="bg-mainGray w-full py-1 absolute top-0 -mtx-[65px] rounded-[22px] ">
+        <View className="bg-yellow-500 w-full my-5 " />
+        {retrievedCitiesList?.length > 0 && retrievedCitiesList?.map((result, index) => {
+            return <View className="pt-3  border-[#d2d2d2] border-t" key={index} >
+                <TouchableOpacity activeOpacity={0.7} key={`${index}-touchable`} className="pt-1 pb-3 px-4" onPress={() => simpleSearchRegion(result)}>
                     <Text key={`${index}-text`}> {result}</Text>
                 </TouchableOpacity>
             </View>

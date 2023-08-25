@@ -15,61 +15,72 @@ const {
  * 
  * @throws {ExistenceError} on user not found (async)
  */
-module.exports = (userId, age, _elements, accessible, distance, _sunExpositionFilter) => {
-    const elements = _elements.split(',');
-    const sunExposition = {
-        shady: false,
-        sunny: false,
-        partial: false,
+module.exports = async (userId, _sunExpositionFilter, age, _elements, accessible, from, distance) => {
+    try {
+        validateUserId(userId)
+
+        age === 'null' ? age = null : age = age
+
+        let isAccessible
+        accessible === 'true' ? isAccessible = true : isAccessible = false
+        accessible === 'false' ? isAccessible = false : isAccessible = true
+
+        const sunExposition = {
+            shady: false,
+            sunny: false,
+            partial: false,
+        }
+        if (_sunExpositionFilter && _sunExpositionFilter !== 'null') {
+            const sunExpositionFilter = _sunExpositionFilter.split(',');
+            sunExpositionFilter.map(sunData => {
+                sunData.toLowerCase() === 'shady' ? sunExposition.shady = true : false
+                sunData.toLowerCase() === 'sunny' ? sunExposition.sunny = true : false
+                sunData.toLowerCase() === 'partial' ? sunExposition.partial = true : false
+            })
+        }
+
+        let elements
+        if (_elements && _elements !== 'null' && _elements !== []) {
+            elements = _elements.split(',');
+        } else {
+            elements = null
+        }
+
+
+        const query = {
+            'visibility': 'public'
+        }
+        if (_sunExpositionFilter !== 'null') {
+            query['sunExposition.shady'] = sunExposition.shady
+            query['sunExposition.sunny'] = sunExposition.sunny
+            query['sunExposition.partial'] = sunExposition.partial
+        }
+        if (age) {
+            query['elements.age'] = { $lte: age }
+        }
+        if (isAccessible) {
+            query['elements.accessibility'] = { $lte: isAccessible }
+        }
+
+        if (elements) {
+            query['elements.type'] = { $in: elements }
+        }
+
+        await Promise.all([
+            User.findById(userId).lean(),
+            Playground.find({
+                $and: [query]
+            }, '-__v -dateCreated -lastModify').lean(),
+        ])
+            .then(([user, playgrounds]) => {
+                console.log(playgrounds.length)
+                if (!user) new ExistenceError(`User with id ${userId} not found`)
+                return playgrounds
+            })
+            .catch(error => {
+                console.log(error)
+            })
+    } catch (error) {
+        console.log(error)
     }
-
-    let sunExpositionFilter
-    if (_sunExpositionFilter) {
-        sunExpositionFilter = _sunExpositionFilter.split(',');
-        sunExpositionFilter.map(sunData => {
-            sunData.toLowerCase() === 'shady' ? sunExposition.shady = true : false
-            sunData.toLowerCase() === 'sunny' ? sunExposition.sunny = true : false
-            sunData.toLowerCase() === 'partial' ? sunExposition.partial = true : false
-        })
-    }
-    let isAccessible
-    accessible ? isAccessible = true : isAccessible = [true, false]
-
-    debugger
-
-
-    validateUserId(userId)
-
-    // return Playground.find({
-    //     'elements.type': {
-    //         $in: elements
-    //     }
-    // }).lean().then(playgrounds => {
-    //     console.log(playgrounds)
-    // })
-
-    return Promise.all([
-        User.findById(userId).lean(),
-        Playground.find({
-            $and: [
-                { 'visibility': 'public' },
-                { 'elements.type': { $in: elements } },
-                { 'sunExposition.shady': sunExposition.shady },
-                { 'sunExposition.sunny': sunExposition.sunny },
-                { 'sunExposition.partial': sunExposition.partial },
-                { 'elements.age': { $lte: age } },
-                { 'elements.accessibility': { $in: isAccessible } },
-            ]
-        }).lean(),
-        // }).distinct('location.city').lean(),
-        // }, '-_id -likes -images -__v -author -description -name   -location._id -location.street -location.type -elements -sunExposition -dateCreated -lastModify -visibility').lean(),
-    ])
-        .then(([user, playgrounds]) => {
-            console.log(playgrounds)
-            if (!user) new ExistenceError(`User with id ${userId} not found`)
-            return playgrounds
-        })
-        .catch(error => {
-            console.log(error)
-        })
 }

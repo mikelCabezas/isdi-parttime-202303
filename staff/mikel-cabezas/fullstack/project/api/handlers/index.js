@@ -24,6 +24,7 @@ module.exports = {
     retrievePlaygroundsHandler: require('./playgrounds/retrievePlaygroundsHandler'),
     retrieveFromFilterHandler: require('./playgrounds/searchPlaygrounds/retrieveFromFilterHandler'),
     retrieveCitiesFromDatabaseHandler: require('./playgrounds/searchPlaygrounds/retrieveCitiesFromDatabaseHandler'),
+    searchAutocompleteCitiesHandler: require('./playgrounds/searchPlaygrounds/searchAutocompleteCitiesHandler'),
     retrievePlaygroundsFromCityHandler: require('./playgrounds/searchPlaygrounds/retrievePlaygroundsFromCityHandler'),
     retrieveCityFromSearchHandler: require('./playgrounds/searchPlaygrounds/retrieveCityFromSearchHandler'),
     retrieveLikedPlaygroundsHandler: require('./playgrounds/retrieveLikedPlaygroundsHandler'),

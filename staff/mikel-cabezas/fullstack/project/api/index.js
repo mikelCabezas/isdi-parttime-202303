@@ -6,7 +6,7 @@ const bodyParser = require('body-parser')
 const cors = require('cors')
 const { serverStatusHandler,
     registerUserHandler, retrieveUserHandler, authenticateUserHandler, forgotPasswordHandler, updateUserImageHandler, updateUserNameHandler, updateUserPasswordHandler, validateUserHandler, setNewPasswordHandler, recoverPasswordHandler, searchUserHandler, confirmNewUserEmailHandler, updateUserEmailHandler, checkLoggedInUserHandler,
-    checkIfHasPlaygroundsNearHandler, addPlaygroundHandler, retrieveCitiesFromDatabaseHandler, retrieveFromFilterHandler, retrieveCityFromSearchHandler, retrievePlaygroundsFromCityHandler, retrievePlaygroundsHandler, retrieveLikedPlaygroundsHandler, retrievePlaygroundByIdHandler, toggleLikePlaygroundHandler } = require('./handlers')
+    checkIfHasPlaygroundsNearHandler, addPlaygroundHandler, retrieveCitiesFromDatabaseHandler, retrieveFromFilterHandler, retrieveCityFromSearchHandler, retrievePlaygroundsFromCityHandler, retrievePlaygroundsHandler, retrieveLikedPlaygroundsHandler, retrievePlaygroundByIdHandler, toggleLikePlaygroundHandler, searchAutocompleteCitiesHandler } = require('./handlers')
 const mongoose = require('mongoose')
 
 mongoose.connect(process.env.MONGODB_URL)
@@ -43,8 +43,9 @@ mongoose.connect(process.env.MONGODB_URL)
         api.post('/playgrounds/', jsonBodyParser, retrievePlaygroundsHandler)
         api.post('/playgrounds/checkNear', jsonBodyParser, checkIfHasPlaygroundsNearHandler)
         api.get('/cities/:city', retrieveCitiesFromDatabaseHandler)
+        api.get('/searchAutocomplete/:city', searchAutocompleteCitiesHandler)
         api.get('/city/:coordinates', retrieveCityFromSearchHandler)
-        api.get('/playgrounds/filter/age=:age&elements=:elements&accessible=:accessible&distance=:distance&sunExposition=:sunExposition', retrieveFromFilterHandler)
+        api.get('/playgrounds/filter/sunExposition=:sunExposition&age=:age&elements=:elements&accessible=:accessible&from=:from&distance=:distance', retrieveFromFilterHandler)
         api.get('/playgrounds/city/:city', retrievePlaygroundsFromCityHandler)
 
         api.post(`/addPlayground`, jsonBodyParser, addPlaygroundHandler)

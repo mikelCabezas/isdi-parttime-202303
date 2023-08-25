@@ -12,11 +12,10 @@ import Context from '../../AppContext'
 import retrievePlaygrounds from "../../logic/playgrounds/retrievePlaygrounds"
 import * as Animatable from 'react-native-animatable';
 
-export default function BaseMap({ user, onMarkerPressed, searchResult, onHomeHandler }) {
+export default function BaseMap({ user, onMarkerPressed, searchResult, onHomeHandler, setPlaygroundsCount, animation, setAnimation }) {
     const mapRef = useRef(null);
     const { colorScheme, currentMarker, setCurrentMarker, origin, setOrigin, location, setLocation, currentLocation, loadCurrentLocation, setLoadCurrentLocation, TOKEN } = useContext(Context)
     const [playgrounds, setPlaygrounds] = useState()
-    const [animation, setAnimation] = useState('fadeInDown')
 
     let isDark
     if (colorScheme === 'dark') isDark = true
@@ -45,7 +44,7 @@ export default function BaseMap({ user, onMarkerPressed, searchResult, onHomeHan
                 retrievePlaygrounds(TOKEN, location)
                     .then(playgrounds => {
                         setPlaygrounds(playgrounds)
-                        console.log('playgrounds[0].length', playgrounds[0].length)
+                        setPlaygroundsCount(playgrounds[0].length)
                         setAnimation('fadeInDown')
                         setTimeout(() => {
                             setAnimation('fadeOutUp')
@@ -188,12 +187,6 @@ export default function BaseMap({ user, onMarkerPressed, searchResult, onHomeHan
             {!playgrounds || playgrounds[0] <= 0 && <Loader text="Loading..." details="This may be take a while. Loading playgrounds" />}
 
             {playgrounds && <>
-                <Animatable.View animation={animation} duration={250} className=" position absolute top-[10vh] py-2 left-0 w-full flex-row justify-center">
-                    <View className="bg-white px-4 py-2 mt-24 left-0 w-auto rounded-full">
-
-                        <Text className="text-center text-lg">{playgrounds[0].length} playgrounds loaded</Text>
-                    </View>
-                </Animatable.View>
                 <Playgrounds user={user} playgrounds={playgrounds} onMarkerPressedHandler={onMarkerPressedHandler} />
             </>}
 
