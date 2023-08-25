@@ -4,7 +4,7 @@ const { User } = require('../../data/models')
 
 describe('User model', () => {
     before(async () => {
-        await mongoose.connect('mongodb+srv://mikelcabezas:AgtcIoVPTLrszOqe@cluster0.lag80ok.mongodb.net/data_pf_test', {
+        await mongoose.connect(`${process.env.MONGODB_URL}/${MONGODB_DATABASE_TESTS}`, {
             // useNewUrlParser: true,
             // useUnifiedTopology: true,
             // useCreateIndex: true,
