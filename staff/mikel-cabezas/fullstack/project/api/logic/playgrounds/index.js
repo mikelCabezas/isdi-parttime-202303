@@ -3,6 +3,7 @@ module.exports = {
     searchAutocompleteCities: require('./searchPlaygrounds/searchAutocompleteCities'),
     retrieveDataFromCurrentLocation: require('./searchPlaygrounds/retrieveDataFromCurrentLocation'),
     retrievePlaygroundsFromCity: require('./searchPlaygrounds/retrievePlaygroundsFromCity'),
+    retrieveCoordinatesFromCity: require('./searchPlaygrounds/retrieveCoordinatesFromCity'),
     retrieveFromFilter: require('./searchPlaygrounds/retrieveFromFilter'),
     retrieveCitiesFromDatabase: require('./searchPlaygrounds/retrieveCitiesFromDatabase'),
     retrieveCityFromSearch: require('./searchPlaygrounds/retrieveCityFromSearch'),

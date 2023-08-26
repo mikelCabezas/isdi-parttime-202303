@@ -2,7 +2,8 @@ const { handleErrors } = require('.')
 
 
 module.exports = handleErrors(async (req, res) => {
-    res.status === 200 ? res.send('Server UP') : res.send('Server DOWN')
+    return 'Server UP'
+    // res.status === 200 ? res.send('Server UP') : res.send('Server DOWN')
 })
 
 

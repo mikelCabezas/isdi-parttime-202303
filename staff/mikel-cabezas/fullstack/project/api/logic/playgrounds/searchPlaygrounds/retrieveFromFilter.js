@@ -15,7 +15,7 @@ const {
  * 
  * @throws {ExistenceError} on user not found (async)
  */
-module.exports = async (userId, _sunExpositionFilter, age, _elements, accessible, from, distance) => {
+module.exports = (userId, _sunExpositionFilter, age, _elements, accessible, from, distance) => {
     try {
         validateUserId(userId)
 
@@ -65,17 +65,25 @@ module.exports = async (userId, _sunExpositionFilter, age, _elements, accessible
         if (elements) {
             query['elements.type'] = { $in: elements }
         }
+        if (from) {
+            query['location'] = {
+                $near: {
+                    $geometry: { type: "Point", coordinates: [from.latitude, from.longitude] },
+                    $maxDistance: distance * 1000
+                }
+            }
+        }
 
-        await Promise.all([
+        return Promise.all([
             User.findById(userId).lean(),
             Playground.find({
                 $and: [query]
             }, '-__v -dateCreated -lastModify').lean(),
         ])
             .then(([user, playgrounds]) => {
-                console.log(playgrounds.length)
                 if (!user) new ExistenceError(`User with id ${userId} not found`)
-                return playgrounds
+                console.log(playgrounds.length)
+                return [[from.latitude, from.longitude], [playgrounds]]
             })
             .catch(error => {
                 console.log(error)

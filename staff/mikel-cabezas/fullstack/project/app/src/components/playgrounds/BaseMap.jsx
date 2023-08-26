@@ -6,7 +6,6 @@ import { useRef, useContext, useState, useEffect } from 'react';
 import { NativeWindStyleSheet } from "nativewind";
 import Playgrounds from './Playgrounds.jsx';
 import AppContext from "../../AppContext.js"
-import Loader from '../../library/Loader';
 const { Provider } = AppContext
 import Context from '../../AppContext'
 import retrievePlaygrounds from "../../logic/playgrounds/retrievePlaygrounds"
@@ -14,7 +13,7 @@ import * as Animatable from 'react-native-animatable';
 
 export default function BaseMap({ user, onMarkerPressed, searchResult, onHomeHandler, setPlaygroundsCount, animation, setAnimation }) {
     const mapRef = useRef(null);
-    const { colorScheme, currentMarker, setCurrentMarker, origin, setOrigin, location, setLocation, currentLocation, loadCurrentLocation, setLoadCurrentLocation, TOKEN } = useContext(Context)
+    const { TOKEN, colorScheme, currentMarker, location, loadCurrentLocation, freeze, unfreeze, setloaderTitle, setloaderMessage } = useContext(Context)
     const [playgrounds, setPlaygrounds] = useState()
 
     let isDark
@@ -23,14 +22,14 @@ export default function BaseMap({ user, onMarkerPressed, searchResult, onHomeHan
     const onMarkerPressedHandler = () => onMarkerPressed()
 
 
-    // useEffect(() => {
-    // }, [playgrounds])
+    useEffect(() => {
+        console.log(playgrounds)
+        unfreeze()
+    }, [playgrounds])
 
     useEffect(() => {
-        console.log('Refresh Posts -> render in useEffect')
+        freeze()
         try {
-            console.log('   Show all Posts -> render in useEffect onLoad compo')
-
         } catch (error) {
             Alert.alert('Error', `${error.message}`, [
                 { text: 'OK', onPress: () => { } },
@@ -40,7 +39,8 @@ export default function BaseMap({ user, onMarkerPressed, searchResult, onHomeHan
     useEffect(() => {
         console.log('Refresh Posts -> render in useEffect')
         try {
-            if (loadCurrentLocation)
+            if (loadCurrentLocation) {
+                unfreeze()
                 retrievePlaygrounds(TOKEN, location)
                     .then(playgrounds => {
                         setPlaygrounds(playgrounds)
@@ -55,12 +55,8 @@ export default function BaseMap({ user, onMarkerPressed, searchResult, onHomeHan
                             { text: 'OK', onPress: () => { } },
                         ]);
                     })
+            }
 
-                    .catch(error => {
-                        Alert.alert('Error', `${error.message}`, [
-                            { text: 'OK', onPress: () => { } },
-                        ]);
-                    })
 
         } catch (error) {
             Alert.alert('Error', `${error.message}`, [
@@ -137,26 +133,6 @@ export default function BaseMap({ user, onMarkerPressed, searchResult, onHomeHan
 
 
     return <>
-        {!loadCurrentLocation && <>
-            <MapView
-                // userInterfaceStyle={'dark'}
-                ref={mapRef}
-                showsUserLocation={true}
-                // followsUserLocation={true}
-                onPress={() => { Keyboard.dismiss(); }}
-                onRegionChange={() => { Keyboard.dismiss() }}
-                className="w-full h-[120%] top-[-10%] absolute"
-                initialRegion={{
-                    // latitude: 43.228833,
-                    // longitude: 1.7255048,
-                    latitude: 40.2085,
-                    longitude: -3.713,
-                    latitudeDelta: 4,
-                    longitudeDelta: 4,
-                }} />
-            <Loader text="Loading..." details="This may be take a while. Loading current position" />
-        </>}
-
         {loadCurrentLocation && <MapView
             ref={mapRef}
             showsUserLocation={true}
@@ -165,8 +141,6 @@ export default function BaseMap({ user, onMarkerPressed, searchResult, onHomeHan
             onRegionChange={() => { Keyboard.dismiss(); }}
             className="w-full h-[120%] top-[-10%] absolute"
             initialRegion={{
-                // latitude: 43.228833,
-                // longitude: 1.7255048,
                 latitude: location.latitude,
                 longitude: location.longitude,
                 latitudeDelta: 0.0922,
@@ -184,7 +158,7 @@ export default function BaseMap({ user, onMarkerPressed, searchResult, onHomeHan
                 </Callout>
             </Marker>
 
-            {!playgrounds || playgrounds[0] <= 0 && <Loader text="Loading..." details="This may be take a while. Loading playgrounds" />}
+
 
             {playgrounds && <>
                 <Playgrounds user={user} playgrounds={playgrounds} onMarkerPressedHandler={onMarkerPressedHandler} />

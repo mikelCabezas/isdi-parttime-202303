@@ -224,6 +224,7 @@ export default function Home({ route, navigation, onSendViewPlaygroundsFromCity 
         ]);
 
     const handleViewPlaygroundsFromCity = (results) => {
+        if (modal) bottomSheetRef.current.close()
         setSearchResult(results)
     }
 
@@ -292,16 +293,19 @@ export default function Home({ route, navigation, onSendViewPlaygroundsFromCity 
                     />
                 </View>
             </>}
-            {modal === 'searchFilter' && <BottomSheet
-                // style={{ backgroundColor: "transparent" }}
-                backgroundStyle={{ backgroundColor: `${mainColor}` }}
-                enablePanDownToClose
-                ref={bottomSheetRef}
-                index={1}
-                snapPoints={snapPoints}
-                onChange={handleSheetChangesSingle}>
-                <AdvancedSearch className="z-[90] h-screen relative " closeHandle={onCloseModal} />
-            </BottomSheet>}
+            {modal === 'searchFilter' && <>
+                <BottomSheet
+                    // style={{ backgroundColor: "transparent" }}
+                    backgroundStyle={{ backgroundColor: `${mainColor}` }}
+                    enablePanDownToClose
+                    ref={bottomSheetRef}
+                    index={1}
+                    snapPoints={snapPoints}
+                    onChange={handleSheetChangesSingle}>
+                    <AdvancedSearch setPlaygroundsCount={setPlaygroundsCount} className="z-[90] h-screen relative " closeHandle={onCloseModal} onHandleViewPlaygroundsFromCity={handleViewPlaygroundsFromCity} />
+                </BottomSheet>
+
+            </>}
 
             {modal === 'nearby' &&
                 <BottomSheet
