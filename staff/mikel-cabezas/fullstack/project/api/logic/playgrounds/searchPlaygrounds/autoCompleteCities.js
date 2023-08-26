@@ -1,3 +1,5 @@
+const fetch = require('node-fetch');
+
 const {
     validators: { validateUserId, validateToken },
     errors: { ExistenceError }

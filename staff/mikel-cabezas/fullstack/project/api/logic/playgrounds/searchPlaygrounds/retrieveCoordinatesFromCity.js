@@ -1,5 +1,5 @@
 
-const { User, Playground } = require('../../../data/models')
+const fetch = require('node-fetch');
 
 const {
     validators: { validateUserId },
