@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
 import { Text, View, Image, SafeAreaView, ScrollView, TouchableHighlight } from 'react-native';
-import { MENU, MY_LOCATION, CLOSE, LIKES, ISSUES, ACCOUNT, LOGOUT, SHARE, FEEDBACK, FUTURE_VERSIONS } from '../../../assets/icons';
+import { MENU, MY_LOCATION, CLOSE, LIKES, WHATS_NEW, ACCOUNT, LOGOUT, SHARE, FEEDBACK, FUTURE_VERSIONS } from '../../../assets/icons';
 import { NativeWindStyleSheet } from "nativewind";
 import Context from '../../AppContext.js'
 import * as Animatable from 'react-native-animatable';
@@ -11,7 +11,7 @@ NativeWindStyleSheet.setOutput({
     default: "native",
 });
 
-export default function Sidebar({ navigation, closeHandle, user, likedHandler, userSettingsHandler }) {
+export default function Sidebar({ navigation, closeHandle, user, likedHandler, whatsNewHandler, userSettingsHandler, setModal }) {
     const { currentView, setCurrentView, isLoggedIn, setIsLoggedIn } = useContext(Context)
     const [animation, setAnimation] = useState()
 
@@ -66,6 +66,10 @@ export default function Sidebar({ navigation, closeHandle, user, likedHandler, u
 
     const handleGoToFutureVersions = () => {
         alert('TODO Go To Future versions')
+    }
+    const handleGoToWhatsNew = () => {
+        setAnimation('fadeOutLeft')
+        whatsNewHandler()
     }
 
     const handleGoToSendFeedback = () => {
@@ -194,6 +198,27 @@ export default function Sidebar({ navigation, closeHandle, user, likedHandler, u
 
                 <TouchableHighlight
                     className="mt-auto"
+                    activeOpacity={1.0}
+                    underlayColor="#fff"
+                    onPress={() => {
+                        setAnimation('fadeInRight')
+                        handleGoToWhatsNew()
+                        onClose()
+                    }}>
+                    <View className="w-12/12 flex-row py-2 ">
+                        <Image
+                            className="w-8 h-8"
+                            source={WHATS_NEW}
+                        />
+                        <Text className="px-4 flex-1 self-center" >
+                            Whats new
+                        </Text>
+                    </View>
+                </TouchableHighlight>
+
+
+                <TouchableHighlight
+
                     activeOpacity={1.0}
                     underlayColor="#fff"
                     onPress={() => {

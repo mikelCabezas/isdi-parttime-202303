@@ -40,19 +40,20 @@ export default function Home({ user, handleCloseWelcomeMessage }) {
                     <Text className="mb-2">Registrarte y loguearte si es la primera vez que entras<Text className="italic text-sm">(debes confirmar tu cuenta por correo)</Text></Text>
                     <Text className="mb-2">Ver los parques cercanos nada mas entrar en la app</Text>
                     <Text className="mb-0.5 font-bold">Desde el menú inferior:</Text>
-                    {/* <Text className="mb-2">Volver a tu ubicación y ver los parques cercanos a 10km</Text> */}
+                    <Text className="mb-2">Volver a tu ubicación y ver los parques cercanos a 10km</Text>
                     <Text className="mb-2">Ver los parques cercanos en el icono de "cercanos" en un apartado deslizable</Text>
                     <Text className="mb-2">Listar tus parques favoritos</Text>
                     <Text className="mb-2">Crear un parque nuevo (por ahora lo tienes que crear desde el mismo lugar para que coja las coordenadas)</Text>
                     <Text className="mb-0.5 font-bold">Desde el menú superior:</Text>
-                    <Text className="mb-2">Buscar por ciudad y ver los parques a un radio de 10km</Text>
+                    <Text className="mb-2">Buscar por ciudad y ver los parques segub el tamaño de la ciudad</Text>
+                    <Text className="mb-2">Busqueda avanzada por ciudad, radio, edad, elementos y exposición de sol</Text>
                     <Text className="mb-0.5 font-bold">Desde el menu lateral:</Text>
                     <Text className="mb-2">Listar tus parques favoritos</Text>
                     <Text className="mb-2">Cerrar sesión</Text>
                     {/* <Text className="mb-2">Mandarme un mensaje de feedback</Text> */}
                     <Text className="mb-0.5 font-bold">Desde el mapa:</Text>
                     <Text className="mb-2">Abrir pin de un parque </Text>
-                    <Text className="mb-2">Volver a tu posición actual con el boton situado encima del menú inferior</Text>
+                    <Text className="mb-2">Volver a tu posición actual con el boton situado encima del menú inferior y el de home</Text>
                     <Text className="mb-0.5 font-bold">Desde un parque:</Text>
                     <Text className="mb-2">Ver la información básica: Calle, ciudad.</Text>
                     <Text className="mb-2">Recibir indicaciones para llegar en tu aplicacion nativa de mapas</Text>

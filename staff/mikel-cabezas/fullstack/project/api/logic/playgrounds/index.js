@@ -10,7 +10,6 @@ module.exports = {
     checkIfHasPlaygroundsNear: require('./checkIfHasPlaygroundsNear'),
     addPlayground: require('./addPlayground'),
     editPost: require('./editPost'),
-    deletePost: require('./deletePost'),
     retrieveLikedPlaygrounds: require('./retrieveLikedPlaygrounds'),
     retrieveSavedPosts: require('./retrieveSavedPosts'),
     retrievePlaygroundById: require('./retrievePlaygroundById'),

@@ -158,6 +158,9 @@ export default function Home({ route, navigation, onSendViewPlaygroundsFromCity 
     const onLiked = () => {
         setModal('liked')
     }
+    const onWhatsNew = () => {
+        setWelcomeMessageStorage(true)
+    }
     const onCreatePlayground = () => {
         setModal('createPlayground')
     }
@@ -258,7 +261,7 @@ export default function Home({ route, navigation, onSendViewPlaygroundsFromCity 
 
 
         <View className="flex-1 bg-white items-center justify-center">
-            {modal === 'sidebar' && <Sidebar likedHandler={onOpenLikedFromSidebar} navigation={navigation} user={user} closeHandle={onCloseSidebar} userSettingsHandler={onUserSettingsFromSidebar} />}
+            {modal === 'sidebar' && <Sidebar setModal={setModal} likedHandler={onOpenLikedFromSidebar} whatsNewHandler={onWhatsNew} navigation={navigation} user={user} closeHandle={onCloseSidebar} userSettingsHandler={onUserSettingsFromSidebar} />}
             <BaseMap setAnimation={setAnimation} animation={animation} setPlaygroundsCount={setPlaygroundsCount} onHomeHandler={onHomeHandler} user={user} className="-z-20" onMarkerPressed={markerPressedHandler} searchResult={searchResult} />
 
             {playgroundsCount && <>

@@ -11,7 +11,6 @@ module.exports = {
     updateUserName: require('./updateUserName'),
     updateUserEmail: require('./updateUserEmail'),
     confirmNewUserEmail: require('./confirmNewUserEmail'),
-    updateUserImage: require('./updateUserImage'),
     updateUserPassword: require('./updateUserPassword'),
 
     checkLoggedInUser: require('./checkLoggedInUser')

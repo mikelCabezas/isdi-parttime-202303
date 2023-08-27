@@ -78,7 +78,6 @@ export default function Login({ navigation }) {
     }
 
     return <>
-
         <ScrollView bounces={false}>
             <View className="flex-1 items-center justify-center w-full" onPress={() => { Keyboard.dismiss(); }} >
                 <Image className="w-full h-screen top-0 absolute" source={BG} />

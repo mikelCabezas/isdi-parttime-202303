@@ -112,16 +112,16 @@ export default function AdvancedSearch({ closeHandle, setPlaygroundsCount, onHan
                             ]);
                         }
                     } catch (error) {
-                        console.log(error.message)
+                        alert(error.message)
                     }
 
                 })
-                .catch(error => console.log(error.message))
+                .catch(error => alert(error.message))
         } catch (error) {
             // Alert.alert('Error', `${error.message}`, [
             //     { text: 'OK', onPress: () => { } },
             // ]);
-            console.log(error.message)
+            alert(error.message)
         }
     }
 
@@ -256,7 +256,7 @@ export default function AdvancedSearch({ closeHandle, setPlaygroundsCount, onHan
                     <View className="flex flex-wrap flex-row mb-6 -z-10">
                         <Text className="dark:text-white text-lg font-semibold w-full">Elements</Text>
                         {elements.map((element, index) => {
-                            return <SingleElement element={element} key={index} mainColor="mainLime" onElementPressed={handleElementPressed} />
+                            return <SingleElement element={element} index={index} mainColor="mainLime" onElementPressed={handleElementPressed} />
                         })}
                     </View>
 

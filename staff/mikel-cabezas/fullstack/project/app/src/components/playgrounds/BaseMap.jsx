@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { USER_LOCATION, MY_LOCATION, WHITE_MY_LOCATION } from '../../../assets/icons';
+import BG from '../../../assets/bg-login.png'
 import { Image, TouchableOpacity, Alert, Keyboard, View, Text } from 'react-native';
 import MapView, { Marker, Callout } from 'react-native-maps'
 import { useRef, useContext, useState, useEffect } from 'react';
@@ -11,6 +12,9 @@ import Context from '../../AppContext'
 import retrievePlaygrounds from "../../logic/playgrounds/retrievePlaygrounds"
 import * as Animatable from 'react-native-animatable';
 
+import Loader from '../../library/Loader'
+
+
 export default function BaseMap({ user, onMarkerPressed, searchResult, onHomeHandler, setPlaygroundsCount, animation, setAnimation }) {
     const mapRef = useRef(null);
     const { TOKEN, colorScheme, currentMarker, location, loadCurrentLocation, freeze, unfreeze, setloaderTitle, setloaderMessage } = useContext(Context)
@@ -21,21 +25,17 @@ export default function BaseMap({ user, onMarkerPressed, searchResult, onHomeHan
 
     const onMarkerPressedHandler = () => onMarkerPressed()
 
-
-    useEffect(() => {
-        console.log(playgrounds)
-        unfreeze()
-    }, [playgrounds])
-
     useEffect(() => {
         freeze()
-        try {
-        } catch (error) {
-            Alert.alert('Error', `${error.message}`, [
-                { text: 'OK', onPress: () => { } },
-            ]);
+    }, []);
+
+    useEffect(() => {
+        if (loadCurrentLocation) {
+            unfreeze()
+
         }
-    }, [])
+    }, [playgrounds, loadCurrentLocation])
+
     useEffect(() => {
         console.log('Refresh Posts -> render in useEffect')
         try {
@@ -133,6 +133,8 @@ export default function BaseMap({ user, onMarkerPressed, searchResult, onHomeHan
 
 
     return <>
+        {/* <Image className="w-full h-screen top-0 absolute" source={BG} /> */}
+        <Loader text="Loading..." details="Fetching your location" />
         {loadCurrentLocation && <MapView
             ref={mapRef}
             showsUserLocation={true}
