@@ -33,8 +33,8 @@ export default function Footer({ nearbyHandler, likedHandler, createPlaygroundHa
         console.log('footer status changed')
     }, [currentView])
 
-    return <View className="z-[1]z absolute w-full justify-center flex bottom-8 content-center">
-        <View className="w-11/12 h-12 p-1 bg-white dark:bg-gray-800 rounded-full left-0 m-auto flex flex-row justify-between px-5">
+    return <View className="absolute w-full justify-center flex bottom-8 content-center">
+        <View className="w-11/12 h-12 p-1 bg-white dark:bg-zinc-800 rounded-full left-0 m-auto flex flex-row justify-between px-10">
             <TouchableHighlight
                 className={`p-[2px]${currentView === 'home' && 'bg-[#B8F138] rounded-[10px]'}`}
                 activeOpacity={1.0}
@@ -44,7 +44,7 @@ export default function Footer({ nearbyHandler, likedHandler, createPlaygroundHa
                     setCurrentView('home')
                 }}>
                 <Image
-                    className={`w-8 h-8 m-auto`}
+                    className={`w-8 h-8 m-auto ${isDark ? 'opacity-80' : ''}`}
                     source={isDark ? WHITE_HOME : HOME}
                 />
             </TouchableHighlight>
@@ -58,7 +58,7 @@ export default function Footer({ nearbyHandler, likedHandler, createPlaygroundHa
                     setCurrentView('nearby')
                 }}>
                 <Image
-                    className={`w-8 h-8 m-auto`}
+                    className={`w-8 h-8 m-auto ${isDark ? 'opacity-80' : ''}`}
                     source={isDark ? WHITE_NEARBY : NEARBY}
                 />
             </TouchableHighlight>
@@ -69,7 +69,7 @@ export default function Footer({ nearbyHandler, likedHandler, createPlaygroundHa
                 underlayColor="#fff"
                 onPress={onLiked}>
                 <Image
-                    className={`w-8 h-8 m-auto`}
+                    className={`w-8 h-8 m-auto ${isDark ? 'opacity-80' : ''}`}
                     source={isDark ? WHITE_LIKES : LIKES}
                 />
             </TouchableHighlight>
@@ -83,7 +83,7 @@ export default function Footer({ nearbyHandler, likedHandler, createPlaygroundHa
                     setCurrentView('search')
                 }}>
                 <Image
-                    className={`w-8 h-8 m-auto`}
+                    className={`w-8 h-8 m-auto ${isDark ? 'opacity-80' : ''}`}
                     source={SEARCH}
                 />
             </TouchableHighlight> */}
@@ -98,11 +98,11 @@ export default function Footer({ nearbyHandler, likedHandler, createPlaygroundHa
                 }}
             >
                 <Image
-                    className="w-8 h-8 m-auto"
+                    className={`w-8 h-8 m-auto ${isDark ? 'opacity-80' : ''}`}
                     source={isDark ? WHITE_ADD : ADD}
                 />
             </TouchableHighlight>
-            <TouchableHighlight
+            {/* <TouchableHighlight
                 className={`p-[2px] pl-0 ${currentView === 'moreOptions' && 'bg-[#B8F138] rounded-[10px]'}`}
                 activeOpacity={1.0}
                 underlayColor="#fff"
@@ -115,7 +115,7 @@ export default function Footer({ nearbyHandler, likedHandler, createPlaygroundHa
                     className="w-8 h-8 m-auto ml-0 "
                     source={isDark ? WHITE_MORE_OPTIONS : MORE_OPTIONS}
                 />
-            </TouchableHighlight>
+            </TouchableHighlight> */}
 
 
         </View>

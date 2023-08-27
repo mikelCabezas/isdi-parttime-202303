@@ -38,6 +38,9 @@ export default function Home({ route, navigation, onSendViewPlaygroundsFromCity 
     const [welcomeMessageStorage, setWelcomeMessageStorage] = useState(false)
     const [onHomeHandler, setOnHomeHandler] = useState(null);
     const [animation, setAnimation] = useState('fadeInDown')
+    const [snapPointSinglePlayground, setSnapPointSinglePlayground] = useState()
+    const [topSheetModalColor, setTopSheetModalColor] = useState()
+    const [topSheetIndicatorColor, setTopSheetIndicatorColor] = useState()
 
 
     const { params } = route;
@@ -53,8 +56,20 @@ export default function Home({ route, navigation, onSendViewPlaygroundsFromCity 
     } else if (colorScheme === 'light') {
         mainColor = '#ffffff'
     }
+    // if (overModal && colorScheme === 'light') {
+    //     mainColor = '#666666'
+    // }
 
     useEffect(() => {
+
+        if (colorScheme === 'light') {
+            setTopSheetModalColor('#fff')
+            setTopSheetIndicatorColor('#777')
+        }
+        if (colorScheme === 'dark') {
+            setTopSheetModalColor('#27272A')
+            setTopSheetIndicatorColor('#888')
+        }
         // console.log('params', params)
         // navigation.getParam('message', 'default value')
         // const message = JSON.stringify(params)
@@ -101,6 +116,11 @@ export default function Home({ route, navigation, onSendViewPlaygroundsFromCity 
             })();
         }
     }, [])
+
+    useEffect(() => {
+        if (snapPointSinglePlayground === 1) bottomSheetRef.current.snapToIndex(1)
+        if (snapPointSinglePlayground === 0) bottomSheetRef.current.snapToIndex(0)
+    }, [snapPointSinglePlayground]);
 
     useEffect(() => {
 
@@ -257,16 +277,13 @@ export default function Home({ route, navigation, onSendViewPlaygroundsFromCity 
     );
 
     return <>
-
-
-
-        <View className="flex-1 bg-white items-center justify-center">
+        <View className="flex-1 bg-white  dark:bg-zinc-800 items-center justify-center">
             {modal === 'sidebar' && <Sidebar setModal={setModal} likedHandler={onOpenLikedFromSidebar} whatsNewHandler={onWhatsNew} navigation={navigation} user={user} closeHandle={onCloseSidebar} userSettingsHandler={onUserSettingsFromSidebar} />}
-            <BaseMap setAnimation={setAnimation} animation={animation} setPlaygroundsCount={setPlaygroundsCount} onHomeHandler={onHomeHandler} user={user} className="-z-20" onMarkerPressed={markerPressedHandler} searchResult={searchResult} />
+            <BaseMap setAnimation={setAnimation} animation={animation} setPlaygroundsCount={setPlaygroundsCount} onHomeHandler={onHomeHandler} user={user} className="-z-20" onMarkerPressed={markerPressedHandler} searchResult={searchResult} newPlaygroundStatus={newPlaygroundStatus} />
 
             {playgroundsCount && <>
                 <Animatable.View animation={animation} duration={350} className="position absolute top-[10vh]">
-                    <View className=" flex-row justify-cente bg-white px-4 py-2 mt-5 left-0 w-auto rounded-full">
+                    <View className=" flex-row justify-center px-4 py-2 mt-5 left-0 w-auto rounded-full">
                         <Text className="text-center text-r">{playgroundsCount} playgrounds loaded</Text>
                     </View>
                 </Animatable.View>
@@ -275,13 +292,23 @@ export default function Home({ route, navigation, onSendViewPlaygroundsFromCity 
             <Header setPlaygroundsCount={setPlaygroundsCount} handleToggleSidebar={handleToggleSidebar} onToggleFilter={onToggleFilter} handleCloseModals={onCloseModal} onHandleViewPlaygroundsFromCity={handleViewPlaygroundsFromCity} />
             <Footer likedHandler={onLiked} nearbyHandler={onNearby} createPlaygroundHandler={onCreatePlayground} homeHandler={onHome} />
             {modal === 'singlePlayground' && <BottomSheet
-                backgroundStyle={{ backgroundColor: `${mainColor}` }}
+                backgroundStyle={{ backgroundColor: `${topSheetModalColor}` }}
+                handleIndicatorStyle={{ backgroundColor: `${topSheetIndicatorColor}` }}
                 enablePanDownToClose
                 ref={bottomSheetRef}
                 index={0}
                 snapPoints={snapPoints}
                 onChange={handleSheetChangesSingle}>
-                <SinglePlayground className="z-[90] h-screen relative " closeHandle={onCloseModal} playground={currentMarker} setSinglePlaygroundImages={setSinglePlaygroundImages} onHandleOpenImages={onHandleOpenImages}></SinglePlayground>
+                <SinglePlayground
+                    className="z-[90] h-screen relative"
+                    setSnapPointSinglePlayground={setSnapPointSinglePlayground}
+                    closeHandle={onCloseModal}
+                    playground={currentMarker}
+                    setSinglePlaygroundImages={setSinglePlaygroundImages}
+                    onHandleOpenImages={onHandleOpenImages}
+                    colorScheme={colorScheme}
+                    setTopSheetIndicatorColor={setTopSheetIndicatorColor}
+                    setTopSheetModalColor={setTopSheetModalColor}></SinglePlayground>
             </BottomSheet>}
             {modalImages && <>
                 <View className={`absolute w-full  h-full left-0 top-0 bg-black80 items-center justify-center`}>
@@ -299,56 +326,84 @@ export default function Home({ route, navigation, onSendViewPlaygroundsFromCity 
             {modal === 'searchFilter' && <>
                 <BottomSheet
                     // style={{ backgroundColor: "transparent" }}
-                    backgroundStyle={{ backgroundColor: `${mainColor}` }}
+                    backgroundStyle={{ backgroundColor: `${topSheetModalColor}` }}
+                    handleIndicatorStyle={{ backgroundColor: `${topSheetIndicatorColor}` }}
                     enablePanDownToClose
                     ref={bottomSheetRef}
                     index={1}
                     snapPoints={snapPoints}
                     onChange={handleSheetChangesSingle}>
-                    <AdvancedSearch setPlaygroundsCount={setPlaygroundsCount} className="z-[90] h-screen relative " closeHandle={onCloseModal} onHandleViewPlaygroundsFromCity={handleViewPlaygroundsFromCity} />
+                    <AdvancedSearch
+                        setPlaygroundsCount={setPlaygroundsCount}
+                        className="z-[90] h-screen relative"
+                        closeHandle={onCloseModal}
+                        onHandleViewPlaygroundsFromCity={handleViewPlaygroundsFromCity}
+                        setTopSheetIndicatorColor={setTopSheetIndicatorColor}
+                        setTopSheetModalColor={setTopSheetModalColor} />
                 </BottomSheet>
 
             </>}
 
-            {modal === 'nearby' &&
-                <BottomSheet
-                    // style={{ width: '90%', marginLeft: '5%' }}
-                    enablePanDownToClose
-                    ref={bottomSheetRef}
-                    index={0}
-                    snapPoints={snapPointsSmall}
-                    onChange={handleSheetChangesSingle}>
-                    <Nearby closeHandle={onCloseModal} playground={currentMarker} handleMarkerPressedHandler={markerPressedHandler}></Nearby>
-                </BottomSheet>}
+            {modal === 'nearby' && <BottomSheet BottomSheet
+                backgroundStyle={{ backgroundColor: `${topSheetModalColor}` }}
+                handleIndicatorStyle={{ backgroundColor: `${topSheetIndicatorColor}` }}
+                enablePanDownToClose
+                ref={bottomSheetRef}
+                index={0}
+                snapPoints={snapPointsSmall}
+                onChange={handleSheetChangesSingle}>
+                <Nearby
+                    closeHandle={onCloseModal}
+                    playground={currentMarker}
+                    handleMarkerPressedHandler={markerPressedHandler}
+                    setTopSheetIndicatorColor={setTopSheetIndicatorColor}
+                    setTopSheetModalColor={setTopSheetModalColor} />
+            </BottomSheet>}
 
             {modal === 'liked' &&
                 <BottomSheet
+                    backgroundStyle={{ backgroundColor: `${topSheetModalColor}` }}
+                    handleIndicatorStyle={{ backgroundColor: `${topSheetIndicatorColor}` }}
                     enablePanDownToClose
                     ref={bottomSheetRef}
                     index={0}
                     snapPoints={snapPointsSmall}
                     onChange={handleSheetChangesSingle}>
-                    <LikedList closeHandle={onCloseModal} playground={currentMarker} handleMarkerPressedHandler={markerPressedHandler}></LikedList>
+                    <LikedList
+                        closeHandle={onCloseModal}
+                        playground={currentMarker}
+                        handleMarkerPressedHandler={markerPressedHandler} />
                 </BottomSheet>}
 
             {modal === 'createPlayground' &&
                 <BottomSheet
+                    backgroundStyle={{ backgroundColor: `${topSheetModalColor}` }}
+                    handleIndicatorStyle={{ backgroundColor: `${topSheetIndicatorColor}` }}
                     enablePanDownToClose
                     ref={bottomSheetRef}
                     index={1}
                     snapPoints={snapPoints}
                     onChange={handleSheetChangesCreate}>
-                    <CreatePlayground closeHandle={onCloseAddPlayground} cancelAddPlayground={confirmCloseModal} />
+                    <CreatePlayground
+                        closeHandle={onCloseAddPlayground}
+                        cancelAddPlayground={confirmCloseModal}
+                        setTopSheetIndicatorColor={setTopSheetIndicatorColor}
+                        setTopSheetModalColor={setTopSheetModalColor} />
                 </BottomSheet>}
 
             {modal === 'userSettings' &&
                 <BottomSheet
+                    backgroundStyle={{ backgroundColor: `${topSheetModalColor}` }}
+                    handleIndicatorStyle={{ backgroundColor: `${topSheetIndicatorColor}` }}
                     enablePanDownToClose
                     ref={bottomSheetRef}
                     index={0}
                     snapPoints={snapPoints}
                     onChange={handleSheetChangesSingle}>
-                    <UserSettings user={user} />
+                    <UserSettings
+                        user={user}
+                        setTopSheetIndicatorColor={setTopSheetIndicatorColor}
+                        setTopSheetModalColor={setTopSheetModalColor} />
                 </BottomSheet>}
 
 

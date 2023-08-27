@@ -90,7 +90,6 @@ export default function UploadImages({ imagesResized, setImagesResized }) {
                 // Canceled
             }
         });
-
     }
     const deleteImage = (url) => {
         setImagesResized(current =>
@@ -102,7 +101,6 @@ export default function UploadImages({ imagesResized, setImagesResized }) {
 
     return (<>
         <View className="flex-row relative" >
-
             <ScrollView horizontal showsHorizontalScrollIndicator={false} className="pr-5 ">
                 <TouchableOpacity key={1} className="flex flex-col relative items-center justify-center w-[31vw] mr-3 h-36 rounded-2xl bg-mainGray last:mr-12" onPress={!imagesResized[0] ? SelectSource : () => deleteImage(imagesResized[0])}>
                     {imagesResized[0] && <Image source={imagesResized[0]} className="w-full h-36 rounded-2xl object-contain" />}

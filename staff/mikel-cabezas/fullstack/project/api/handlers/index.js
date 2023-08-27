@@ -19,7 +19,10 @@ module.exports = {
 
     checkIfHasPlaygroundsNearHandler: require('./playgrounds/checkIfHasPlaygroundsNearHandler'),
     addPlaygroundHandler: require('./playgrounds/addPlaygroundHandler'),
-    editPlaygroundHandler: require('./playgrounds/editPlaygroundHandler'),
+    editPlaygroundElementsHandler: require('./playgrounds/editPlayground/editPlaygroundElementsHandler'),
+    editPlaygroundSunExpositionHandler: require('./playgrounds/editPlayground/editPlaygroundSunExpositionHandler'),
+    editPlaygroundDescriptionHandler: require('./playgrounds/editPlayground/editPlaygroundDescriptionHandler'),
+    editPlaygroundAddImagesHandler: require('./playgrounds/editPlayground/editPlaygroundAddImagesHandler'),
     deletePlaygroundostHandler: require('./playgrounds/deletePostHandler'),
     retrievePlaygroundsHandler: require('./playgrounds/retrievePlaygroundsHandler'),
     retrieveFromFilterHandler: require('./playgrounds/searchPlaygrounds/retrieveFromFilterHandler'),

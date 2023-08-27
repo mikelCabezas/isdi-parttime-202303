@@ -6,7 +6,7 @@ const bodyParser = require('body-parser')
 const cors = require('cors')
 const { serverStatusHandler,
     registerUserHandler, retrieveUserHandler, authenticateUserHandler, forgotPasswordHandler, updateUserImageHandler, updateUserNameHandler, updateUserPasswordHandler, validateUserHandler, setNewPasswordHandler, recoverPasswordHandler, searchUserHandler, confirmNewUserEmailHandler, updateUserEmailHandler, checkLoggedInUserHandler,
-    checkIfHasPlaygroundsNearHandler, addPlaygroundHandler, retrieveCitiesFromDatabaseHandler, retrieveFromFilterHandler, retrieveCityFromSearchHandler, retrievePlaygroundsFromCityHandler, retrievePlaygroundsHandler, retrieveLikedPlaygroundsHandler, retrievePlaygroundByIdHandler, toggleLikePlaygroundHandler, searchAutocompleteCitiesHandler } = require('./handlers')
+    checkIfHasPlaygroundsNearHandler, addPlaygroundHandler, editPlaygroundSunExpositionHandler, editPlaygroundAddImagesHandler, editPlaygroundDescriptionHandler, editPlaygroundElementsHandler, retrieveCitiesFromDatabaseHandler, retrieveFromFilterHandler, retrieveCityFromSearchHandler, retrievePlaygroundsFromCityHandler, retrievePlaygroundsHandler, retrieveLikedPlaygroundsHandler, retrievePlaygroundByIdHandler, toggleLikePlaygroundHandler, searchAutocompleteCitiesHandler } = require('./handlers')
 const mongoose = require('mongoose')
 
 mongoose.connect(process.env.MONGODB_URL)
@@ -49,6 +49,10 @@ mongoose.connect(process.env.MONGODB_URL)
         api.get('/playgrounds/city/:city', retrievePlaygroundsFromCityHandler)
 
         api.post(`/addPlayground`, jsonBodyParser, addPlaygroundHandler)
+        api.patch(`/editPlayground/elements/:playgroundId`, jsonBodyParser, editPlaygroundElementsHandler)
+        api.patch(`/editPlayground/description/:playgroundId`, jsonBodyParser, editPlaygroundDescriptionHandler)
+        api.patch(`/editPlayground/sunExposition/:playgroundId`, jsonBodyParser, editPlaygroundSunExpositionHandler)
+        api.patch(`/editPlayground/addImages/:playgroundId`, jsonBodyParser, editPlaygroundAddImagesHandler)
 
         // api.patch(`/posts/update/:postId`, jsonBodyParser, editPostHandler)
         // api.delete(`/posts/:postId`, deletePostHandler)

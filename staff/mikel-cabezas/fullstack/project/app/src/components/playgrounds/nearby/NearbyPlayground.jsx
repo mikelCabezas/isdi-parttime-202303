@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react"
 import Context from "../../../AppContext"
-import { Text, Image, View, TouchableHighlight } from 'react-native';
+import { Text, Image, View, TouchableOpacity } from 'react-native';
 
 // import { utils } from '../../../com'
 
@@ -32,14 +32,14 @@ export default function NearbyPlayground({ playground, playground: { name, text,
         Linking.openURL(url)
     }
     return <>
-        <TouchableHighlight key={id} onPress={markerPressedHandler} activeOpacity={0.9} underlayColor="#fff">
+        <TouchableOpacity activeOpacity={0.8} key={id} onPress={markerPressedHandler} underlayColor="#fff">
             <View className="flex flex-col relative" key={`container-${id}`}>
                 <Image source={{ uri: image }} key={`image-${id}`} className="rounded-2xl w-full h-[168px] object-contain" />
-                <Text key={`name-${id}`} className="font-bold text-sm text-[13px] leading-4 mt-2 pr-1">{name}</Text>
-                <Text key={`street-${id}`} className="text-[11px] pr-1">{street}</Text>
+                <Text key={`name-${id}`} className="dark:text-zinc-100 font-bold text-sm text-[13px] leading-4 mt-2 pr-1">{name}</Text>
+                <Text key={`street-${id}`} className="dark:text-zinc-100 text-[11px] pr-1">{street}</Text>
 
             </View>
-        </TouchableHighlight>
+        </TouchableOpacity>
     </>
 }
 

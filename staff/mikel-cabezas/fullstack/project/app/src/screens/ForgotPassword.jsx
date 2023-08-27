@@ -51,11 +51,11 @@ export default function Login({ navigation }) {
                 <Image className="w-full h-screen top-0 absolute" source={BG} />
 
                 <View className="flex-1 items-center justify-center w-full">
-                    <View className="bg-white dark:bg-gray-800 h-auto px-6 py-7 w-3/4 rounded-3xl">
-                        {/* <Text className="dark:text-white text-2xl text-center font-semibold">{url}</Text> */}
-                        <Text className="dark:text-white text-2xl text-center font-semibold">Forgot password</Text>
+                    <View className="bg-white dark:bg-zinc-800 h-auto px-6 py-7 w-3/4 rounded-3xl">
+                        {/* <Text className="dark:text-zinc-100 text-2xl text-center font-semibold">{url}</Text> */}
+                        <Text className="dark:text-zinc-100 text-2xl text-center font-semibold">Forgot password</Text>
 
-                        <Text className="dark:text-white pt-4 text-xs text-center">Your email</Text>
+                        <Text className="dark:text-zinc-100 pt-4 text-xs text-center">Your email</Text>
                         <TextInput
                             label="Email"
                             returnKeyType="next"
@@ -64,7 +64,7 @@ export default function Login({ navigation }) {
                             autoCapitalize="none"
                             autoCompleteType="email"
                             placeholder="Email"
-                            className="dark:text-white border border-mainGray bg-mainGray dark:border-gray-700 dark:bg-gray-700 rounded-full mt-1 mb-0 px-2 py-2 self-center w-full text-center"
+                            className="dark:text-zinc-100 border border-mainGray bg-mainGray dark:border-zinc-700 dark:bg-zinc-700 rounded-full mt-1 mb-0 px-2 py-2 self-center w-full text-center"
                             inputMode="text"
                             keyboardType="email-address"
                         />
@@ -87,7 +87,7 @@ export default function Login({ navigation }) {
                             onPress={handleGoToLogin}
                         >
                             <Text
-                                className="dark:text-white mt-3 text-xs text-center" >
+                                className="dark:text-zinc-100 mt-3 text-xs text-center" >
                                 Already registered?
                                 <Text className="font-bold">Login</Text></Text>
                         </TouchableOpacity>

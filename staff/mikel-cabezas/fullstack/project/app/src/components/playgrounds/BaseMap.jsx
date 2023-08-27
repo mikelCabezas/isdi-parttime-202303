@@ -15,7 +15,7 @@ import * as Animatable from 'react-native-animatable';
 import Loader from '../../library/Loader'
 
 
-export default function BaseMap({ user, onMarkerPressed, searchResult, onHomeHandler, setPlaygroundsCount, animation, setAnimation }) {
+export default function BaseMap({ user, onMarkerPressed, searchResult, onHomeHandler, setPlaygroundsCount, newPlaygroundStatus, setAnimation }) {
     const mapRef = useRef(null);
     const { TOKEN, colorScheme, currentMarker, location, loadCurrentLocation, freeze, unfreeze, setloaderTitle, setloaderMessage } = useContext(Context)
     const [playgrounds, setPlaygrounds] = useState()
@@ -32,15 +32,11 @@ export default function BaseMap({ user, onMarkerPressed, searchResult, onHomeHan
     useEffect(() => {
         if (loadCurrentLocation) {
             unfreeze()
-
         }
     }, [playgrounds, loadCurrentLocation])
-
     useEffect(() => {
-        console.log('Refresh Posts -> render in useEffect')
         try {
-            if (loadCurrentLocation) {
-                unfreeze()
+            if (newPlaygroundStatus) {
                 retrievePlaygrounds(TOKEN, location)
                     .then(playgrounds => {
                         setPlaygrounds(playgrounds)
@@ -55,9 +51,35 @@ export default function BaseMap({ user, onMarkerPressed, searchResult, onHomeHan
                             { text: 'OK', onPress: () => { } },
                         ]);
                     })
+                unfreeze()
             }
+        } catch (error) {
+            Alert.alert('Error', `${error.message}`, [
+                { text: 'OK', onPress: () => { } },
+            ]);
+        }
+    }, [newPlaygroundStatus])
 
-
+    useEffect(() => {
+        console.log('Refresh Posts -> render in useEffect')
+        try {
+            if (loadCurrentLocation) {
+                retrievePlaygrounds(TOKEN, location)
+                    .then(playgrounds => {
+                        setPlaygrounds(playgrounds)
+                        setPlaygroundsCount(playgrounds[0].length)
+                        setAnimation('fadeInDown')
+                        setTimeout(() => {
+                            setAnimation('fadeOutUp')
+                        }, 3000);
+                    })
+                    .catch(error => {
+                        Alert.alert('Error', `${error.message}`, [
+                            { text: 'OK', onPress: () => { } },
+                        ]);
+                    })
+                unfreeze()
+            }
         } catch (error) {
             Alert.alert('Error', `${error.message}`, [
                 { text: 'OK', onPress: () => { } },
@@ -167,11 +189,11 @@ export default function BaseMap({ user, onMarkerPressed, searchResult, onHomeHan
             </>}
 
         </MapView>}
-        <TouchableOpacity className="bg-white p-1 rounded-full absolute right-4 bottom-20 mb-4"
+        <TouchableOpacity className="bg-white dark:bg-zinc-800 p-1.5 rounded-full absolute right-4 bottom-[75px] mb-4"
             activeOpacity={0.8}
             onPress={() => onCurrentLocation()}>
             <Image
-                className="w-8 h-8 m-auto "
+                className={`w-8 h-8 m-auto ${isDark ? 'opacity-80' : ''}`}
                 source={isDark ? WHITE_MY_LOCATION : MY_LOCATION} />
         </TouchableOpacity>
 

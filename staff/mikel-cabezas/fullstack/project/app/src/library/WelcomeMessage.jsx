@@ -27,7 +27,7 @@ export default function Home({ user, handleCloseWelcomeMessage }) {
 
 
     return <>
-        <View className="flex-1 w-full h-screen bg-black60 justify-center items-center">
+        <View className="flex-1 w-full h-screen bg-black60 justify-center items-center absolute top-0">
             <TouchableHighlight onPress={onCloseWelcomeMessage} className="absolute right-2 top-10 z-50 shadow-md shadow-black ">
                 <Image source={WHITE_CLOSE} className="w-10 h-10" />
             </TouchableHighlight>

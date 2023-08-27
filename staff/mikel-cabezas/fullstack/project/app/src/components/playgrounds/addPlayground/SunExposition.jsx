@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { Text, Image, View, TouchableOpacity } from 'react-native';
 import { SUNNY, SHADY } from '../../../../assets/icons';
 
-export default function CreatePlayground({ playgroundShady, setPlaygroundShady, playgroundSunny, setPlaygroundSunny, playgroundPartial, setPlaygroundPartial }) {
+export default function SunExposition({ playgroundShady, setPlaygroundShady, playgroundSunny, setPlaygroundSunny, playgroundPartial, setPlaygroundPartial }) {
     const handleShady = () => {
         playgroundShady.status ? setPlaygroundShady({ status: false, color: 'bg-mainGray' })
             : setPlaygroundShady({ status: true, color: 'bg-mainLime' })
@@ -22,7 +22,7 @@ export default function CreatePlayground({ playgroundShady, setPlaygroundShady, 
     }, [playgroundShady, playgroundSunny, playgroundPartial])
 
     return <>
-        <Text className="dark:text-white text-lg mt-3 font-semibold">Sun exposition</Text>
+        <Text className="dark:text-zinc-100 text-lg mt-3 font-semibold">Sun exposition</Text>
         <View className="flex-row">
             <TouchableOpacity
                 activeOpacity={0.8}

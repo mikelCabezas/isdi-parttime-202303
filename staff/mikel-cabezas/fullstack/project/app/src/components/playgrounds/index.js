@@ -5,5 +5,5 @@ import BaseMap from "./BaseMap";
 export {
     Playground,
     Playgrounds,
-    BaseMap
+    BaseMap,
 }

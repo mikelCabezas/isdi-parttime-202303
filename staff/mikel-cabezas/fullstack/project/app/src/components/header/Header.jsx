@@ -17,9 +17,7 @@ export default function Header({ navigation, onHandleViewPlaygroundsFromCity, ha
 
     if (colorScheme === 'dark') isDark = true
     let isDark
-    let searchTimeOut
     const clearTextInput = useRef(null);
-
 
     const { modal, setModal, colorScheme, TOKEN } = useContext(Context)
     const [text, setChangeText] = React.useState();
@@ -105,14 +103,14 @@ export default function Header({ navigation, onHandleViewPlaygroundsFromCity, ha
         </View>
         }
         <View className="absolute w-full justify-center flex top-12 content-center">
-            <View className="w-11/12 bg-white dark:bg-gray-800 rounded-full left-0 m-auto flex flex-row px-4 h-12">
+            <View className="w-11/12 bg-white dark:bg-zinc-800  rounded-full left-0 m-auto flex flex-row px-4 h-12">
                 <TouchableHighlight
                     className={`p-[2px]`}
                     activeOpacity={1.0}
                     underlayColor="#fff"
                     onPress={onToggleSidebar}>
                     <Image
-                        className="w-8 h-8 m-auto"
+                        className={`w-8 h-8 m-auto ${isDark ? 'opacity-80' : ''}`}
                         source={isDark ? WHITE_MENU : MENU}
                     />
                 </TouchableHighlight>
@@ -122,7 +120,7 @@ export default function Header({ navigation, onHandleViewPlaygroundsFromCity, ha
                             onFocus={onSearchPlayground}
                             clearButtonMode="always"
                             inputMode="text"
-                            className="px-5 py-3 flex-1 dark:text-white  text-left"
+                            className="px-5 py-3 flex-1 dark:text-zinc-100  text-left"
                             setChangeText={setChangeText}
                             onChangeText={(query) => handleSearch(query)}
                             value={text}

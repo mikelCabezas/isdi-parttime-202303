@@ -71,10 +71,10 @@ export default function Login({ navigation }) {
             <View className="flex-1 items-center justify-center w-full h-screen">
                 <Image className="w-full h-screen top-0 absolute" source={BG} />
                 <View className="flex-1 items-center justify-center w-full">
-                    <View className="bg-white dark:bg-gray-800 h-auto px-6 py-7 w-3/4 rounded-3xl">
-                        {/* <Text className="dark:text-white text-2xl text-center font-semibold">{passwordToken}</Text> */}
-                        <Text className="dark:text-white text-2xl text-center font-semibold">Set new password</Text>
-                        <Text className="dark:text-white pt-4 text-xs text-center">New password</Text>
+                    <View className="bg-white dark:bg-zinc-800 h-auto px-6 py-7 w-3/4 rounded-3xl">
+                        {/* <Text className="dark:text-zinc-100 text-2xl text-center font-semibold">{passwordToken}</Text> */}
+                        <Text className="dark:text-zinc-100 text-2xl text-center font-semibold">Set new password</Text>
+                        <Text className="dark:text-zinc-100 pt-4 text-xs text-center">New password</Text>
                         <TextInput
                             label="Password"
                             returnKeyType="done"
@@ -82,11 +82,11 @@ export default function Login({ navigation }) {
                             onChangeText={setPassword}
                             secureTextEntry
                             placeholder="Password"
-                            className="dark:text-white border border-mainGray bg-mainGray dark:border-gray-700 dark:bg-gray-700 rounded-full my-1 px-2 py-2 self-center w-full text-center"
+                            className="dark:text-zinc-100 border border-mainGray bg-mainGray dark:border-zinc-700 dark:bg-zinc-700 rounded-full my-1 px-2 py-2 self-center w-full text-center"
                             inputMode="text"
                             keyboardType="default"
                         />
-                        <Text className="dark:text-white pt-3 text-xs text-center">Repeat your password</Text>
+                        <Text className="dark:text-zinc-100 pt-3 text-xs text-center">Repeat your password</Text>
                         <TextInput
                             label="Repeat password"
                             returnKeyType="done"
@@ -94,7 +94,7 @@ export default function Login({ navigation }) {
                             onChangeText={setRepeatPassword}
                             secureTextEntry
                             placeholder="Repeat password"
-                            className="dark:text-white border border-mainGray bg-mainGray dark:border-gray-700 dark:bg-gray-700 rounded-full my-1 px-2 py-2 self-center w-full text-center"
+                            className="dark:text-zinc-100 border border-mainGray bg-mainGray dark:border-zinc-700 dark:bg-zinc-700 rounded-full my-1 px-2 py-2 self-center w-full text-center"
                             inputMode="text"
                             keyboardType="default"
                         />
@@ -112,7 +112,7 @@ export default function Login({ navigation }) {
                             activeOpacity={1}
                             onPress={handleGoToLogin} >
                             <Text
-                                className="dark:text-white mt-3 text-xs text-center" >
+                                className="dark:text-zinc-100 mt-3 text-xs text-center" >
                                 Already registered?
                                 <Text className="font-bold">Login</Text></Text>
                         </TouchableOpacity>

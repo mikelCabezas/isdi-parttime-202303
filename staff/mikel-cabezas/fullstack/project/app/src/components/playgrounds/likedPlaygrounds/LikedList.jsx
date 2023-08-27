@@ -28,7 +28,7 @@ export default function LikedList({ closeHandle, playground, handleMarkerPressed
         {playground &&
             <View className="w-full h-auto max-h-max pl-5 pr-0 pt-1 rounded-[20px] mx-auto " >
                 <View className="flex-row">
-                    <Text className=" font-bold text-lg mb-2">My favorites</Text>
+                    <Text className="dark:text-zinc-100  font-bold text-lg mb-2">My favorites</Text>
                 </View>
                 <View className="w-auto" >
                 </View>

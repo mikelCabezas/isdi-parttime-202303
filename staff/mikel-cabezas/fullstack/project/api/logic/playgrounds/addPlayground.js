@@ -26,7 +26,6 @@ module.exports = (token, userId, name, description, sunExposition, elements, ima
     validateUserId(userId)
     validateText(name)
     validateText(description)
-
     try {
         const latitude = location[0]
         const longitude = location[1]
@@ -76,19 +75,10 @@ module.exports = (token, userId, name, description, sunExposition, elements, ima
                                 }
                             })
                         })
-                    // .then(() => { })
                 }
-
             })
-
-
-
     } catch (error) {
         console.log(error.message)
         return error.message
     }
-
-
-
-
 }

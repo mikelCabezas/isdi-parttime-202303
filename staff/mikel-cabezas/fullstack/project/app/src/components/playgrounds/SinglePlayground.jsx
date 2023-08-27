@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
-import { Text, Image, View, ScrollView, Platform, Linking } from 'react-native';
+import { Text, Image, View, ScrollView, Platform, Linking, Alert } from 'react-native';
 import { TouchableOpacity, TouchableHighlight, TouchableWithoutFeedback, } from '@gorhom/bottom-sheet';
 
 import { SHADY, LIKE, LIKE_FILLED, SUNNY, ADD } from '../../../assets/icons';
@@ -7,10 +7,12 @@ import Context from '../../AppContext.js'
 import SingleElement from './SingleElement'
 import { toggleLikePlayground } from "../../logic/playgrounds/toggleLikePlayground";
 import retrievePlaygroundById from "../../logic/playgrounds/retrievePlaygroundById";
+import { EditSunExposition, EditElements, EditDescription, AddImages } from "./editPlayground/";
 import createMapLink from 'react-native-open-maps';
 
-export default function Nearby({ closeHandle, setSinglePlaygroundImages, onHandleOpenImages }) {
+export default function SinglePlayground({ colorScheme, setTopSheetModalColor, setTopSheetIndicatorColor, setSnapPointSinglePlayground, setSinglePlaygroundImages, onHandleOpenImages }) {
     const { currentView, setCurrentView, currentMarker, setCurrentMarker, TOKEN } = useContext(Context)
+    const [modal, setModal] = useState()
     const [playground, setPlayground] = useState()
     const [shady, setShady] = useState('bg-mainGray')
     const [sunny, setSunny] = useState('bg-mainGray')
@@ -22,9 +24,9 @@ export default function Nearby({ closeHandle, setSinglePlaygroundImages, onHandl
             .then(playground => {
                 setPlayground(playground)
                 setLikes(playground.likes)
-                shady ? setShady('bg-mainLime') : setShady('bg-mainGray')
-                sunny ? sunny('bg-mainYellow') : sunny('bg-mainGray')
-                partial ? setPartial('bg-[#38F1A3]') : setPartial('bg-mainGray'
+                playground.sunExposition.shady ? setShady('bg-mainLime') : setShady('bg-mainGray')
+                playground.sunExposition.sunny ? setSunny('bg-mainYellow') : setSunny('bg-mainGray')
+                playground.sunExposition.partial ? setPartial('bg-[#38F1A3]') : setPartial('bg-mainGray'
                 )
             })
             .catch(error => error.message)
@@ -33,7 +35,7 @@ export default function Nearby({ closeHandle, setSinglePlaygroundImages, onHandl
     useEffect(() => {
     }, [likes])
 
-    const onLike = async () => {
+    const onUpdate = async () => {
         await toggleLikePlayground(TOKEN, playground._id)
             .then(() => {
                 refreshLikes()
@@ -44,9 +46,10 @@ export default function Nearby({ closeHandle, setSinglePlaygroundImages, onHandl
         retrievePlaygroundById(TOKEN, currentMarker._id)
             .then(playground => {
                 setLikes(playground.likes)
-                shady ? setShady('bg-mainLime') : setShady('bg-mainGray')
-                sunny ? sunny('bg-mainYellow') : sunny('bg-mainGray')
-                partial ? setPartial('bg-[#38F1A3]') : setPartial('bg-mainGray'
+                setPlayground(playground)
+                playground.sunExposition.shady ? setShady('bg-mainLime') : setShady('bg-mainGray')
+                playground.sunExposition.sunny ? setSunny('bg-mainYellow') : setSunny('bg-mainGray')
+                playground.sunExposition.partial ? setPartial('bg-[#38F1A3]') : setPartial('bg-mainGray'
                 )
             })
             .catch(error => error.message)
@@ -69,23 +72,100 @@ export default function Nearby({ closeHandle, setSinglePlaygroundImages, onHandl
         setSinglePlaygroundImages(playground.images)
         onHandleOpenImages()
     }
+    const onEditElements = () => {
+        setModal('edit-element')
+        if (colorScheme === 'light') {
+            setTopSheetModalColor('#666666')
+            setTopSheetIndicatorColor('#222')
+        }
+        if (colorScheme === 'dark') {
+            setTopSheetModalColor('#111')
+            setTopSheetIndicatorColor('#888')
+        }
+        setSnapPointSinglePlayground(1)
+    }
+    const onEditSunExposition = () => {
+        setModal('edit-sun-exposition')
+        if (colorScheme === 'light') {
+            setTopSheetModalColor('#666666')
+            setTopSheetIndicatorColor('#222')
+        }
+        if (colorScheme === 'dark') {
+            setTopSheetModalColor('#111')
+            setTopSheetIndicatorColor('#888')
+        }
+        setSnapPointSinglePlayground(1)
+    }
+    const onEditDescription = () => {
+        setModal('edit-description')
+        if (colorScheme === 'light') {
+            setTopSheetModalColor('#111')
+            setTopSheetIndicatorColor('#222')
+        }
+        if (colorScheme === 'dark') {
+            setTopSheetModalColor('#27272A')
+            setTopSheetIndicatorColor('#888')
+        }
+        setSnapPointSinglePlayground(1)
+    }
+    const onAddImages = () => {
+        setModal('add-images')
+        if (colorScheme === 'light') {
+            setTopSheetModalColor('#111')
+            setTopSheetIndicatorColor('#222')
+        }
+        if (colorScheme === 'dark') {
+            setTopSheetModalColor('#27272A')
+            setTopSheetIndicatorColor('#888')
+        }
+        setSnapPointSinglePlayground(1)
+    }
+    const onEdited = () => {
+        setModal()
+        refreshLikes()
+        setSnapPointSinglePlayground(0)
+        if (colorScheme === 'light')
+            setTopSheetModalColor('#fff')
+        setTopSheetIndicatorColor('#777')
+
+        if (colorScheme === 'dark')
+            setTopSheetModalColor('#27272A')
+        setTopSheetIndicatorColor('#888')
+
+        Alert.alert('Success"', `Thank you! \n Playground updated.`, [
+            { text: 'OK', onPress: () => { } },
+        ]);
+
+    }
+    const onCancelEdit = () => {
+        if (colorScheme === 'light')
+            setTopSheetModalColor('#fff')
+        setTopSheetIndicatorColor('#777')
+
+        if (colorScheme === 'dark')
+            setTopSheetModalColor('#27272A')
+        setTopSheetIndicatorColor('#888')
+
+        setModal()
+        setSnapPointSinglePlayground(0)
+    }
     let sunExposition = false
-    if (shady === 'bg-mainLime' || sunny === 'bg-mainLime' || partial === 'bg-mainLime') {
+    if (shady === 'bg-mainLime' || sunny === 'bg-main' || partial === 'bg-mainLime') {
         sunExposition = true
     }
 
     return <View className="h-full bg-red-500z relative flex-column justify-between items-center bg-[blue]">
         {playground && <>
             <ScrollView showsVerticalScrollIndicator={false} className="bg-[blue]">
-                <View className="w-full px-5 pb-12 bg-white dark:bg-gray-800  z-40 relative" >
+                <View className="w-full px-5 pb-12 bg-white dark:bg-zinc-800  z-40 relative" >
                     <View className="ml-auto mt-1 z-50 flex-row items-center">
-                        <Text className="text-center mr-2 text-lg">{likes.length}</Text>
+                        <Text className="dark:text-zinc-100 text-center mr-2 text-lg">{likes.length}</Text>
                         <TouchableHighlight
                             className=""
                             activeOpacity={1.0}
                             underlayColor="#fff"
                             onPress={() => {
-                                onLike()
+                                onUpdate()
                             }}>
                             <Image
                                 className={`w-7 h-7 mx-auto `}
@@ -94,8 +174,8 @@ export default function Nearby({ closeHandle, setSinglePlaygroundImages, onHandl
                         </TouchableHighlight>
 
                     </View>
-                    <Text className="dark:text-white text-xl font-semibold">{playground.name}</Text>
-                    <Text className="dark:text-white pt-1 text-sm max-w-[80vw] text-[#20841E] mb-2">{playground.location.street}</Text>
+                    <Text className="dark:text-zinc-100 text-xl font-semibold">{playground.name}</Text>
+                    <Text className="pt-1 text-sm max-w-[80vw] text-darkGreen dark:text-mainLime mb-2">{playground.location.street}</Text>
                     <TouchableHighlight
                         onPress={handleOpenMap}>
                         <View className={`border border-mainLime bg-mainLime rounded-full mt-1 mb-2`}>
@@ -103,9 +183,12 @@ export default function Nearby({ closeHandle, setSinglePlaygroundImages, onHandl
                         </View>
                     </TouchableHighlight>
                     <View className="flex-row flex-wrap  mb-4">
-                        <Text className="dark:text-white text-lg mt-3 mb-1.5 font-semibold w-full">Sun Exposition</Text>
-                        <Text className="dark:text-white mb-3 font-semibold w-full">There is no info yet... Tap fer edit!</Text>
+                        <View className="flex-row w-full mt-3 mb-2">
+                            <Text className="dark:text-zinc-100 text-lg font-semibold mr-2">Sun Exposition</Text>
+                            <TouchableOpacity className="" onPress={onEditSunExposition}><View className="my-auto px-2 mr-3 rounded-full"><Text className="text-darkGreen dark:text-mainLime text-xs font-semibold mt-1">Edit details</Text></View></TouchableOpacity>
+                        </View>
                         {!sunExposition && <>
+                            <Text className="dark:text-zinc-100 mb-3 font-semibold w-full">There is no info yet... Tap add details for edit!</Text>
                         </>}
                         <View className="gap-3 flex-row flex-wrap">
                             <View
@@ -135,13 +218,15 @@ export default function Nearby({ closeHandle, setSinglePlaygroundImages, onHandl
                         </View>
                     </View>
                     <View className="flex-row flex-wrap mb-4">
-                        <Text className="dark:text-white text-lg mt-3 mb-1.5 font-semibold w-full">Elements</Text>
-
+                        <View className="flex-row w-full mt-3 mb-2">
+                            <Text className="dark:text-zinc-100 text-lg font-semibold mr-3">Elements</Text>
+                            <TouchableOpacity activeOpacity={0.8} onPress={onEditElements}><View className="my-auto px-2 mr-3 rounded-full"><Text className="text-darkGreen dark:text-mainLime text-xs font-semibold mt-1">Edit elements</Text></View></TouchableOpacity>
+                        </View>
                         {playground.elements.length !== 0 ? playground.elements.map((element, index) => {
-                            return <SingleElement element={element} key={index} />
+                            return <SingleElement element={element} index={index} />
                         }) :
                             <View className="flex-row flex-wrap mb-">
-                                <Text className="dark:text-white mb-1.5 font-semibold w-full">There are no elements yet...</Text>
+                                <Text className="dark:text-zinc-100 mb-1.5 font-semibold w-full">There are no elements yet...</Text>
                                 <TouchableOpacity
                                     activeOpacity={0.8}
                                     className="border border-mainLime  rounded-full mb-1 mt-2 mr-2 bg-mainGray"
@@ -158,13 +243,25 @@ export default function Nearby({ closeHandle, setSinglePlaygroundImages, onHandl
                             </View>
                         }
                     </View>
-                    {playground.description && playground.description !== '-' &&
-                        <View className="flex-column mb-4 w-full">
-                            <Text className="dark:text-white text-lg mb-1 font-semibold  w-full">Description</Text>
-                            <Text className="text-lgs font-normal">{playground.description}</Text>
-                        </View>}
+                    <View className="flex-column mb-4 w-full">
+                        <View className="flex-row w-full mt-3 mb-2">
+                            <Text className="dark:text-zinc-100 text-lg font-semibold mr-3">Description</Text>
+                            {playground.description && playground.description === '-' &&
+                                <TouchableOpacity onPress={onEditDescription} className=""><View className="my-auto px-2 mr-3 rounded-full"><Text className="text-darkGreen dark:text-mainLime text-xs font-semibold mt-1">Add description</Text></View></TouchableOpacity>
+                            }
+                            {playground.description && playground.description !== '-' &&
+                                <TouchableOpacity onPress={onEditDescription} className=""><View className="my-auto px-2 mr-3 rounded-full"><Text className="text-darkGreen dark:text-mainLime text-xs font-semibold mt-1">Edit description</Text></View></TouchableOpacity>
+                            }
+                        </View>
+                        {playground.description && playground.description !== '-' &&
+                            <Text className="dark:text-zinc-100 text-lgs font-normal">{playground.description}</Text>
+                        }
+                    </View>
 
-                    <Text className="dark:text-white text-lg mb-2 font-semibold  w-full">Images</Text>
+                    <View className="flex-row w-full mt-3 mb-2">
+                        <Text className="dark:text-zinc-100 text-lg font-semibold mr-3">Images</Text>
+                        <TouchableOpacity onPress={onAddImages} className=""><View className="my-auto px-2 mr-3 rounded-full"><Text className="text-darkGreen dark:text-mainLime text-xs font-semibold mt-1">Add images</Text></View></TouchableOpacity>
+                    </View>
                     <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} pagingEnabled={true} >
                         <View className="flex-row gap-3">
 
@@ -181,20 +278,19 @@ export default function Nearby({ closeHandle, setSinglePlaygroundImages, onHandl
                                         source={{ uri: image }}
                                     />
                                 </TouchableOpacity>
-
-
                             })}
                         </View>
+
                     </ScrollView>
-
-
+                    <View className="mb-36" />
                 </View>
-
             </ScrollView>
-
+            {modal === 'edit-sun-exposition' && <EditSunExposition TOKEN={TOKEN} id={playground._id} sunExposition={playground.sunExposition} onEdited={onEdited} onCancelEdit={onCancelEdit} setTopSheetModalColor={setTopSheetModalColor} setTopSheetIndicatorColor={setTopSheetIndicatorColor} colorScheme={colorScheme} />}
+            {modal === 'edit-element' && <EditElements TOKEN={TOKEN} id={playground._id} elements={playground.elements} onEdited={onEdited} onCancelEdit={onCancelEdit} setTopSheetModalColor={setTopSheetModalColor} setTopSheetIndicatorColor={setTopSheetIndicatorColor} colorScheme={colorScheme} />}
+            {modal == 'edit-description' && <EditDescription TOKEN={TOKEN} id={playground._id} description={playground.description} onEdited={onEdited} onCancelEdit={onCancelEdit} setTopSheetModalColor={setTopSheetModalColor} setTopSheetIndicatorColor={setTopSheetIndicatorColor} colorScheme={colorScheme} />}
+            {modal == 'add-images' && <AddImages TOKEN={TOKEN} id={playground._id} onEdited={onEdited} onCancelEdit={onCancelEdit} setTopSheetModalColor={setTopSheetModalColor} setTopSheetIndicatorColor={setTopSheetIndicatorColor} colorScheme={colorScheme} />}
         </>
         }
-        <View className="flex-row  bg-mainGrays w-full mx-auto justify-center z-50 pb-40" />
 
 
 

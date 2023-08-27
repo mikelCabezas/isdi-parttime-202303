@@ -46,7 +46,7 @@ export default function LikedPlaygrounds({ onMarkerPressedHandler }) {
         <View className="flex-row relative h-4/6 " >
 
             {playgrounds?.length === 0 && <View className="flex-1 justify-center items-center h-full mt-auto pr-4 pb-4">
-                <Text className="text-lg text-center">You haven't saved any playground as a favorite yet!</Text>
+                <Text className="dark:text-zinc-100 text-lg text-center">You haven't saved any playground as a favorite yet!</Text>
             </View>
             }
             {playgrounds?.length > 0 &&

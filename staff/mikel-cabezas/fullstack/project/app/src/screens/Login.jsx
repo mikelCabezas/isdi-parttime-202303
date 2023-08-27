@@ -84,12 +84,12 @@ export default function Login({ navigation }) {
                 <View className="w-full h-screen flex-1 justify-center items-center">
                     {/* <Image className="wz-8/12 max-w-[220px] mb-4 h-[119px]" source={LOGO} /> */}
                     <Image className="wz-8/12 max-w-[240px] mb-4 h-[51px]" source={LOGO_SM} />
-                    <View className="bg-white dark:bg-gray-800 h-auto px-6 py-7 w-3/4 max-w-[300px] rounded-3xl">
-                        {/* <Text className="dark:text-white text-2xl text-center font-semibold">{process.env.EXPO_PUBLIC_API_URL}</Text> */}
+                    <View className="bg-white dark:bg-zinc-800 h-auto px-6 py-7 w-3/4 max-w-[300px] rounded-3xl">
+                        {/* <Text className="dark:text-zinc-100 text-2xl text-center font-semibold">{process.env.EXPO_PUBLIC_API_URL}</Text> */}
 
-                        {/* <Text className="dark:text-white pt-4 text-xs text-center">{process.env.EXPO_PUBLIC_API_URL}</Text> */}
-                        <Text className="dark:text-white text-2xl text-center font-semibold">Login</Text>
-                        <Text className="dark:text-white pt-4 text-xs text-center">Your email</Text>
+                        {/* <Text className="dark:text-zinc-100 pt-4 text-xs text-center">{process.env.EXPO_PUBLIC_API_URL}</Text> */}
+                        <Text className="dark:text-zinc-100 text-2xl text-center font-semibold">Login</Text>
+                        <Text className="dark:text-zinc-100 pt-4 text-xs text-center">Your email</Text>
                         <TextInput
                             label="Email"
                             returnKeyType="next"
@@ -98,11 +98,11 @@ export default function Login({ navigation }) {
                             autoCapitalize="none"
                             autoCompleteType="email"
                             placeholder="Email"
-                            className="dark:text-white border border-mainGray bg-mainGray dark:border-gray-700 dark:bg-gray-700 rounded-full mt-1 mb-0 px-2 py-2 self-center w-full text-center"
+                            className="dark:text-zinc-100 border border-mainGray bg-mainGray dark:border-zinc-700 dark:bg-zinc-700 rounded-full mt-1 mb-0 px-2 py-2 self-center w-full text-center"
                             inputMode="text"
                             keyboardType="email-address"
                         />
-                        <Text className="dark:text-white pt-3 text-xs text-center">Your Password</Text>
+                        <Text className="dark:text-zinc-100 pt-3 text-xs text-center">Your Password</Text>
                         <TextInput
                             label="Password"
                             returnKeyType="done"
@@ -110,7 +110,7 @@ export default function Login({ navigation }) {
                             onChangeText={setPassword}
                             secureTextEntry
                             placeholder="Password"
-                            className="dark:text-white border border-mainGray bg-mainGray dark:border-gray-700 dark:bg-gray-700 rounded-full my-1 px-2 py-2 self-center w-full text-center"
+                            className="dark:text-zinc-100 border border-mainGray bg-mainGray dark:border-zinc-700 dark:bg-zinc-700 rounded-full my-1 px-2 py-2 self-center w-full text-center"
                             inputMode="text"
                             keyboardType="default"
                         />
@@ -145,7 +145,7 @@ export default function Login({ navigation }) {
                             }}
                         >
                             <Text
-                                className="dark:text-white mt-3 text-xs text-center">
+                                className="dark:text-zinc-100 mt-3 text-xs text-center">
                                 Not registered?
                                 <Text className="font-bold">Register</Text></Text>
                         </TouchableOpacity>
