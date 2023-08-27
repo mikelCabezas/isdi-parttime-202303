@@ -9,10 +9,13 @@ npm-debug.*
 *.mobileprovision
 *.orig.*
 web-build/
+*.ipa
+ios/
+android/
+.history/
 
 # sensible data
 .env
-ios/
 # macOS
 .DS_Store
 
