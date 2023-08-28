@@ -2,6 +2,7 @@ const { User } = require('../../data/models')
 // const randomString = require('../helpers/randomString')
 const sendRegisterEmail = require('../helpers/sendRegisterEmail')
 const jwt = require('jsonwebtoken')
+const bcrypt = require('bcryptjs')
 
 const {
     validators: { validateName, validateEmail, validatePassword },
@@ -34,7 +35,6 @@ module.exports = function registerUser(name, email, password) {
 
         for (let i = 0; i < length; i++) {
             const character = Math.floor((Math.random() * 10) + 1)
-
             randomString += character
         }
         return randomString
@@ -42,18 +42,21 @@ module.exports = function registerUser(name, email, password) {
     const isValid = false
     const uniqueString = randomString()
 
-
-    console.log(uniqueString)
-
-    return User.create({ name, email, password, isValid, uniqueString })
-        .then(() => {
+    return (async () => {
+        try {
+            const hash = await bcrypt.hash(password, 10)
+            debugger
+            await User.create({ name, email, password: hash, isValid, uniqueString })
             const payload = { sub: uniqueString }
             const { JWT_SECRET, JWT_RECOVER_EMAIL_EXPIRATION } = process.env
             const token = jwt.sign(payload, JWT_SECRET, { expiresIn: JWT_RECOVER_EMAIL_EXPIRATION })
             sendRegisterEmail(name, email, token)
-        })
-        .catch(error => {
+                .catch(error => error)
+
+        } catch (error) {
             if (error.message.includes('E11000')) throw new DuplicityError(`This user whith email ${email} already exists`)
             throw error
-        })
+        }
+    })()
+
 }

@@ -1,7 +1,7 @@
 const { User } = require('../../data/models')
+const bcrypt = require('bcryptjs')
 
 
-const context = require('../context')
 const {
     validators: { validateUserId, validatePassword, validateNewPassword },
     errors: { ExistenceError, ContentError }
@@ -29,17 +29,20 @@ module.exports = (userId, currentPassword, newPassword, repeatPassword) => {
     validatePassword(newPassword)
     validatePassword(repeatPassword)
 
+    return (async () => {
+        const user = await User.findById(userId)
+        if (!user) throw new ExistenceError('user not found')
 
-    return User.findById(userId)
-        .then(user => {
-            if (!user) throw new ExistenceError('user not found')
+        const checkOldNewPasswordsMatch = await bcrypt.compare(currentPassword, user.password)
+        if (!checkOldNewPasswordsMatch) throw new ContentError("Current password does not match")
 
-            if (user.password !== currentPassword) throw new ContentError("Current password does not match")
+        const checkOldNewPasswordsNotMatch = await bcrypt.compare(newPassword, user.password)
+        if (!checkOldNewPasswordsNotMatch) throw new ContentError("New password must be different as previous password")
 
-            if (currentPassword === newPassword) throw new ContentError("New password must be different as previous password")
+        if (newPassword !== repeatPassword) throw new ContentError("New password and new password confirmation does not match")
 
-            if (newPassword !== repeatPassword) throw new ContentError("New password and new password confirmation does not match")
+        const hash = await bcrypt.hash(newPassword, 10)
 
-            return user.updateOne({ password: newPassword })
-        })
+        return user.updateOne({ password: hash })
+    })
 }

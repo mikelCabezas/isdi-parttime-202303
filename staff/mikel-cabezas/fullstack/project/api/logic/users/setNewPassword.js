@@ -1,5 +1,5 @@
 const { User } = require('../../data/models')
-// const randomString = require('../helpers/randomString')
+const bcrypt = require('bcryptjs')
 
 const {
     validators: { validateName, validateEmail, validatePassword },
@@ -21,11 +21,15 @@ const {
 module.exports = function setNewPassword(uniqueString, newPassword) {
     validatePassword(newPassword)
     // TODO validate unique string
-    return User.findOne({ uniqueString: uniqueString })
-        .then(user => {
-            return user.updateOne({ password: newPassword })
-        })
-        .catch(error => {
-            throw error
-        })
+    try {
+        return (async () => {
+            const user = await User.findOne({ uniqueString: uniqueString })
+            const hash = await bcrypt.hash(newPassword, 10)
+            await user.updateOne({ password: hash })
+            return
+        })()
+    } catch (error) {
+        throw error
+    }
 }
+

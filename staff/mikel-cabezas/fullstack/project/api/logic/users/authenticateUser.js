@@ -3,6 +3,7 @@ const {
     validators: { validateEmail, validatePassword },
     errors: { ExistenceError, AuthError }
 } = require('com')
+const bcrypt = require('bcryptjs');
 const { User } = require('../../data/models')
 
 /**
@@ -22,15 +23,17 @@ module.exports = function authenticateUser(email, password) {
     validateEmail(email)
     validatePassword(password)
 
+    return (async () => {
+        const user = await User.findOne({ email })
+        if (!user) throw new ExistenceError('user not found')
+        if (!user.isValid) throw new AuthError('Verify your account please. Check your email')
 
-    return User.findOne({ email })
-        .then(user => {
-            if (!user) throw new ExistenceError('user not found')
+        const match = await bcrypt.compare(password, user.password)
 
-            if (user.password !== password) throw new AuthError('wrong credentials')
+        if (!match) throw new AuthError('wrong credentials')
 
-            if (!user.isValid) throw new AuthError('Verify your account please. Check your email')
+        return user.id
 
-            return user.id
-        })
+    })()
+
 }

@@ -9,7 +9,7 @@ import searchUser from "../logic/users/searchUser.js";
 import BG from '../../assets/bg-login.png'
 import LOGO_SM from '../../assets/logo-sm.png'
 import LOGO from '../../assets/logo.png'
-export default function Login({ navigation }) {
+export default function Login({ route, navigation }) {
     const { currentView, setCurrentView, colorScheme } = useContext(Context)
     const [name, setName] = useState()
     const [email, setEmail] = useState()
@@ -17,21 +17,20 @@ export default function Login({ navigation }) {
     const [repeatPassword, setRepeatPassword] = useState()
     const [url, setUrl] = useState()
     const [passwordToken, setPasswordToken] = useState()
+    const { params } = route;
 
 
     useEffect(() => {
-        Linking.getInitialURL().then((url) => {
-
-            if (!url) {
+        if (params?.token) {
+            if (!params.token) {
                 navigation.navigate('Login')
             }
-            const index = url.indexOf("=");
-            const token = url.slice(index + 1)
+            const index = params.token.indexOf("=");
+            const token = params.token.slice(index + 1)
 
             searchUser(token)
                 .then(() => {
-                    debugger
-                    setUrl(url)
+                    setUrl(token)
                     setPasswordToken(token)
                 })
                 .catch(error => {
@@ -43,22 +42,45 @@ export default function Login({ navigation }) {
                         routes: [{ name: 'Login' }],
                     })
                 })
+        }
+        // Linking.getInitialURL().then((url) => {
+        //     debugger
+        //     if (!url) {
+        //         navigation.navigate('Login')
+        //     }
+        //     const index = url.indexOf("=");
+        //     const token = url.slice(index + 1)
 
-        });
+        //     searchUser(token)
+        //         .then(() => {
+        //             debugger
+        //             setUrl(url)
+        //             setPasswordToken(token)
+        //         })
+        //         .catch(error => {
+        //             console.log(error.message)
+        //             alert('Invalid Token')
+        //             // navigation.navigate('Login')
+        //             navigation.reset({
+        //                 index: 0,
+        //                 routes: [{ name: 'Login' }],
+        //             })
+        //         })
+        // });
     }, []);
     const handleSetNewPassword = () => {
-        if (password !== repeatPassword) throw new Error('Passwords does not match')
-        console.log(passwordToken)
-        updateNewPassword(passwordToken, password)
-            .then(() => {
-                alert('Password updated! \n Now you can login.')
-                navigation.navigate('Login')
-            })
-            .catch(error => alert(error.message))
         try {
+            if (password !== repeatPassword) throw new Error('Passwords does not match')
+
+            updateNewPassword(passwordToken, password)
+                .then(() => {
+                    alert('Password updated! \n Now you can login.')
+                    navigation.navigate('Login')
+                })
+                .catch(error => alert(error.message))
 
         } catch (error) {
-            console.log(error.message)
+            alert(error.message)
         }
     }
 

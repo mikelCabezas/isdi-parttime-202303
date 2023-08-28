@@ -3,7 +3,8 @@ const { validatePassword, validateNewPassword, validateToken } = validators
 export function updateNewPassword(token, newPassword) {
     validateToken(token)
     validatePassword(newPassword)
-    return fetch(`${process.env.EXPO_PUBLIC_API_URL}/user/setNewPassword/`, {
+
+    return fetch(`${process.env.EXPO_PUBLIC_API_URL}/user/recoverPassword/setNewPassword/`, {
         method: 'PATCH',
         headers: {
             'Content-Type': 'application/json',
