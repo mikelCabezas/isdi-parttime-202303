@@ -50,7 +50,7 @@ export default function SingleElement({ index, element, handleEditElement }) {
     const status = assignElementStatus(element.status)
 
     const handleOnPress = () => {
-        handleEditElement(element.id)
+        handleEditElement(element._ID_)
     }
 
     return <TouchableOpacity

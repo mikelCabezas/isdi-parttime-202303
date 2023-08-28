@@ -14,8 +14,8 @@ export default function Playgrounds({ onMarkerPressedHandler, playgrounds, user 
                 playground={playground}
                 user={user}
                 id={playground._id}
-                title
-                description
+                title={playground.title}
+                description={playground.description}
                 onMarkerPressedHandler={onMarkerPressedHandler}
             />
         })}

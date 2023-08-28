@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
-import { Text, Image, View, ScrollView, Platform, Linking, Alert } from 'react-native';
+import { Text, Image, View, Platform, Linking, Alert } from 'react-native';
 import { TouchableOpacity, TouchableHighlight, TouchableWithoutFeedback, } from '@gorhom/bottom-sheet';
 
 import { SHADY, LIKE, LIKE_FILLED, SUNNY, ADD } from '../../../assets/icons';
@@ -9,7 +9,7 @@ import { toggleLikePlayground } from "../../logic/playgrounds/toggleLikePlaygrou
 import retrievePlaygroundById from "../../logic/playgrounds/retrievePlaygroundById";
 import { EditSunExposition, EditElements, EditDescription, AddImages } from "./editPlayground/";
 import createMapLink from 'react-native-open-maps';
-
+import { ScrollView } from 'react-native-gesture-handler';
 export default function SinglePlayground({ colorScheme, setTopSheetModalColor, setTopSheetIndicatorColor, setSnapPointSinglePlayground, setSinglePlaygroundImages, onHandleOpenImages }) {
     const { currentView, setCurrentView, currentMarker, setCurrentMarker, TOKEN } = useContext(Context)
     const [modal, setModal] = useState()

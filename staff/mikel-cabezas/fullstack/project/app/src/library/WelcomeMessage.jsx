@@ -10,7 +10,6 @@ export default function Home({ user, handleCloseWelcomeMessage }) {
     const { colorScheme } = useContext(Context)
 
     // const [welcomeMessageStorage, setWelcomeMessageStorage] = useState(false)
-
     let mainColor
     if (colorScheme === 'dark') {
         mainColor = 'rgb(31 41 55)'
@@ -18,13 +17,9 @@ export default function Home({ user, handleCloseWelcomeMessage }) {
         mainColor = '#ffffff'
     }
 
-
-
     const onCloseWelcomeMessage = () => {
         handleCloseWelcomeMessage()
     }
-
-
 
     return <>
         <View className="flex-1 w-full h-screen bg-black60 justify-center items-center absolute top-0">

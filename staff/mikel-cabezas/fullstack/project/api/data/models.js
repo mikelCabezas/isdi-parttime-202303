@@ -113,11 +113,6 @@ const element = new Schema({
     },
 })
 const issue = new Schema({
-    _id: {
-        type: ObjectId,
-        required: true,
-        unique: true
-    },
     author: {
         type: ObjectId,
         ref: 'User',
@@ -186,7 +181,6 @@ const playground = new Schema({
     },
     elements: {
         type: [element],
-        required: true,
     },
     sunExposition: {
         type: Object,

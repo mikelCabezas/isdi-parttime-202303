@@ -42,7 +42,6 @@ module.exports = (token, userId, name, description, sunExposition, elements, ima
         )
             .then(playgrounds => {
                 [coordinates, playgrounds]
-                debugger
                 if (playgrounds.length > 0) throw new ExistenceError('New playgrounds cannot are near than 20 meters than other.')
                 if (playgrounds.length === 0) {
                     return fetch(`https://maps-api.apple.com/v1/reverseGeocode?loc=${location}`, {

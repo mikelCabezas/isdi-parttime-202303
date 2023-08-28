@@ -52,12 +52,13 @@ export default function LikedPlaygrounds({ onMarkerPressedHandler }) {
             {playgrounds?.length > 0 &&
                 <ScrollView className="pr-5 flex-1 h-full " styles={{ alignItems: 'center', justifyContent: 'center' }}>
                     {playgrounds.map(playground => {
-                        return <View className="relative mb-3" ><LikedPlayground
-                            key={playground._id}
-                            playground={playground}
-                            user={user}
-                            onMarkerPressedHandler={onMarkerPressedHandler}
-                        />
+                        return <View className="relative mb-3" >
+                            <LikedPlayground
+                                key={playground._id}
+                                playground={playground}
+                                user={user}
+                                onMarkerPressedHandler={onMarkerPressedHandler}
+                            />
                         </View>
                     })}
                 </ScrollView>

@@ -40,6 +40,7 @@ function validatePassword(password) {
 }
 
 function validateUserId(userId) {
+    debugger
     if (typeof userId !== 'string') throw new TypeError('User is not a string')
     if (!userId) throw new ContentError('User is empty')
 }

@@ -47,7 +47,7 @@ export default function Login({ navigation }) {
         try {
             validateEmail(email)
             validatePassword(password)
-            authenticateUser(email.toLowerCase().trim(), password.toLowerCase().trim())
+            authenticateUser(email.toLowerCase().trim(), password)
                 .then(async () => {
                     return AsyncStorage.getItem('@TOKEN')
                         .then(token => {

@@ -1,7 +1,9 @@
 import { useEffect, useState, useContext } from "react"
 import retrievePlaygrounds from "../../../logic/playgrounds/retrievePlaygrounds"
 import NearbyPlayground from "./NearbyPlayground"
-import { View, ScrollView, Alert } from "react-native"
+import { View, Alert } from "react-native"
+import { ScrollView } from 'react-native-gesture-handler';
+
 import retrieveUser from "../../../logic/users/retrieveUser"
 import Context from '../../../AppContext.js'
 
@@ -52,10 +54,7 @@ export default function NearbyPlaygrounds({ onMarkerPressedHandler }) {
                     </View>
                 })}
             </ScrollView>
-
         </View>
-
-        {/* </View> */}
     </>
 
 }

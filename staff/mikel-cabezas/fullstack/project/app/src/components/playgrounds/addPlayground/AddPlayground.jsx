@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useContext, useRef } from "react";
-import { ActivityIndicator, Text, Image, View, ScrollView, TouchableOpacity, TextInput, Alert } from 'react-native';
+import { ActivityIndicator, Text, Image, View, TouchableOpacity, TextInput, Alert } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
 
 import * as Location from 'expo-location';
 
@@ -38,9 +39,6 @@ export default function CreatePlayground({ closeHandle, cancelAddPlayground, set
     useEffect(() => {
 
         (async () => {
-
-
-
             let { status } = await Location.requestForegroundPermissionsAsync();
             if (status !== 'granted') {
                 setErrorMsg('Permission to access location was denied');
@@ -71,7 +69,7 @@ export default function CreatePlayground({ closeHandle, cancelAddPlayground, set
     }
     const onEditElement = (element) => {
         setPlaygroundElements(currentElements => {
-            currentElements[element.id] = element
+            currentElements[element._ID_] = element
             return [...currentElements]
         })
         setModal('')
@@ -134,11 +132,6 @@ export default function CreatePlayground({ closeHandle, cancelAddPlayground, set
     }
 
     useEffect(() => {
-        // console.log('playgroundName', playgroundName)
-        // console.log('playgroundDescription', playgroundDescription)
-        // console.log('playgroundElements', playgroundElements)
-        // console.log('imagesResized', imagesResized)
-
         if (!playgroundName || !playgroundDescription || !playgroundElements || imagesResized.length <= 0) {
             setFieldsStatusColor('mainGray')
         } else {

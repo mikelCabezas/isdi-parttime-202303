@@ -18,7 +18,8 @@ export default function AddElement({ setTopSheetModalColor, setTopSheetIndicator
                 throw new Error('Complete all fields')
             }
             const accessibility = selectedAccessibility === 'Yes' ? true : false
-            const element = { id, type: selectedType, age: Number(selectedAge), status: selectedStatus, accessibility: accessibility }
+            const element = { _ID_: id, type: selectedType, age: Number(selectedAge), status: selectedStatus, accessibility: accessibility }
+            console.log(element)
             onElementCreated(element)
 
         } catch (error) {
@@ -53,7 +54,7 @@ export default function AddElement({ setTopSheetModalColor, setTopSheetIndicator
     return <>
         {modal && <View className="flex-1  bg-black60 items-center justify-center absolute w-[100vw] h-full z-[51] bottom-0 ">
             <View className="w-full absolute bottom-[152px] right-0 z-50 flex-row  justify-end py-5 px-5">
-                <TouchableOpacity activeOpacity="0.8" className=" rounded-lg bg-mainLime ">
+                <TouchableOpacity activeOpacity={0.8} className=" rounded-lg bg-mainLime ">
                     <Text className=" p-1.5 font-bold" onPress={onCloseModal}>OK</Text>
                 </TouchableOpacity>
             </View>
@@ -91,28 +92,28 @@ export default function AddElement({ setTopSheetModalColor, setTopSheetIndicator
         <View className="flex-1 bg-black60  items-center justify-center z-50 absolute w-full h-full">
             <View className="bg-white dark:bg-zinc-800 h-auto px-6 py-7 w-11/12 rounded-3xl">
                 <Text className="dark:text-zinc-100 text-xl font-semibold">Add element</Text>
-                <TouchableOpacity activeOpacity="0.8" onPress={onElementType}>
+                <TouchableOpacity activeOpacity={0.8} onPress={onElementType}>
                     <Text className="dark:text-zinc-100 pt-4 text-xs ">Type</Text>
                     <View className="dark:text-zinc-100 border border-mainGray bg-mainGray dark:border-zinc-700 dark:bg-zinc-700 rounded-full mt-1 mb-0 px-4 py-2 self-center w-full flex-row justify-between items-center" >
                         <Text className="flex-1" >{selectedType ? selectedType : 'Add element'}</Text>
                         <Image className="w-5 h-5 flex-2" source={DROPDOWN} />
                     </View>
                 </TouchableOpacity>
-                <TouchableOpacity activeOpacity="0.8" onPress={onElementAge}>
+                <TouchableOpacity activeOpacity={0.8} onPress={onElementAge}>
                     <Text className="dark:text-zinc-100 pt-4 text-xs ">Age</Text>
                     <View className="dark:text-zinc-100 border border-mainGray bg-mainGray dark:border-zinc-700 dark:bg-zinc-700 rounded-full mt-1 mb-0 px-4 py-2 self-center w-full flex-row justify-between items-center" >
                         <Text className="flex-1" >{selectedAge ? selectedAge : 'Set age'}</Text>
                         <Image className="w-5 h-5 flex-2" source={DROPDOWN} />
                     </View>
                 </TouchableOpacity>
-                <TouchableOpacity activeOpacity="0.8" onPress={onElementStatus}>
+                <TouchableOpacity activeOpacity={0.8} onPress={onElementStatus}>
                     <Text className="dark:text-zinc-100 pt-4 text-xs ">Status</Text>
                     <View className="dark:text-zinc-100 border border-mainGray bg-mainGray dark:border-zinc-700 dark:bg-zinc-700 rounded-full mt-1 mb-0 px-4 py-2 self-center w-full flex-row justify-between items-center" >
                         <Text className="flex-1" >{selectedStatus ? selectedStatus : 'Set status'}</Text>
                         <Image className="w-5 h-5 flex-2" source={DROPDOWN} />
                     </View>
                 </TouchableOpacity>
-                <TouchableOpacity activeOpacity="0.8" onPress={onElementAccessibility}>
+                <TouchableOpacity activeOpacity={0.8} onPress={onElementAccessibility}>
                     <Text className="dark:text-zinc-100 pt-4 text-xs ">Accessibility</Text>
                     <View className="dark:text-zinc-100 border border-mainGray bg-mainGray dark:border-zinc-700 dark:bg-zinc-700 rounded-full mt-1 mb-0 px-4 py-2 self-center w-full flex-row justify-between items-center" >
                         <Text className="flex-1" >{selectedAccessibility ? selectedAccessibility : 'Set accessibility'}</Text>

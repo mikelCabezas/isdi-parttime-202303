@@ -67,7 +67,11 @@ export default function BaseMap({ user, onMarkerPressed, searchResult, onHomeHan
                 retrievePlaygrounds(TOKEN, location)
                     .then(playgrounds => {
                         setPlaygrounds(playgrounds)
-                        setPlaygroundsCount(playgrounds[0].length)
+                        if (playgrounds[0].length > 0) {
+                            setPlaygroundsCount(playgrounds[0].length)
+                        } else if (playgrounds[0].length === 0) {
+                            setPlaygroundsCount(null)
+                        }
                         setAnimation('fadeInDown')
                         setTimeout(() => {
                             setAnimation('fadeOutUp')
@@ -79,6 +83,13 @@ export default function BaseMap({ user, onMarkerPressed, searchResult, onHomeHan
                         ]);
                     })
                 unfreeze()
+                const onCurrentMarkerRegion = {
+                    latitude: location.latitude,
+                    longitude: location.longitude,
+                    latitudeDelta: 0.01,
+                    longitudeDelta: 0.01,
+                }
+                mapRef.current.animateToRegion(onCurrentMarkerRegion, 1 * 1000);
             }
         } catch (error) {
             Alert.alert('Error', `${error.message}`, [
@@ -86,6 +97,14 @@ export default function BaseMap({ user, onMarkerPressed, searchResult, onHomeHan
             ]);
         }
     }, [loadCurrentLocation])
+
+
+    // useEffect(() => {
+    //     if (loadCurrentLocation) {
+
+    //     }
+    // }, [loadCurrentLocation])
+
 
 
     useEffect(() => {
@@ -123,17 +142,6 @@ export default function BaseMap({ user, onMarkerPressed, searchResult, onHomeHan
         mapRef.current.animateToRegion(onCurrentMarkerRegion, 1 * 1000);
     }
 
-    useEffect(() => {
-        if (loadCurrentLocation) {
-            const onCurrentMarkerRegion = {
-                latitude: location.latitude,
-                longitude: location.longitude,
-                latitudeDelta: 0.01,
-                longitudeDelta: 0.01,
-            }
-            mapRef.current.animateToRegion(onCurrentMarkerRegion, 1 * 1000);
-        }
-    }, [loadCurrentLocation])
 
 
 
@@ -161,8 +169,8 @@ export default function BaseMap({ user, onMarkerPressed, searchResult, onHomeHan
             ref={mapRef}
             showsUserLocation={true}
             // followsUserLocation={true}
-            onPress={() => { Keyboard.dismiss(); }}
-            onRegionChange={() => { Keyboard.dismiss(); }}
+            onPress={() => { Keyboard.dismiss() }}
+            onRegionChange={() => { Keyboard.dismiss() }}
             className="w-full h-[120%] top-[-10%] absolute"
             initialRegion={{
                 latitude: location.latitude,

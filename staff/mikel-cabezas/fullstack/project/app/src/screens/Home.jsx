@@ -156,7 +156,6 @@ export default function Home({ route, navigation, onSendViewPlaygroundsFromCity 
                 setAnimation('fadeOutUp')
             }, 3000);
         }
-
     }, [playgroundsCount])
 
 
@@ -283,8 +282,15 @@ export default function Home({ route, navigation, onSendViewPlaygroundsFromCity 
 
             {playgroundsCount && <>
                 <Animatable.View animation={animation} duration={350} className="position absolute top-[10vh]">
-                    <View className=" flex-row justify-center px-4 py-2 mt-5 left-0 w-auto rounded-full">
+                    <View className=" flex-row justify-center px-4 py-2 mt-5 left-0 w-auto rounded-full bg-white">
                         <Text className="text-center text-r">{playgroundsCount} playgrounds loaded</Text>
+                    </View>
+                </Animatable.View>
+            </>}
+            {!playgroundsCount && <>
+                <Animatable.View animation={animation} duration={350} className="position absolute top-[10vh]">
+                    <View className=" flex-row justify-center px-4 py-2 mt-5 left-0 w-auto rounded-full bg-white">
+                        <Text className="text-center text-r">No playgrounds found in this location!</Text>
                     </View>
                 </Animatable.View>
             </>}

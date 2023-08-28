@@ -7,6 +7,7 @@ import { ActionSheetProvider } from '@expo/react-native-action-sheet';
 import serverStatus from "./src/logic/helpers/serverStatus.js";
 import Loader from "./src/library/Loader.jsx";
 import BG from './assets/bg-login.png'
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 
 import MainStack from "./src/navigation/MainStack.jsx";
@@ -145,11 +146,12 @@ export default function App({ }) {
         setAnimation, TOKEN, setTOKEN, origin, setOrigin, location, setLocation, loadCurrentLocation, setLoadCurrentLocation, isLoggedIn, setIsLoggedIn
       }}>
 
-        {<ActionSheetProvider>
-          <NavigationContainer linking={linking} >
-            <MainStack />
-          </NavigationContainer>
-        </ActionSheetProvider>}
+        {<GestureHandlerRootView style={{ flex: 1 }}>
+          <ActionSheetProvider>
+            <NavigationContainer linking={linking} >
+              <MainStack />
+            </NavigationContainer>
+          </ActionSheetProvider></GestureHandlerRootView>}
       </Provider>
     </HideKeyboard>
     {loader && <>
