@@ -66,7 +66,7 @@ module.exports = (token, userId, city) => {
                             // $maxDistance: 10000
                         }
                     }
-                })
+                }).lean()
                     .then(playgrounds => [coordinates, [playgrounds]])
 
             } catch (error) {

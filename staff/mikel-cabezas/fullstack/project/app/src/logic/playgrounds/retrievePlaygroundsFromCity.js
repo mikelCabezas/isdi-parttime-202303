@@ -12,6 +12,7 @@ export default (token, city) => {
         }
     })
         .then(res => {
+            debugger
             if (res.status !== 200)
                 return res.json().then(({ error: message }) => { throw new Error(message) })
             return res.json()

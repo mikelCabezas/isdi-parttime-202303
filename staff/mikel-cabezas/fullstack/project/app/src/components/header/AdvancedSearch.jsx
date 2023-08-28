@@ -14,7 +14,7 @@ import retrieveFromFilter from "../../logic/playgrounds/retrieveFromFilter";
 import retrievePlaygroundsCities from "../../logic/playgrounds/retrievePlaygroundsCities";
 import * as Animatable from 'react-native-animatable';
 
-export default function AdvancedSearch({ closeHandle, setPlaygroundsCount, onHandleViewPlaygroundsFromCity }) {
+export default function AdvancedSearch({ closeHandle, setPlaygroundsCount, onHandleViewPlaygroundsFromSearch }) {
     const { TOKEN, currentView, setCurrentView, currentMarker, location, freeze, unfreeze } = useContext(Context)
     const [playground, setPlayground] = useState()
     const [elements, setElements] = useState([{ status: false, type: 'Slide' }, { status: false, type: 'Rider' }, { status: false, type: 'Swing' }, { status: false, type: 'Double Swing' }, { status: false, type: 'Seesaw' }, { status: false, type: 'Sandbox' }, { status: false, type: 'House' }, { status: false, type: 'Climber' }])
@@ -91,7 +91,7 @@ export default function AdvancedSearch({ closeHandle, setPlaygroundsCount, onHan
                             // setTimeout(() => {
                             //     unfreeze()
                             // }, 500);
-                            onHandleViewPlaygroundsFromCity(playgroundsResult)
+                            onHandleViewPlaygroundsFromSearch(playgroundsResult)
                             setPlaygroundsCount(playgroundsResult[1][0].length)
                         }
                         else {

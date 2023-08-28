@@ -88,7 +88,7 @@ export default function Header({ navigation, onHandleViewPlaygroundsFromCity, ha
         setTimeoutId(newTimeoutId)
     }
     return <>
-        {modal === 'simpleSearch' && data?.length > 0 && <View className="flex-1 w-full h-screen justify-center items-center">
+        {modal === 'simpleSearch' && data?.length > 0 && <View className="flex-1 w-full h-screen justify-center items-center absolute top-0">
             <TouchableOpacity activeOpacity={1} onPress={handleCloseModal}>
                 <View className="bg-tranparent flex-1 h-screen w-screen" />
             </TouchableOpacity>

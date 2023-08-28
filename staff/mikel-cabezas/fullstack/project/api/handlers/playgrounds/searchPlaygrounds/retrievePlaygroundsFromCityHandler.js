@@ -10,7 +10,7 @@ module.exports = handleErrors((req, res) => {
     return mapkitAccessToken()
         .then(accessToken => {
             return retrievePlaygroundsFromCity(accessToken, userId, city)
-                .then(posts => res.status(200).send(posts))
+                .then(playgrounds => res.status(200).send(playgrounds))
                 .catch(error => error.message)
         })
 })

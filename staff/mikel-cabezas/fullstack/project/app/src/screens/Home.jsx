@@ -245,8 +245,11 @@ export default function Home({ route, navigation, onSendViewPlaygroundsFromCity 
             },
         ]);
 
-    const handleViewPlaygroundsFromCity = (results) => {
+    const handleViewPlaygroundsFromSearch = (results) => {
         if (modal) bottomSheetRef.current.close()
+        setSearchResult(results)
+    }
+    const handleViewPlaygroundsFromCity = (results) => {
         setSearchResult(results)
     }
 
@@ -343,7 +346,7 @@ export default function Home({ route, navigation, onSendViewPlaygroundsFromCity 
                         setPlaygroundsCount={setPlaygroundsCount}
                         className="z-[90] h-screen relative"
                         closeHandle={onCloseModal}
-                        onHandleViewPlaygroundsFromCity={handleViewPlaygroundsFromCity}
+                        onHandleViewPlaygroundsFromSearch={handleViewPlaygroundsFromSearch}
                         setTopSheetIndicatorColor={setTopSheetIndicatorColor}
                         setTopSheetModalColor={setTopSheetModalColor} />
                 </BottomSheet>
