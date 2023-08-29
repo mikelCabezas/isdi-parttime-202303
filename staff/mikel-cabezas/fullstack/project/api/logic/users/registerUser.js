@@ -6,7 +6,7 @@ const bcrypt = require('bcryptjs')
 
 const {
     validators: { validateName, validateEmail, validatePassword },
-    errors: { DuplicityError }
+    errors: { DuplicityError, UnknownError }
 } = require('com')
 /**
  * 
@@ -50,13 +50,12 @@ module.exports = function registerUser(name, email, password) {
             const payload = { sub: uniqueString }
             const { JWT_SECRET, JWT_RECOVER_EMAIL_EXPIRATION } = process.env
             const token = jwt.sign(payload, JWT_SECRET, { expiresIn: JWT_RECOVER_EMAIL_EXPIRATION })
-            sendRegisterEmail(name, email, token)
-                .catch(error => error)
-
+            await sendRegisterEmail(name, email, token)
         } catch (error) {
-            if (error.message.includes('E11000')) throw new DuplicityError(`This user whith email ${email} already exists`)
-            throw error
+            if (error.message.includes('E11000'))
+                throw new DuplicityError(`This user with email ${email} already exists`)
+
+            throw new UnknownError(error.message)
         }
     })()
-
 }

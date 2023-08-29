@@ -28,18 +28,11 @@ class FormatError extends Error {
     }
     get name() { return FormatError.name }
 }
-class UnknownError extends Error {
-    constructor(message) {
-        super(message)
-    }
-    get name() { return FormatError.name }
-}
 
 module.exports = {
     DuplicityError,
     ContentError,
     ExistenceError,
     AuthError,
-    FormatError,
-    UnknownError
+    FormatError
 }

@@ -124,7 +124,7 @@ const issue = new Schema({
         unique: true
     },
     elements: {
-        type: [String],
+        type: [element],
         required: true,
         default: []
         // unique: true

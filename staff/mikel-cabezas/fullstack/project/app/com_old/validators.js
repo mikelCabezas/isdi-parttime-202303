@@ -1,5 +1,6 @@
 const { ContentError, FormatError } = require('./errors')
 function validateName(name) {
+    if (!name) throw new TypeError('Name is empty')
     if (typeof name !== 'string') throw new TypeError('Name is not a string')
     if (!name.trim().length) throw new ContentError('Name is empty')
 }
@@ -23,8 +24,8 @@ function validateImage(inputImage) {
 function validateEmail(email) {
     const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
 
+    if (!email) throw new ContentError('Email is empty')
     if (typeof email !== 'string') throw new TypeError('Email is not a string')
-    if (!email.trim().length) throw new ContentError('Email is empty')
     if (!emailRegex.test(email)) throw new FormatError('Invalid email format')
 }
 
@@ -34,20 +35,14 @@ function validateText(text) {
 }
 
 function validatePassword(password) {
-    if (!password) throw new ContentError("Password is empty")
-    if (typeof password !== "string") throw new TypeError("Password is not a string");
-    if (password === " ") throw new ContentError("Password cannot be a whitespace")
-    if (password.trim().length < 8) throw new RangeError("Password is shorter than 8 characters");
+    if (!password) throw new ContentError('Password is empty')
+    if (!password.trim().length > 8) throw new FormatError('Password must be higher than 8 characters')
 }
 
 function validateUserId(userId) {
+    debugger
     if (typeof userId !== 'string') throw new TypeError('User is not a string')
     if (!userId) throw new ContentError('User is empty')
-}
-
-function validateId(id, explain = 'token') {
-    if (typeof id !== 'string') throw new TypeError(`${explain} is not a string`)
-    if (!id) throw new ContentError(`${explain} is empty`)
 }
 
 function validatePostId(postId) {
@@ -70,7 +65,6 @@ module.exports = {
     validateEmail,
     validateText,
     validatePassword,
-    validateId,
     validateUserId,
     validatePostId,
     validateCallback,
