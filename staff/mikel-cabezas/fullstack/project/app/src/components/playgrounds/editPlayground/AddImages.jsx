@@ -66,8 +66,8 @@ export default function EditElements({ TOKEN, id, onEdited, onCancelEdit, descri
     return <>
         {<View className="flex-1 bg-black60  items-center justify-center z-50 absolute w-full h-full">
             <View className="bg-white dark:bg-zinc-800 h-auto pl-6 py-7 w-11/12 rounded-3xl">
-                <Text className="dark:text-zinc-100 text-xl font-semibold mb-2">Add images</Text>
-                <Text className="dark:text-zinc-100 pt-3 text-xs mb-2">Images</Text>
+                <Text className="dark:text-zinc-200 text-xl font-semibold mb-2">Add images</Text>
+                <Text className="dark:text-zinc-200 pt-3 text-xs mb-2">Images</Text>
                 <UploadImages setImagesResized={setImagesResized} imagesResized={imagesResized} />
                 {/* <UploadImages setImagesResized={setImagesResized} imagesResized={imagesResized} closeOnPlaygroundCreated={onCreatePlayground} /> */}
                 <View className="pr-6 mt-2">
@@ -87,7 +87,7 @@ export default function EditElements({ TOKEN, id, onEdited, onCancelEdit, descri
                         onPress={handleCancel}
                     >
                         <View className="px-6  self-center " >
-                            <Text className="dark:text-zinc-100 text-lg">Cancel</Text>
+                            <Text className="dark:text-zinc-200 text-lg">Cancel</Text>
                         </View>
                     </TouchableOpacity>
                 </View>

@@ -146,9 +146,9 @@ export default function CreatePlayground({ closeHandle, cancelAddPlayground, set
 
         <ScrollView className="flex-1 bg-white dark:bg-zinc-800">
             <View className=" px-6 w-full pt-5 pb-2.5   mx-auto min-hs-[300px] z-40 ">
-                <Text className="dark:text-zinc-100 text-2xl font-semibold">Add playground</Text>
-                <Text className="dark:text-zinc-100 text-lg mt-3 font-semibold">Info</Text>
-                <Text className="dark:text-zinc-100 mt-1 text-xs ">Playground name</Text>
+                <Text className="dark:text-zinc-200 text-2xl font-semibold">Add playground</Text>
+                <Text className="dark:text-zinc-200 text-lg mt-3 font-semibold">Info</Text>
+                <Text className="dark:text-zinc-200 mt-1 text-xs ">Playground name</Text>
                 <TextInput
                     label="Name"
                     returnKeyType="next"
@@ -157,11 +157,11 @@ export default function CreatePlayground({ closeHandle, cancelAddPlayground, set
                     autoCapitalize="none"
                     autoCompleteType=""
                     placeholder="Name"
-                    className="dark:text-zinc-100 border border-mainGray bg-mainGray dark:border-zinc-700 dark:bg-zinc-700 rounded-full mt-1 mb-0 px-2 py-2 self-center w-full "
+                    className="dark:text-zinc-200 border border-mainGray bg-mainGray dark:border-zinc-700 dark:bg-zinc-700 rounded-full mt-1 mb-0 px-2 py-2 self-center w-full "
                     inputMode="text"
                     keyboardType="default"
                 />
-                <Text className="dark:text-zinc-100 pt-3 text-xs ">Description</Text>
+                <Text className="dark:text-zinc-200 pt-3 text-xs ">Description</Text>
                 <TextInput
                     label="Description"
                     returnKeyType="done"
@@ -169,20 +169,20 @@ export default function CreatePlayground({ closeHandle, cancelAddPlayground, set
                     onChangeText={setPlaygroundDescription}
                     secureTextEntry
                     placeholder="Description"
-                    className="dark:text-zinc-100 border border-mainGray bg-mainGray dark:border-zinc-700 dark:bg-zinc-700  rounded-xl my-1 px-2 py-2 self-start w-full h-[85px]"
+                    className="dark:text-zinc-200 border border-mainGray bg-mainGray dark:border-zinc-700 dark:bg-zinc-700 rounded-xl my-1 px-2 py-2 self-start w-full h-[85px]"
                     inputMode="text"
                     keyboardType="default"
                     multiline={true}
                 />
                 <SunExposition playgroundShady={playgroundShady} setPlaygroundShady={setPlaygroundShady} playgroundSunny={playgroundSunny} setPlaygroundSunny={setPlaygroundSunny} playgroundPartial={playgroundPartial} setPlaygroundPartial={setPlaygroundPartial} />
                 <View className="flex-row flex-wrap">
-                    <Text className="dark:text-zinc-100 text-lg mt-3 font-semibold w-full">Elements</Text>
+                    <Text className="dark:text-zinc-200 text-lg mt-3 font-semibold w-full">Elements</Text>
                     {playgroundElements.length !== 0 && playgroundElements.map((element, index) => {
                         return <SingleElement element={element} index={index} handleEditElement={handleEditElement} />
                     })}
                     <TouchableOpacity
                         activeOpacity={0.8}
-                        className={`border border-mainYellow rounded-full   bg-mainGray self-center items-center pr-1`}
+                        className={`border border-mainYellow rounded-full bg-mainGray self-center items-center pr-1`}
                         onPress={onAddElement}>
                         <View className="font-bold px-3 py-[8px] flex-row items-center justify-center" >
                             <Image className="w-5 h-5 mr-2" source={ADD} />
@@ -192,7 +192,7 @@ export default function CreatePlayground({ closeHandle, cancelAddPlayground, set
                 </View>
             </View>
             <View className="bg-white dark:bg-zinc-800 pl-6 pb-4">
-                <Text className="dark:text-zinc-100 text-lg mb-3 font-semibold">Images <Text className="dark:text-zinc-100 text-sm mt-3 font-normal">(Max 5 images)</Text></Text>
+                <Text className="dark:text-zinc-200 text-lg mb-3 font-semibold">Images <Text className="dark:text-zinc-200 text-sm mt-3 font-normal">(Max 5 images)</Text></Text>
                 <UploadImages setImagesResized={setImagesResized} imagesResized={imagesResized} closeOnPlaygroundCreated={onCreatePlayground} />
             </View>
             {!uploading ?
@@ -212,7 +212,7 @@ export default function CreatePlayground({ closeHandle, cancelAddPlayground, set
                 onPress={handleCancel}
             >
                 <View className="px-6  self-center " >
-                    <Text className="dark:text-zinc-100 text-lg">Cancel</Text>
+                    <Text className="dark:text-zinc-200 text-lg">Cancel</Text>
                 </View>
             </TouchableOpacity>
         </ScrollView>

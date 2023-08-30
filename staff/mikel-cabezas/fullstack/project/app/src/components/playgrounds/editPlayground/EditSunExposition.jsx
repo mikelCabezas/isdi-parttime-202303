@@ -73,7 +73,7 @@ export default function EditElements({ TOKEN, id, onEdited, onCancelEdit, sunExp
     return <>
         {playgroundShady && playgroundSunny && playgroundPartial && <View className="flex-1 bg-black60  items-center justify-center z-50 absolute w-full h-full">
             <View className="bg-white dark:bg-zinc-800 h-auto px-6 py-7 w-11/12 rounded-3xl">
-                <Text className="dark:text-zinc-100 text-lg mt-3 mb-3 font-semibold">Sun exposition</Text>
+                <Text className="dark:text-zinc-200 text-lg mt-3 mb-3 font-semibold">Sun exposition</Text>
                 <View className="flex-row flex-wrap mb-4 gap-1.5">
                     <TouchableOpacity
                         activeOpacity={0.8}
@@ -119,7 +119,7 @@ export default function EditElements({ TOKEN, id, onEdited, onCancelEdit, sunExp
                     onPress={handleCancel}
                 >
                     <View className="px-6  self-center " >
-                        <Text className="dark:text-zinc-100 text-lg">Cancel</Text>
+                        <Text className="dark:text-zinc-200 text-lg">Cancel</Text>
                     </View>
                 </TouchableOpacity>
             </View>

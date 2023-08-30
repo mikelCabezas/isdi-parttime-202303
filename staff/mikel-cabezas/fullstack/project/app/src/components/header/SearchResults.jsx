@@ -37,12 +37,12 @@ export default function SearchResults({ handleCloseModal, data, handleViewPlaygr
             })
     }
 
-    return <View>
+    return <View className="dark:bg-zinc-800">
         {data.length > 0 && data.map((result, index) => {
-            return <View className="pt-3 border-mainGray" key={index} >
+            return <View className="pt-3 border-mainGray dark:bg-zinc-800" key={index} >
                 <View className="pt-3 border-mainGray" key={`${index}-0`} />
                 <TouchableOpacity activeOpacity={0.7} key={`${index}-touchable`} className="py-3 px-4" onPress={() => simpleSearchRegion(result)}>
-                    <Text key={`${index}-text`}> {result}</Text>
+                    <Text className="dark:text-zinc-200" key={`${index}-text`}> {result}</Text>
                 </TouchableOpacity>
             </View>
         })}

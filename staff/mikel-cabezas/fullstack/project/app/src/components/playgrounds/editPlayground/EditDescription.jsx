@@ -55,8 +55,8 @@ export default function EditElements({ TOKEN, id, onEdited, onCancelEdit, descri
     return <>
         {<View className="flex-1 bg-black60  items-center justify-center z-50 absolute w-full h-full">
             <View className="bg-white dark:bg-zinc-800 h-auto px-6 py-7 w-11/12 rounded-3xl">
-                <Text className="dark:text-zinc-100 text-xl font-semibold mb-2">Edit Description</Text>
-                <Text className="dark:text-zinc-100 pt-3 text-xs ">Description</Text>
+                <Text className="dark:text-zinc-200 text-xl font-semibold mb-2">Edit Description</Text>
+                <Text className="dark:text-zinc-200 pt-3 text-xs ">Description</Text>
                 <TextInput
                     label="Description"
                     returnKeyType="done"
@@ -64,7 +64,7 @@ export default function EditElements({ TOKEN, id, onEdited, onCancelEdit, descri
                     onChangeText={setPlaygroundDescription}
                     secureTextEntry
                     placeholder="Description"
-                    className="dark:text-zinc-100 border border-mainGray bg-mainGray dark:border-zinc-600 dark:bg-zinc-600  rounded-xl mt-1 mb-4 px-2 py-2 self-start w-full h-[85px]"
+                    className="dark:text-zinc-200 border border-mainGray bg-mainGray dark:border-zinc-600 dark:bg-zinc-600  rounded-xl mt-1 mb-4 px-2 py-2 self-start w-full h-[85px]"
                     inputMode="text"
                     keyboardType="default"
                     multiline={true}
@@ -85,7 +85,7 @@ export default function EditElements({ TOKEN, id, onEdited, onCancelEdit, descri
                     onPress={handleCancel}
                 >
                     <View className="px-6  self-center " >
-                        <Text className="dark:text-zinc-100 text-lg">Cancel</Text>
+                        <Text className="dark:text-zinc-200 text-lg">Cancel</Text>
                     </View>
                 </TouchableOpacity>
             </View>

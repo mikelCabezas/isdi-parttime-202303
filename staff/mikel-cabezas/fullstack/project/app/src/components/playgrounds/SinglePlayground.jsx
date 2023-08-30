@@ -159,7 +159,7 @@ export default function SinglePlayground({ colorScheme, setTopSheetModalColor, s
             <ScrollView showsVerticalScrollIndicator={false} className="bg-[blue]">
                 <View className="w-full px-5 pb-12 bg-white dark:bg-zinc-800  z-40 relative" >
                     <View className="ml-auto mt-1 z-50 flex-row items-center">
-                        <Text className="dark:text-zinc-100 text-center mr-2 text-lg">{likes.length}</Text>
+                        <Text className="dark:text-zinc-200 text-center mr-2 text-lg">{likes.length}</Text>
                         <TouchableHighlight
                             className=""
                             activeOpacity={1.0}
@@ -174,7 +174,7 @@ export default function SinglePlayground({ colorScheme, setTopSheetModalColor, s
                         </TouchableHighlight>
 
                     </View>
-                    <Text className="dark:text-zinc-100 text-xl font-semibold">{playground.name}</Text>
+                    <Text className="dark:text-zinc-200 text-xl font-semibold">{playground.name}</Text>
                     <Text className="pt-1 text-sm max-w-[80vw] text-darkGreen dark:text-mainLime mb-2">{playground.location.street}</Text>
                     <TouchableHighlight
                         onPress={handleOpenMap}>
@@ -184,11 +184,11 @@ export default function SinglePlayground({ colorScheme, setTopSheetModalColor, s
                     </TouchableHighlight>
                     <View className="flex-row flex-wrap  mb-4">
                         <View className="flex-row w-full mt-3 mb-2">
-                            <Text className="dark:text-zinc-100 text-lg font-semibold mr-2">Sun Exposition</Text>
+                            <Text className="dark:text-zinc-200 text-lg font-semibold mr-2">Sun Exposition</Text>
                             <TouchableOpacity className="" onPress={onEditSunExposition}><View className="my-auto px-2 mr-3 rounded-full"><Text className="text-darkGreen dark:text-mainLime text-xs font-semibold mt-1">Edit details</Text></View></TouchableOpacity>
                         </View>
                         {!sunExposition && <>
-                            <Text className="dark:text-zinc-100 mb-3 font-semibold w-full">There is no info yet... Tap add details for edit!</Text>
+                            <Text className="dark:text-zinc-200 mb-3 font-semibold w-full">There is no info yet... Tap add details for edit!</Text>
                         </>}
                         <View className="gap-3 flex-row flex-wrap">
                             <View
@@ -219,14 +219,14 @@ export default function SinglePlayground({ colorScheme, setTopSheetModalColor, s
                     </View>
                     <View className="flex-row flex-wrap mb-4">
                         <View className="flex-row w-full mt-3 mb-2">
-                            <Text className="dark:text-zinc-100 text-lg font-semibold mr-3">Elements</Text>
+                            <Text className="dark:text-zinc-200 text-lg font-semibold mr-3">Elements</Text>
                             <TouchableOpacity activeOpacity={0.8} onPress={onEditElements}><View className="my-auto px-2 mr-3 rounded-full"><Text className="text-darkGreen dark:text-mainLime text-xs font-semibold mt-1">Edit elements</Text></View></TouchableOpacity>
                         </View>
                         {playground.elements.length !== 0 ? playground.elements.map((element, index) => {
                             return <SingleElement element={element} index={index} />
                         }) :
                             <View className="flex-row flex-wrap mb-">
-                                <Text className="dark:text-zinc-100 mb-1.5 font-semibold w-full">There are no elements yet...</Text>
+                                <Text className="dark:text-zinc-200 mb-1.5 font-semibold w-full">There are no elements yet...</Text>
                                 <TouchableOpacity
                                     activeOpacity={0.8}
                                     className="border border-mainLime  rounded-full mb-1 mt-2 mr-2 bg-mainGray"
@@ -245,7 +245,7 @@ export default function SinglePlayground({ colorScheme, setTopSheetModalColor, s
                     </View>
                     <View className="flex-column mb-4 w-full">
                         <View className="flex-row w-full mt-3 mb-2">
-                            <Text className="dark:text-zinc-100 text-lg font-semibold mr-3">Description</Text>
+                            <Text className="dark:text-zinc-200 text-lg font-semibold mr-3">Description</Text>
                             {playground.description && playground.description === '-' &&
                                 <TouchableOpacity onPress={onEditDescription} className=""><View className="my-auto px-2 mr-3 rounded-full"><Text className="text-darkGreen dark:text-mainLime text-xs font-semibold mt-1">Add description</Text></View></TouchableOpacity>
                             }
@@ -254,12 +254,12 @@ export default function SinglePlayground({ colorScheme, setTopSheetModalColor, s
                             }
                         </View>
                         {playground.description && playground.description !== '-' &&
-                            <Text className="dark:text-zinc-100 text-lgs font-normal">{playground.description}</Text>
+                            <Text className="dark:text-zinc-200 text-lgs font-normal">{playground.description}</Text>
                         }
                     </View>
 
                     <View className="flex-row w-full mt-3 mb-2">
-                        <Text className="dark:text-zinc-100 text-lg font-semibold mr-3">Images</Text>
+                        <Text className="dark:text-zinc-200 text-lg font-semibold mr-3">Images</Text>
                         <TouchableOpacity onPress={onAddImages} className=""><View className="my-auto px-2 mr-3 rounded-full"><Text className="text-darkGreen dark:text-mainLime text-xs font-semibold mt-1">Add images</Text></View></TouchableOpacity>
                     </View>
                     <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} pagingEnabled={true} >

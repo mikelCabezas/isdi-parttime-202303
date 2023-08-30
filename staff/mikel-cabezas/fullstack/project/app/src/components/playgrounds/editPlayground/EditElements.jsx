@@ -108,9 +108,9 @@ export default function EditElements({ TOKEN, id, colorScheme, setTopSheetModalC
     return <>
         {newElements && <View className="flex-1 bg-black60  items-center justify-center z-50 absolute w-full h-full">
             <View className="bg-white dark:bg-zinc-800 h-auto px-6 py-7 w-11/12 rounded-3xl">
-                <Text className="dark:text-zinc-100 text-xl font-semibold mb-2">Edit elements</Text>
+                <Text className="dark:text-zinc-200 text-xl font-semibold mb-2">Edit elements</Text>
                 <View className="flex-row flex-wrap w-full mb-2">
-                    <Text className="dark:text-zinc-100 text-lg mb-2 font-semibold w-full">Elements</Text>
+                    <Text className="dark:text-zinc-200 text-lg mb-2 font-semibold w-full">Elements</Text>
                     {newElements.length !== 0 && newElements.map((element, index) => {
                         return <SingleElement element={element} index={index} handleEditElement={handleEditElement} />
                     })}
@@ -140,7 +140,7 @@ export default function EditElements({ TOKEN, id, colorScheme, setTopSheetModalC
                     onPress={handleCancel}
                 >
                     <View className="px-6  self-center " >
-                        <Text className="dark:text-zinc-100 text-lg">Cancel</Text>
+                        <Text className="dark:text-zinc-200 text-lg">Cancel</Text>
                     </View>
                 </TouchableOpacity>
             </View>

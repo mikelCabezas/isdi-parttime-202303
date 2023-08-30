@@ -121,6 +121,16 @@ export default function Home({ route, navigation, onSendViewPlaygroundsFromCity 
         if (snapPointSinglePlayground === 1) bottomSheetRef.current.snapToIndex(1)
         if (snapPointSinglePlayground === 0) bottomSheetRef.current.snapToIndex(0)
     }, [snapPointSinglePlayground]);
+    useEffect(() => {
+        if (colorScheme === 'light') {
+            setTopSheetModalColor('#fff')
+            setTopSheetIndicatorColor('#777')
+        }
+        if (colorScheme === 'dark') {
+            setTopSheetModalColor('#27272A')
+            setTopSheetIndicatorColor('#888')
+        }
+    }, [colorScheme]);
 
     useEffect(() => {
 

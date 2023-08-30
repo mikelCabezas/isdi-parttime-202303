@@ -22,7 +22,7 @@ export default function SunExposition({ playgroundShady, setPlaygroundShady, pla
     }, [playgroundShady, playgroundSunny, playgroundPartial])
 
     return <>
-        <Text className="dark:text-zinc-100 text-lg mt-3 font-semibold">Sun exposition</Text>
+        <Text className="dark:text-zinc-200 text-lg mt-3 font-semibold">Sun exposition</Text>
         <View className="flex-row">
             <TouchableOpacity
                 activeOpacity={0.8}

@@ -183,11 +183,11 @@ export default function AdvancedSearch({ closeHandle, setPlaygroundsCount, onHan
             <ScrollView showsVerticalScrollIndicator={false}>
                 <View className="pb-12 bg-white dark:bg-zinc-800 z-40" >
                     <View className="flex-row flex-wrap mt-4 mb-5">
-                        <Text className="dark:text-zinc-100 text-2xl font-semibold w-full mb-3">Advanced search</Text>
+                        <Text className="dark:text-zinc-200 text-2xl font-semibold w-full mb-3">Advanced search</Text>
                         <View className="flex-row flex-wrap items-center mb-5 w-full z-30">
-                            <View className="bg-white z-10 w-full flex-row flex-wrap items-center">
-                                <Text className="dark:text-zinc-100 text-lg w-full font-bold mr-2 flex">Location</Text>
-                                <Text className="dark:text-zinc-100 text-sm mr-2 flex">Use my current location</Text>
+                            <View className="z-10 w-full flex-row flex-wrap items-center">
+                                <Text className="dark:text-zinc-200 text-lg w-full font-bold mr-2 flex">Location</Text>
+                                <Text className="dark:text-zinc-200 text-sm mr-2 flex">Use my current location</Text>
                                 <Switch
                                     style={{ marginTop: 4, transform: [{ scaleX: .75 }, { scaleY: .75 }] }}
                                     onValueChange={toggleCurrentLocation}
@@ -197,7 +197,7 @@ export default function AdvancedSearch({ closeHandle, setPlaygroundsCount, onHan
                                     {/* {retrievedCitiesList && <>
                                         <TouchableOpacity onPress={closeCitiesList} className="flex-1 w-full h-screen absolute left-0 top-0 bg-red-500z z-[99]" />
                                     </>} */}
-                                    <Text className="dark:text-zinc-100 text-lg w-full font-bold mr-2">Search by city</Text>
+                                    <Text className="dark:text-zinc-200 text-lg w-full font-bold mr-2">Search by city</Text>
 
                                     <View className="z-[100]">
                                         <TextInput
@@ -209,7 +209,7 @@ export default function AdvancedSearch({ closeHandle, setPlaygroundsCount, onHan
                                             // autoCompleteType="city"
                                             clearButtonMode="always"
                                             placeholder="City"
-                                            className="dark:text-zinc-100 border border-mainGray bg-mainGray dark:border-zinc-700 dark:bg-zinc-700 rounded-full mt-1 mb-0 pl-3 pr-6 py-3 self-start w-full z-10"
+                                            className="dark:text-zinc-200 border border-mainGray bg-mainGray dark:border-zinc-700 dark:bg-zinc-700 rounded-full mt-1 mb-0 pl-3 pr-6 py-3 self-start w-full z-10"
                                             inputMode="text"
                                             keyboardType="default"
                                         />
@@ -224,7 +224,7 @@ export default function AdvancedSearch({ closeHandle, setPlaygroundsCount, onHan
                             </View>
                         </View>
                         <View className="mb-5 z-10">
-                            <Text className="dark:text-zinc-100 text-lg mb-1 font-semibold w-full">Distance</Text>
+                            <Text className="dark:text-zinc-200 text-lg mb-1 font-semibold w-full">Distance</Text>
                             <View className="flex-row flex-wrap items-center">
                                 <Slider
                                     style={{ width: '60%', height: 40 }}
@@ -235,11 +235,11 @@ export default function AdvancedSearch({ closeHandle, setPlaygroundsCount, onHan
                                     maximumTrackTintColor="#ECECEC"
                                     onValueChange={setDistance}
                                 />
-                                <Text className="ml-6">{distance} km</Text>
+                                <Text className="ml-6 dark:text-zinc-200">{distance} km</Text>
                             </View>
                         </View>
                         <View className="flex-row items-center mb-2 w-full z-10">
-                            <Text className="dark:text-zinc-100 text-lg font-bold mr-2 flex">Accessibility</Text>
+                            <Text className="dark:text-zinc-200 text-lg font-bold mr-2 flex">Accessibility</Text>
                             <Switch
                                 style={{ marginTop: 0, transform: [{ scaleX: .75 }, { scaleY: .75 }] }}
                                 onValueChange={toggleAccessible}
@@ -249,13 +249,13 @@ export default function AdvancedSearch({ closeHandle, setPlaygroundsCount, onHan
                         <SunExposition playgroundShady={playgroundShady} setPlaygroundShady={setPlaygroundShady} playgroundSunny={playgroundSunny} setPlaygroundSunny={setPlaygroundSunny} playgroundPartial={playgroundPartial} setPlaygroundPartial={setPlaygroundPartial} />
                     </View>
                     <View className="flex flex-wrap flex-row mb-5 -z-10">
-                        <Text className="dark:text-zinc-100 text-lg font-semibold w-full">Age</Text>
+                        <Text className="dark:text-zinc-200 text-lg font-semibold w-full">Age</Text>
                         {ages.map((age, index) => {
                             return <SingleAge activeAges={activeAges} age={age} mainColor="mainLime" onAgePressed={handleAgePressed} />
                         })}
                     </View>
                     <View className="flex flex-wrap flex-row mb-6 -z-10">
-                        <Text className="dark:text-zinc-100 text-lg font-semibold w-full">Elements</Text>
+                        <Text className="dark:text-zinc-200 text-lg font-semibold w-full">Elements</Text>
                         {elements.map((element, index) => {
                             return <SingleElement element={element} index={index} mainColor="mainLime" onElementPressed={handleElementPressed} />
                         })}

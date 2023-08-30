@@ -37,7 +37,7 @@ export default function LikedPlayground({ playground, playground: { name, text, 
                     <Image source={{ uri: image }} className="w-28 h-28 object-contain " />
                 </View>
                 <View className="px-4 flex justify-center">
-                    <Text className="dark:text-zinc-100 font-bold text-sm text-[15px] leading-4 mt-1 mb-1 pr-1">{name}</Text>
+                    <Text className="dark:text-zinc-200 font-bold text-sm text-[15px] leading-4 mt-1 mb-1 pr-1">{name}</Text>
                     <Text className="text-[13px] pr-1 text-darkGreen dark:text-mainLime">{street}</Text>
                     <Text className="text-[13px] pr-1 text-darkGreen dark:text-mainLime italic">{city}</Text>
                 </View>

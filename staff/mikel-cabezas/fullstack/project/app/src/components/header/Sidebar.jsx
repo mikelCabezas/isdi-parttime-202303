@@ -96,7 +96,7 @@ export default function Sidebar({ navigation, closeHandle, user, likedHandler, w
                 </View>
 
                 <View className="w-12/12 flex-row pb-3 pt-2">
-                    <Text className="dark:text-zinc-100 px-1 flex-1 text-lg font-semibold" >
+                    <Text className="dark:text-zinc-200 px-1 flex-1 text-lg font-semibold" >
                         Hi {user.name}!
                     </Text>
                 </View>
@@ -115,7 +115,7 @@ export default function Sidebar({ navigation, closeHandle, user, likedHandler, w
                             className="w-8 h-8"
                             source={ACCOUNT}
                         />
-                        <Text className="dark:text-zinc-100 px-4 flex-1 self-center" >
+                        <Text className="dark:text-zinc-200 px-4 flex-1 self-center" >
                             My account
                         </Text>
                     </View>
@@ -130,7 +130,7 @@ export default function Sidebar({ navigation, closeHandle, user, likedHandler, w
                             className="w-8 h-8"
                             source={LIKES}
                         />
-                        <Text className="dark:text-zinc-100 px-4 flex-1 self-center" >
+                        <Text className="dark:text-zinc-200 px-4 flex-1 self-center" >
                             My favorites
                         </Text>
                     </View>
@@ -170,7 +170,7 @@ export default function Sidebar({ navigation, closeHandle, user, likedHandler, w
                             className="w-8 h-8"
                             source={LOGOUT}
                         />
-                        <Text className="dark:text-zinc-100 px-4 flex-1 self-center" >
+                        <Text className="dark:text-zinc-200 px-4 flex-1 self-center" >
                             Logout
                         </Text>
                     </View>
@@ -190,7 +190,7 @@ export default function Sidebar({ navigation, closeHandle, user, likedHandler, w
                             className="w-8 h-8"
                             source={SHARE}
                         />
-                        <Text className="dark:text-zinc-100 px-4 flex-1 self-center" >
+                        <Text className="dark:text-zinc-200 px-4 flex-1 self-center" >
                             Share app with friends
                         </Text>
                     </View>
@@ -210,7 +210,7 @@ export default function Sidebar({ navigation, closeHandle, user, likedHandler, w
                             className="w-8 h-8"
                             source={WHATS_NEW}
                         />
-                        <Text className="dark:text-zinc-100 px-4 flex-1 self-center" >
+                        <Text className="dark:text-zinc-200 px-4 flex-1 self-center" >
                             Whats new
                         </Text>
                     </View>
@@ -232,7 +232,7 @@ export default function Sidebar({ navigation, closeHandle, user, likedHandler, w
                             className="w-8 h-8"
                             source={FUTURE_VERSIONS}
                         />
-                        <Text className="dark:text-zinc-100 px-4 flex-1 self-center" >
+                        <Text className="dark:text-zinc-200 px-4 flex-1 self-center" >
                             Future versions
                         </Text>
                     </View>
@@ -253,7 +253,7 @@ export default function Sidebar({ navigation, closeHandle, user, likedHandler, w
                             className="w-8 h-8"
                             source={FEEDBACK}
                         />
-                        <Text className="dark:text-zinc-100 px-4 flex-1 self-center" >
+                        <Text className="dark:text-zinc-200 px-4 flex-1 self-center" >
                             Send feedback
                         </Text>
                     </View>
