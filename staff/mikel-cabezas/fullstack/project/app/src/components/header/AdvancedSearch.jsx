@@ -95,7 +95,7 @@ export default function AdvancedSearch({ closeHandle, setPlaygroundsCount, onHan
                             setPlaygroundsCount(playgroundsResult[1][0].length)
                         }
                         else {
-                            Alert.alert('No results found', 'Do you want to search with other parameters?', [
+                            Alert.alert('No results were found', 'Do you want to search with other parameters?', [
                                 {
                                     text: 'Close',
                                     onPress: () => {
@@ -158,7 +158,7 @@ export default function AdvancedSearch({ closeHandle, setPlaygroundsCount, onHan
                             console.log('data', data)
                             setRetrievedCitiesList(data)
                         } else {
-                            setRetrievedCitiesList(['No results found. Try another city name.'])
+                            setRetrievedCitiesList(['No results were found. Try another city name.'])
                         }
                     })
             } catch (error) {

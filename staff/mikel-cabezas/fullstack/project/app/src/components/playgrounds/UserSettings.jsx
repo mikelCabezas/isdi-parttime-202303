@@ -53,7 +53,7 @@ export default function UserSettings({ closeHandle, handleMarkerPressedHandler }
                 validateEmail(email)
                 updateUserEmail(TOKEN, email)
                     .then(() => {
-                        Alert.alert('Success', `${'Your email was updated!'}`, [
+                        Alert.alert('Check your email', `${'Verify your new email'}`, [
                             { text: 'OK', onPress: () => { } },
                         ])
                         retrieveUser(TOKEN)

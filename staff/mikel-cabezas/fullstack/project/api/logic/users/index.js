@@ -10,7 +10,7 @@ module.exports = {
     retrieveUser: require('./retrieveUser'),
     updateUserName: require('./updateUserName'),
     updateUserEmail: require('./updateUserEmail'),
-    confirmNewUserEmail: require('./confirmNewUserEmail'),
+    confirmNewEmail: require('./confirmNewEmail'),
     updateUserPassword: require('./updateUserPassword'),
 
     checkLoggedInUser: require('./checkLoggedInUser')

@@ -23,15 +23,22 @@ const {
  * 
  */
 
-module.exports = function confirmNewEmail(userId, newEmail) {
+module.exports = async function confirmNewEmail(userId, newEmail) {
     // validateEmail(newEmail)
 
-    return User.findById(userId)
-        .then(user => {
-            const payload = { sub: user.uniqueString }
-            const { JWT_SECRET, JWT_RECOVER_EMAIL_EXPIRATION } = process.env
-            const token = jwt.sign(payload, JWT_SECRET, { expiresIn: JWT_RECOVER_EMAIL_EXPIRATION })
-            sendConfirmNewEmail(user.name, newEmail, token)
-        })
-        .catch(error => error)
+    const user = await User.findById(userId)
+    const checkNewEmail = await User.findOne({ email: newEmail })
+
+    if (!user) throw new ExistenceError('user not found')
+
+    if (checkNewEmail) throw new DuplicityError(`This user with email ${newEmail} already exists`)
+    if (user.isValid === false) throw new AuthError('Verify your account please. Check your email')
+
+    const payload = { sub: user.uniqueString }
+    const { JWT_SECRET, JWT_RECOVER_EMAIL_EXPIRATION } = process.env
+    const token = jwt.sign(payload, JWT_SECRET, { expiresIn: JWT_RECOVER_EMAIL_EXPIRATION })
+
+    sendConfirmNewEmail(user.name, newEmail, token)
 }
+
+

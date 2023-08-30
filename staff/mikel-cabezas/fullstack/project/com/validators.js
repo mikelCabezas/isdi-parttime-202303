@@ -36,8 +36,8 @@ function validateText(text) {
 function validatePassword(password) {
     if (!password) throw new ContentError("Password is empty")
     if (typeof password !== "string") throw new TypeError("Password is not a string");
+    if (password.length < 8) throw new RangeError("Password must be higher than 8 characters");
     if (password === " ") throw new ContentError("Password cannot be a whitespace")
-    if (password.trim().length < 8) throw new RangeError("Password is shorter than 8 characters");
 }
 
 function validateUserId(userId) {

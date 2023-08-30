@@ -18,8 +18,8 @@ describe('registerUser', () => {
         await cleanUp()
     })
     after(async () => {
-        await mongoose.disconnect()
         await cleanUp()
+        await mongoose.disconnect()
     })
     it("should succeed on creating an user", async () => {
         await registerUser(user.name, user.email, user.password)
@@ -105,7 +105,7 @@ describe('registerUser', () => {
     })
     it('should fail on password less than 8 characters', () => {
         expect(() =>
-            registerUser(user.name, user.email, 152)
+            registerUser(user.name, user.email, '152')
         ).to.throw(Error, 'Password must be higher than 8 characters')
     })
 

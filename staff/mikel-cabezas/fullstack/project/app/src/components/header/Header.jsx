@@ -61,29 +61,47 @@ export default function Header({ navigation, onHandleViewPlaygroundsFromCity, ha
     const simpleSearchRegion = (search) => {
         // console.log(search)
     }
+    useEffect(() => {
+        const delayId = setTimeout(() => {
+            (async () => {
+                try {
+                    console.log(searchQuery)
+                    const results = await retrievePlaygroundsCities(TOKEN, searchQuery)
+                    if (results.length > 0) {
+                        setData(results)
+                    } else {
+                        setData(['No results were found. Try another city name.'])
+                    }
+                } catch (error) {
 
+                }
+            })()
+        }, 800);
+
+    }, [searchQuery]);
     const handleSearch = (query) => {
-        setSearchQuery(query)
+        // setSearchQuery(query)
 
-        if (timeoutId) {
-            clearTimeout(timeoutId)
-        }
+        // if (timeoutId) {
+        //     clearTimeout(timeoutId)
+        // }
 
-        const newTimeoutId = setTimeout(async () => {
-            try {
-                if (searchQuery)
-                    await retrievePlaygroundsCities(TOKEN, searchQuery).then(data => {
-                        if (data.length > 0) {
-                            setData(data)
-                        } else {
-                            setData(['No results found. Try another city name.'])
-                        }
-                        // alert(data)
-                    })
-            } catch (error) {
-                console.log(error.message)
-            }
-        }, 2000);
+        // const newTimeoutId = setTimeout(async () => {
+        //     try {
+        //         if (searchQuery)
+        //             await retrievePlaygroundsCities(TOKEN, searchQuery).then(data => {
+        //                 if (data.length > 0) {
+        //                     setData(data)
+        //                 } else {
+        //                     setData(['No results were found. Try another city name.'])
+        //                 }
+        //                 console.log(searchQuery)
+        //                 // alert(data)
+        //             })
+        //     } catch (error) {
+        //         console.log(error.message)
+        //     }
+        // }, 800);
 
         setTimeoutId(newTimeoutId)
     }
@@ -118,7 +136,7 @@ export default function Header({ navigation, onHandleViewPlaygroundsFromCity, ha
                             inputMode="text"
                             className="px-5 py-3 flex-1 dark:text-zinc-100  text-left"
                             setChangeText={setChangeText}
-                            onChangeText={(query) => handleSearch(query)}
+                            onChangeText={(e) => setSearchQuery(e)}
                             value={text}
                             placeholder="Search playground in..."
                             keyboardType="default"

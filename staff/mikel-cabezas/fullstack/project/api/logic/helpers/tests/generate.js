@@ -9,7 +9,7 @@ module.exports = {
         uniqueString: Math.random().toFixed(8) * 100000000,
     }),
 
-    playground: (userId) => ({
+    playground: () => ({
         _id: `id-${Math.random()}`,
         author: user._id,
         name: `name-${Math.random()}`,

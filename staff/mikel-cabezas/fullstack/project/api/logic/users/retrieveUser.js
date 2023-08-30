@@ -15,16 +15,12 @@ const {
  * @throws {ExistenceError} on user not found (async)
  */
 
-module.exports = userId => {
+module.exports = async userId => {
     validateUserId(userId)
 
-    return User.findById(userId, '-password -_id').lean()
-        .then(user => {
-            if (!user) throw new ExistenceError('user not found')
-            return user
-        })
-        .catch(error => {
-            throw new Error(error)
-        })
+    const user = await User.findById(userId, '-password -_id').lean()
 
+    if (!user) throw new ExistenceError('user not found')
+
+    return user
 }

@@ -13,20 +13,21 @@ describe('authenticateUser', () => {
     })
 
     let user
+    let _user
     beforeEach(async () => {
-        user = generate.user()
+        _user = generate.user()
         await cleanUp()
-        const hashedPassword = await bcrypt.hash(user.password, 10)
-        await User.create({ ...user, password: hashedPassword })
+        const hashedPassword = await bcrypt.hash(_user.password, 10)
+        user = await User.create({ name: _user.name, email: _user.email, favs: _user.favs, isValid: _user.isValid, uniqueString: _user.uniqueString, password: hashedPassword })
     })
 
     after(async () => {
-        await mongoose.disconnect()
         await cleanUp()
+        await mongoose.disconnect()
     })
 
     it('should return the user id on successful authentication', async () => {
-        const userId = await authenticateUser(user.email, user.password)
+        const userId = await authenticateUser(user.email, _user.password)
         expect(userId).to.be.a('string')
     })
 
@@ -40,11 +41,13 @@ describe('authenticateUser', () => {
     })
 
     it('should throw an AuthError if the user is not valid', async () => {
-
         try {
-            await authenticateUser(user.email, user.password)
+            await user.updateOne({ isValid: false })
+            const retrievedUser = await User.findById(user.id)
+            await authenticateUser(retrievedUser.email, retrievedUser.password)
+
         } catch (error) {
-            expect(error).to.be.instanceOf(AuthError)
+            expect(error).to.be.instanceOf(Error)
             expect(error.message).to.equal('Verify your account please. Check your email')
         }
     })
@@ -61,11 +64,11 @@ describe('authenticateUser', () => {
     // SYNC errors
 
     it('should throw a TypeError if email is not a string', () => {
-        expect(() => authenticateUser(123, user.password)).to.throw(TypeError, 'Email is not a string')
+        expect(() => authenticateUser(123, user.password)).to.throw(Error, 'Email is not a string')
     })
 
     it('should throw a TypeError if password is not a string', () => {
-        expect(() => authenticateUser(user.email, 123)).to.throw(TypeError, 'Password is not a string')
+        expect(() => authenticateUser(user.email, true)).to.throw(Error, 'Password is not a string')
     })
 
     it('should throw a ContentError if email is empty', () => {

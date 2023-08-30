@@ -1,4 +1,4 @@
-const { confirmNewUserEmail } = require('../../logic/users')
+const { confirmNewEmail } = require('../../logic/users')
 const { extractUserId } = require('../helpers')
 const { handleErrors } = require('../helpers')
 const jwt = require('jsonwebtoken')
@@ -11,7 +11,7 @@ module.exports = handleErrors((req, res) => {
     const { newEmail } = req.body
 
 
-    return confirmNewUserEmail(userId, newEmail)
+    return confirmNewEmail(userId, newEmail)
         .then(() => res.status(204).send())
 
     // return updateUserEmail(userId, email)

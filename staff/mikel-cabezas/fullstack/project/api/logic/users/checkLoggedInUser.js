@@ -3,7 +3,7 @@ const { User } = require('../../data/models')
 
 const {
     validators: { validateName, validateEmail, validatePassword },
-    errors: { DuplicityError }
+    errors: { ExistenceError, AuthError }
 } = require('com')
 /**
  * 
@@ -18,14 +18,20 @@ const {
  * 
  */
 
-module.exports = function searchUser(userId) {
+module.exports = async function checkLoggedInUser(userId) {
     // TODO validate unique string
-    return User.findById(userId)
-        .then(user => {
-            console.log(user)
-            return user
-        })
-        .catch(error => {
-            throw error
-        })
+    const _user = await User.findById(userId)
+    if (!_user) throw new ExistenceError('user not found')
+
+    if (!_user.isValid) throw new AuthError('Account not verified. Please check your email')
+
+    const user = {
+        id: _user.id,
+        _id: _user._id,
+        name: _user.name,
+        email: _user.email,
+    }
+
+    return user
+
 }

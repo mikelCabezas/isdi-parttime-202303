@@ -26,7 +26,7 @@ module.exports = function authenticateUser(email, password) {
     return (async () => {
         const user = await User.findOne({ email })
         if (!user) throw new ExistenceError('user not found')
-        if (!user.isValid) throw new AuthError('Verify your account please. Check your email')
+        if (user.isValid === false) throw new AuthError('Verify your account please. Check your email')
 
         const match = await bcrypt.compare(password, user.password)
 
