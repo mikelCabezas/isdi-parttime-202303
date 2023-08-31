@@ -6,7 +6,7 @@ const jwt = require('jsonwebtoken')
 
 const {
     validators: { validateEmail },
-    errors: { DuplicityError }
+    errors: { DuplicityError, ExistenceError, AuthError }
 } = require('com')
 /**
  * 
@@ -24,21 +24,28 @@ const {
  */
 
 module.exports = async function confirmNewEmail(userId, newEmail) {
-    // validateEmail(newEmail)
+    try {
+        validateEmail(newEmail)
 
-    const user = await User.findById(userId)
-    const checkNewEmail = await User.findOne({ email: newEmail })
+        const user = await User.findById(userId)
+        if (!user) throw new ExistenceError('user not found')
 
-    if (!user) throw new ExistenceError('user not found')
+        const checkNewEmail = await User.findOne({ email: newEmail })
 
-    if (checkNewEmail) throw new DuplicityError(`This user with email ${newEmail} already exists`)
-    if (user.isValid === false) throw new AuthError('Verify your account please. Check your email')
+        if (checkNewEmail) throw new DuplicityError(`This user with email ${newEmail} already exists`)
+        if (user.isValid === false) throw new AuthError('Account not verified. Please check your email')
 
-    const payload = { sub: user.uniqueString }
-    const { JWT_SECRET, JWT_RECOVER_EMAIL_EXPIRATION } = process.env
-    const token = jwt.sign(payload, JWT_SECRET, { expiresIn: JWT_RECOVER_EMAIL_EXPIRATION })
+        const payload = { sub: user.uniqueString }
+        const { JWT_SECRET, JWT_RECOVER_EMAIL_EXPIRATION } = process.env
+        const token = jwt.sign(payload, JWT_SECRET, { expiresIn: JWT_RECOVER_EMAIL_EXPIRATION })
 
-    sendConfirmNewEmail(user.name, newEmail, token)
+        const mailSent = await sendConfirmNewEmail(user.name, newEmail, token)
+
+        if (!mailSent) throw new Error('Mail not sent. Check email settings')
+        return true
+    } catch (error) {
+        throw error
+    }
 }
 
 

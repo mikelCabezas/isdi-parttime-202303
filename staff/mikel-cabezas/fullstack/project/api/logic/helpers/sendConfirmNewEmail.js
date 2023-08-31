@@ -77,12 +77,13 @@ module.exports = async (name, email, token) => {
         transport.sendMail(mailOptions, function (error, response) {
             if (error) {
                 console.log(error.message)
-                throw new Error('Wrong email settings')
+                // throw new Error('Wrong email settings')
+                throw new Error('Mail not sent. Check email settings')
             } else {
                 console.log('Mail sent!')
-                return true
             }
         })
+        return true
     } catch (error) {
         console.log(error.message)
         console.log('Mail not sent!')

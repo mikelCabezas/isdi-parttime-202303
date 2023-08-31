@@ -2,7 +2,7 @@ const { expect } = require('chai')
 const confirmNewEmail = require('../confirmNewEmail.js');
 const {
     validators: { validateEmail },
-    errors: { DuplicityError }
+    errors: { DuplicityError, ExistenceError, FormatError, AuthError }
 } = require('com')
 const { cleanUp, generate } = require('../../helpers/tests/index.js')
 const { User } = require('../../../data/models.js')
@@ -28,11 +28,6 @@ describe('confirmNewEmail', () => {
 
         const hashedPassword = await bcrypt.hash(_user.password, 10)
         user = await User.create({ name: _user.name, email: _user.email, favs: _user.favs, isValid: _user.isValid, uniqueString: _user.uniqueString, password: hashedPassword })
-        const payload = { sub: user.uniqueString }
-        const { JWT_SECRET, JWT_RECOVER_EMAIL_EXPIRATION } = process.env
-        token = jwt.sign(payload, JWT_SECRET, { expiresIn: JWT_RECOVER_EMAIL_EXPIRATION })
-
-
     })
 
     after(async () => {
@@ -41,15 +36,34 @@ describe('confirmNewEmail', () => {
     })
 
     it('should send a confirmation email with a valid token', async () => {
-        await confirmNewEmail(user._id, 'newemail@example.com')
-
-        expect(confirmNewEmail).to.be.true
+        const emailSent = await confirmNewEmail(user._id, 'newemail@example.com')
+        expect(emailSent).to.be.true
     })
 
+
+    it('should throw an error if the user is not verified', async () => {
+        try {
+            await user.updateOne({ isValid: false })
+
+            const userRegistered = await User.findOne({ email: user.email })
+            await confirmNewEmail(userRegistered._id, 'newemail@example.com')
+        } catch (error) {
+            expect(error).to.be.instanceOf(AuthError)
+            expect(error.message).to.equal('Account not verified. Please check your email')
+        }
+    })
 
     it('should throw an error if the user does not exist', async () => {
         const invalidID = '123456789101112131415123'
 
+        try {
+            await confirmNewEmail(invalidID, 'newemail@example.com')
+        } catch (error) {
+            expect(error).to.be.instanceOf(ExistenceError)
+            expect(error.message).to.equal('user not found')
+        }
+    })
+    it('should throw an error if mail not sent', async () => {
         try {
             await confirmNewEmail(invalidID, 'newemail@example.com')
         } catch (error) {
@@ -72,7 +86,12 @@ describe('confirmNewEmail', () => {
         }
     })
 
-    it('should throw an error if the new email is invalid', () => {
-        expect(() => confirmNewEmail(user._id, 'invalidemail')).to.throw(Error, 'Invalid email format')
+    it('should throw an error if the new email is invalid', async () => {
+        try {
+            const emailSent = await confirmNewEmail(user._id, 'newemail_example.com')
+        } catch (error) {
+            expect(error).to.be.instanceOf(FormatError)
+            expect(error.message).to.equal(`Invalid email format`)
+        }
     })
 })
