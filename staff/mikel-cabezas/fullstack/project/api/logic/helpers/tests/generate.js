@@ -6,19 +6,17 @@ module.exports = {
         password: `password-${Math.random()}`,
         favs: [],
         isValid: true,
-        uniqueString: Math.random().toFixed(8) * 100000000,
+        uniqueString: Math.floor(10000000 + Math.random() * 80000000).toString()
+        // uniqueString: (Math.random() * 100000000).toFixed(0).toString()
+
     }),
 
     playground: () => ({
-        _id: `id-${Math.random()}`,
-        author: user._id,
+        // _id: `id-${Math.random()}`,
         name: `name-${Math.random()}`,
         description: `description-${Math.random()}`,
-        images: `[image-${Math.random()}]`,
+        images: [`image-${Math.random()}`],
         text: `text-${Math.random()}`,
-        dateCreated: Date.now,
-        lastModify: Date.now,
-        likes: [],
         visibility: 'public',
         location: {
             type: 'Point',

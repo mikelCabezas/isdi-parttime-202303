@@ -1,6 +1,6 @@
 const { expect } = require('chai')
 const registerUser = require('../registerUser.js');
-const { cleanUp, generate } = require('../../helpers/tests/')
+const { cleanUp, generate } = require('../../helpers/tests/index.js')
 
 const { User } = require('../../../data/models.js')
 const mongoose = require('mongoose')

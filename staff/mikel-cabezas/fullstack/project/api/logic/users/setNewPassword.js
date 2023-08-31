@@ -2,8 +2,8 @@ const { User } = require('../../data/models')
 const bcrypt = require('bcryptjs')
 
 const {
-    validators: { validateName, validateEmail, validatePassword },
-    errors: { DuplicityError }
+    validators: { validateName, validateUniqueString, validatePassword },
+    errors: { ExistenceError }
 } = require('com')
 /**
  * 
@@ -20,10 +20,12 @@ const {
 
 module.exports = function setNewPassword(uniqueString, newPassword) {
     validatePassword(newPassword)
-    // TODO validate unique string
+    validateUniqueString(uniqueString)
     try {
         return (async () => {
             const user = await User.findOne({ uniqueString: uniqueString })
+            if (!user) throw new ExistenceError('user not found')
+
             const hash = await bcrypt.hash(newPassword, 10)
             await user.updateOne({ password: hash })
             return

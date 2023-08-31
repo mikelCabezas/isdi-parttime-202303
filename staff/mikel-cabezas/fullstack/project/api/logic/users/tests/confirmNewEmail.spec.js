@@ -65,6 +65,8 @@ describe('confirmNewEmail', () => {
     })
     it('should throw an error if mail not sent', async () => {
         try {
+            const invalidID = '123456789101112131415123'
+
             await confirmNewEmail(invalidID, 'newemail@example.com')
         } catch (error) {
             expect(error).to.be.instanceOf(ExistenceError)
@@ -94,4 +96,5 @@ describe('confirmNewEmail', () => {
             expect(error.message).to.equal(`Invalid email format`)
         }
     })
+
 })

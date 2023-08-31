@@ -1,8 +1,12 @@
+const { validateEmail, validateName, validateToken } = require("com/validators");
 const nodeMailer = require("nodemailer");
 require("dotenv").config()
 
 
 module.exports = async (name, email, token) => {
+    validateName(name)
+    validateEmail(email)
+    validateToken(token)
     try {
         const transport = nodeMailer.createTransport({
             host: process.env.HOST,
@@ -69,23 +73,21 @@ module.exports = async (name, email, token) => {
                         </p>
                     </div>
                 </body>
-            </html>
-             `
-            // html: `Press <a href="${process.env.API_URL}/validate/${uniqueString}"> here </a> to verify your account`
+            </html>`
+
         }
 
         transport.sendMail(mailOptions, function (error, response) {
             if (error) {
-                console.log(error.message)
-                // throw new Error('Wrong email settings')
                 throw new Error('Mail not sent. Check email settings')
-            } else {
-                console.log('Mail sent!')
+            }
+            else {
+                //     console.log('Mail sent!')
             }
         })
         return true
     } catch (error) {
-        console.log(error.message)
-        console.log('Mail not sent!')
+        // console.log('Mail not sent!')
+        return error
     }
 }

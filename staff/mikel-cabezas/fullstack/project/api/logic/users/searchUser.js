@@ -2,8 +2,8 @@ const { User } = require('../../data/models')
 // const randomString = require('../helpers/randomString')
 
 const {
-    validators: { validateName, validateEmail, validatePassword },
-    errors: { DuplicityError }
+    validators: { validateName, validateEmail, validateUniqueString },
+    errors: { ExistenceError }
 } = require('com')
 /**
  * 
@@ -18,13 +18,12 @@ const {
  * 
  */
 
-module.exports = function searchUser(uniqueString) {
-    // TODO validate unique string
-    return User.findOne({ uniqueString: uniqueString })
-        .then(() => {
-            return
-        })
-        .catch(error => {
-            throw error
-        })
+module.exports = async function searchUser(uniqueString) {
+    validateUniqueString(uniqueString)
+    const user = await User.findOne({ uniqueString: uniqueString })
+    if (!user) throw new ExistenceError('user not found')
+    return true
+    // .catch(error => {
+    //     throw error
+    // })
 }

@@ -6,7 +6,7 @@ const jwt = require('jsonwebtoken')
 
 const {
     validators: { validateEmail },
-    errors: { DuplicityError }
+    errors: { ExistenceError }
 } = require('com')
 /**
  * 
@@ -23,39 +23,37 @@ const {
  * 
  */
 
-module.exports = function forgotPassword(email) {
-    validateEmail(email)
+module.exports = async function forgotPassword(email) {
+    try {
+        validateEmail(email)
 
-    const randomString = () => {
-        const length = 8
-        let randomString = ''
+        const randomString = () => {
+            const length = 8
+            let randomString = ''
 
-        for (let i = 0; i < length; i++) {
-            const character = Math.floor((Math.random() * 10) + 1)
+            for (let i = 0; i < length; i++) {
+                const character = Math.floor((Math.random() * 10) + 1)
 
-            randomString += character
-        }
-        return randomString
-    }
-    const uniqueString = randomString()
-
-    console.log(uniqueString)
-
-    return User.findOne({ email })
-        .then(user => {
-            if (!user.uniqueString) {
-                return user.updateOne({ uniqueString: uniqueString }).then(user => user)
+                randomString += character
             }
+            return randomString
+        }
+        const uniqueString = randomString()
 
-            return user
-        })
-        .then(user => {
-            const payload = { sub: user.uniqueString }
-            const { JWT_SECRET, JWT_RECOVER_EMAIL_EXPIRATION } = process.env
-            const token = jwt.sign(payload, JWT_SECRET, { expiresIn: JWT_RECOVER_EMAIL_EXPIRATION })
-            sendNewPasswordEmail(email, token)
-        })
-        .catch(error => {
-            throw error
-        })
+
+        const user = await User.findOne({ email })
+        if (!user) throw new ExistenceError('user not found')
+
+        await user.updateOne({ uniqueString: uniqueString }).then(user => user)
+
+        const payload = { sub: user.uniqueString }
+        const { JWT_SECRET, JWT_RECOVER_EMAIL_EXPIRATION } = process.env
+        const token = jwt.sign(payload, JWT_SECRET, { expiresIn: JWT_RECOVER_EMAIL_EXPIRATION })
+        sendNewPasswordEmail(email, token)
+
+        return true
+        // return user
+    } catch (error) {
+        throw error
+    }
 }
