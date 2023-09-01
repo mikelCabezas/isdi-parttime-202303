@@ -5,7 +5,7 @@ module.exports = {
     forgotPassword: require('./forgotPassword'),
     recoverPassword: require('./recoverPassword'),
     setNewPassword: require('./setNewPassword'),
-    updatePassword: require('./updatePassword'),
+    // updatePassword: require('./updatePassword'),
     authenticateUser: require('./authenticateUser'),
     retrieveUser: require('./retrieveUser'),
     updateUserName: require('./updateUserName'),

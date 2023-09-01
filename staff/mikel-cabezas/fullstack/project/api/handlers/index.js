@@ -6,6 +6,7 @@ module.exports = {
     validateUserHandler: require('./users/validateUserHandler'),
     forgotPasswordHandler: require('./users/forgotPasswordHandler'),
     recoverPasswordHandler: require('./users/recoverPasswordHandler'),
+    // updatePasswordHandler: require('./users/updatePasswordHandler'),
     setNewPasswordHandler: require('./users/setNewPasswordHandler'),
     updateUserPasswordHandler: require('./users/updateUserPasswordHandler'),
     retrieveUserHandler: require('./users/retrieveUserHandler'),

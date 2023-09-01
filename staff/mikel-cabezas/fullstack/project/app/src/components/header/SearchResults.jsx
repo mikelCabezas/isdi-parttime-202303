@@ -29,7 +29,6 @@ export default function SearchResults({ handleCloseModal, data, handleViewPlaygr
 
     const simpleSearchRegion = (search) => {
         handleCloseModal()
-        // console.log(search)
         retrievePlaygroundsFromCity(TOKEN, search)
             .then(playgroundsResult => {
                 handleViewPlaygroundsFromCity(playgroundsResult)

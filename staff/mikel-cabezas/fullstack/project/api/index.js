@@ -26,7 +26,7 @@ mongoose.connect(process.env.MONGODB_URL)
 
         api.get('/user/recoverPassword/:token', recoverPasswordHandler)
         api.post('/user/forgotPassword', jsonBodyParser, forgotPasswordHandler)
-        api.patch('/user/recoverPassword/setNewPassword/', jsonBodyParser, setNewPasswordHandler)
+        api.patch('/user/recoverPassword/updatePassword/', jsonBodyParser, setNewPasswordHandler)
 
         api.post('/user/confirmUpdateEmail/', jsonBodyParser, confirmNewUserEmailHandler)
         api.get('/user/confirmUpdateEmail/updateEmail/:token/:email', updateUserEmailHandler)

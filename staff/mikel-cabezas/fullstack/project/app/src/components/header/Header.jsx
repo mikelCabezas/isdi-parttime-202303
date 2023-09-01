@@ -24,7 +24,7 @@ export default function Header({ navigation, onHandleViewPlaygroundsFromCity, ha
     const [searchQuery, setSearchQuery] = React.useState();
     const [loading, setIsLoading] = React.useState();
     const [isTyping, setIsTyping] = React.useState([]);
-    const [data, setData] = React.useState([]);
+    const [data, setData] = React.useState();
     const [timeoutId, setTimeoutId] = useState()
     const [animation, setAnimation] = useState('fadeInDown')
 
@@ -36,18 +36,17 @@ export default function Header({ navigation, onHandleViewPlaygroundsFromCity, ha
         handleToggleSidebar()
     }
 
-    useEffect(() => {
-        clearTimeout(isTyping)
-        setIsTyping()
-        setData()
-        setModal('simpleSearch')
-    }, [searchQuery])
+    // useEffect(() => {
+    //     clearTimeout(isTyping)
+    //     setData()
+    //     setModal('simpleSearch')
+    // }, [searchQuery])
 
     useEffect(() => {
     }, [data]);
 
     const onSearchPlayground = () => {
-
+        setModal('simpleSearch')
     }
 
     const handleCloseModal = () => {
@@ -59,17 +58,15 @@ export default function Header({ navigation, onHandleViewPlaygroundsFromCity, ha
     }
 
     const simpleSearchRegion = (search) => {
-        // console.log(search)
     }
     useEffect(() => {
         const delayId = setTimeout(() => {
             (async () => {
                 try {
-                    console.log(searchQuery)
                     const results = await retrievePlaygroundsCities(TOKEN, searchQuery)
                     if (results.length > 0) {
                         setData(results)
-                    } else {
+                    } else if (searchQuery) {
                         setData(['No results were found. Try another city name.'])
                     }
                 } catch (error) {

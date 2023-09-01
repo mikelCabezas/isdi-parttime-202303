@@ -1,5 +1,5 @@
 const { request } = require('express')
-const { setNewPassword } = require('../../logic/users')
+const { updatePassword } = require('../../logic/users')
 const { handleErrors, extractUserId } = require('../helpers')
 
 

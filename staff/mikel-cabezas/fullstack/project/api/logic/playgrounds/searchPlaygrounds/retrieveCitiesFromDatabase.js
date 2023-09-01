@@ -33,5 +33,7 @@ module.exports = (userId, city) => {
 
             if (!user) new ExistenceError(`User with id ${userId} not found`)
             return cities
+            if (cities.length > 0) return cities
+            if (cities.length === 0) return null
         })
 }

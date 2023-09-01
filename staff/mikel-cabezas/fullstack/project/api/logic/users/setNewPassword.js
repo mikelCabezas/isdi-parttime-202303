@@ -18,7 +18,7 @@ const {
  * 
  */
 
-module.exports = function setNewPassword(uniqueString, newPassword) {
+module.exports = function updatePassword(uniqueString, newPassword) {
     validatePassword(newPassword)
     validateUniqueString(uniqueString)
     try {

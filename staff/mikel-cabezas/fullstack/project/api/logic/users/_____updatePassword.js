@@ -18,8 +18,9 @@ const {
  * 
  */
 
-module.exports = function setNewPassword(newPassword) {
+module.exports = async function setNewPassword(newPassword) {
     // TODO validate unique string
+    const hash = await bcrypt.hash(newPassword, 10)
 
-    return User.updateOne({ password: newPassword })
+    await User.updateOne({ password: hash })
 }
