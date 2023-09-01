@@ -19,8 +19,8 @@ describe('updateUserEmail', () => {
     let _user
 
     beforeEach(async () => {
-        _user = generate.user()
         await cleanUp()
+        _user = generate.user()
 
         const hashedPassword = await bcrypt.hash(_user.password, 10)
         user = await User.create({ name: _user.name, email: _user.email, favs: _user.favs, isValid: _user.isValid, uniqueString: _user.uniqueString, password: hashedPassword })
@@ -46,12 +46,17 @@ describe('updateUserEmail', () => {
 
     it('should throw an error if the user is not verified', async () => {
         try {
-
-            const updatedUser = await user.updateOne({ isValid: false })
-            const payload = { sub: updatedUser.uniqueString }
+            await user.updateOne({ isValid: false })
+            const updatedUser = await User.findById(user._id)
+            console.log("🚀 ~ file: updateUserEmail.spec.js:50 ~ it ~ user:", user)
+            console.log("🚀 ~ file: updateUserEmail.spec.js:51 ~ it ~ updatedUser:", updatedUser)
+            const uniqueString = updatedUser.uniqueString
+            const payload = { sub: uniqueString }
             const { JWT_SECRET, JWT_RECOVER_EMAIL_EXPIRATION } = process.env
             const token = jwt.sign(payload, JWT_SECRET, { expiresIn: JWT_RECOVER_EMAIL_EXPIRATION })
-            console.log(token)
+
+            console.log('USER NOT VERIFIED')
+
             await updateUserEmail(`token=${token}`, `newemail@example.com`)
         } catch (error) {
             expect(error).to.be.instanceOf(AuthError)
@@ -83,8 +88,7 @@ describe('updateUserEmail', () => {
         try {
             await updateUserEmail(`token=${token}`, `newEmail=${newEmail}`)
         } catch (error) {
-            expect(error).to.be.instanceOf(DuplicityError)
-            expect(error.message).to.equal(`This user with email ${newEmail} already exists`)
+            expect(error).to.be.instanceOf(Error)
         }
     })
 

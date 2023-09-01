@@ -20,6 +20,7 @@ const {
 
  */
 module.exports = (userId, newName) => {
+    debugger
     validateId(userId)
     validateText(newName)
 

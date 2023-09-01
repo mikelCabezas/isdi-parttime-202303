@@ -32,8 +32,8 @@ module.exports = async (token, newEmail) => {
         const emailSliced = newEmail.slice(emailIndex + 1)
 
         const payload = jwt.verify(tokenSliced, process.env.JWT_SECRET)
-        const { sub: uniqueString } = payload
-        console.log(typeof uniqueString)
+        const uniqueString = payload.sub
+
         validateUniqueString(uniqueString)
         validateEmail(emailSliced)
 

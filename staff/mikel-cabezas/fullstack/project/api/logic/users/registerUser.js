@@ -45,7 +45,7 @@ module.exports = function registerUser(name, email, password) {
     return (async () => {
         try {
             const hash = await bcrypt.hash(password, 10)
-            debugger
+
             await User.create({ name, email, password: hash, isValid, uniqueString })
             const payload = { sub: uniqueString }
             const { JWT_SECRET, JWT_RECOVER_EMAIL_EXPIRATION } = process.env

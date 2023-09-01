@@ -88,6 +88,7 @@ export default function Login({ navigation }) {
                         {/* <Text className="dark:text-zinc-200 text-2xl text-center font-semibold">{process.env.EXPO_PUBLIC_API_URL}</Text> */}
 
                         {/* <Text className="dark:text-zinc-200 pt-4 text-xs text-center">{process.env.EXPO_PUBLIC_API_URL}</Text> */}
+                        <Text className="dark:text-zinc-200 text-2xl text-center font-semibold">{process.env.EXPO_PUBLIC_API_URL}-</Text>
                         <Text className="dark:text-zinc-200 text-2xl text-center font-semibold">Login</Text>
                         <Text className="dark:text-zinc-200 pt-4 text-xs text-center">Your email</Text>
                         <TextInput

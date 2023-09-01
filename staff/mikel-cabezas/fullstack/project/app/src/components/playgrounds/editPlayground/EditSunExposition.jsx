@@ -45,7 +45,7 @@ export default function EditElements({ TOKEN, id, onEdited, onCancelEdit, sunExp
             {
                 text: 'Save', onPress: () => {
                     return editPlaygroundSunExposition(TOKEN, id, sunExposition)
-                        .then(() => onEdited())
+                        .then(() => { onEdited() })
                         .catch(error => console.log(error))
                 }
             },

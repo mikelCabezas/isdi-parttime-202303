@@ -45,7 +45,7 @@ function validateUserId(userId) {
     if (!userId) throw new ContentError('User is empty')
 }
 
-function validateId(id, explain = 'token') {
+function validateId(id, explain = 'Id') {
     if (typeof id !== 'string') throw new TypeError(`${explain} is not a string`)
     if (!id) throw new ContentError(`${explain} is empty`)
 }
@@ -64,6 +64,7 @@ function validateToken(token, explain = 'token') {
     if (token.split('.').length !== 3) throw new ContentError(`${explain} is not valid`)
 }
 function validateUniqueString(uniqueString, explain = 'uniqueString') {
+    console.log('typeof uniqueString in validator', typeof uniqueString)
     if (typeof uniqueString !== 'string') throw new TypeError(`${explain} is not a string`)
     if (uniqueString.length !== 8) throw new ContentError(`${explain} is not valid`)
 }
