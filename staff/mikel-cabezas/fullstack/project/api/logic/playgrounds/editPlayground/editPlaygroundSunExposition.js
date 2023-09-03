@@ -1,6 +1,6 @@
 const { User, Playground } = require('../../../data/models')
 const {
-    validators: { validateId, validateText },
+    validators: { validateId, validateObject },
     errors: { ExistenceError }
 } = require('com')
 
@@ -20,31 +20,22 @@ const {
  * 
  * @throws {ExistenceError} on playground not found (async)
  */
-module.exports = (userId, playgroundId, sunExposition) => {
-    try {
-        validateId(userId)
-        validateId(playgroundId)
+module.exports = async (userId, playgroundId, sunExposition) => {
+    validateId(userId)
+    validateId(playgroundId)
+    validateObject(sunExposition)
+    const [user, playground] = await Promise.all([
+        User.findById(userId).lean(),
+        Playground.findById(playgroundId)
+    ])
+    if (!user) throw new ExistenceError('User not found')
+    if (!playground) throw new ExistenceError('Playground not found')
 
-        return Promise.all([
-            User.findById(userId).lean(),
-            Playground.findById(playgroundId)
-        ])
-            .then(([user, playground]) => {
-                if (!user) throw new ExistenceError('User not found')
-                if (!playground) throw new ExistenceError('Playground not found')
-
-                return playground.updateOne({
-                    sunExposition: sunExposition
-                    // 'sunExposition.shady': sunExposition.shady,
-                    // 'sunExposition.sunny': sunExposition.sunny,
-                    // 'sunExposition.partial': sunExposition.partial
-                })
-            })
-
-    } catch (error) {
-        console.log(error.message)
-        return error.message
-    }
-
+    return playground.updateOne({
+        sunExposition: sunExposition
+        // 'sunExposition.shady': sunExposition.shady,
+        // 'sunExposition.sunny': sunExposition.sunny,
+        // 'sunExposition.partial': sunExposition.partial
+    })
 }
 

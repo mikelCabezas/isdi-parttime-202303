@@ -2,8 +2,8 @@ const { User } = require('../../data/models')
 // const randomString = require('../helpers/randomString')
 
 const {
-    validators: { validateName, validateEmail, validatePassword },
-    errors: { DuplicityError }
+    validators: { validateUniqueString },
+    errors: { ExistenceError }
 } = require('com')
 /**
  * 
@@ -18,14 +18,11 @@ const {
  * 
  */
 
-module.exports = function validateUser(uniqueString) {
-    // TODO validate unique string
-    return User.findOne({ uniqueString })
-        .then(user => {
-            return user.updateOne({ isValid: true })
-        })
-        .catch(error => {
-            if (error.message.includes('E11000')) throw new DuplicityError(`This user whith email ${email} already exists`)
-            throw error
-        })
+module.exports = async function validateUser(uniqueString) {
+    validateUniqueString(uniqueString)
+    const user = await User.findOne({ uniqueString: uniqueString })
+    if (!user) throw new ExistenceError('user not found')
+
+    await user.updateOne({ isValid: true })
+
 }

@@ -2,7 +2,7 @@ const { User, Playground } = require('../../data/models')
 const context = require('../context')
 const { ObjectId } = require('mongodb')
 const {
-    validators: { validateUserId },
+    validators: { validateId },
     errors: { ExistenceError }
 } = require('com')
 /**
@@ -15,17 +15,14 @@ const {
  * 
  * @throws {ExistenceError} on user not found (async)
  */
-module.exports = userId => {
-    validateUserId(userId)
+module.exports = async userId => {
+    validateId(userId)
 
-    const { users, posts } = context
-    const _user = { _id: new ObjectId(userId) }
-
-    return Promise.all(
-        [User.findById(userId).lean(),
-        Playground.find({ likes: { $in: userId } }).lean()
+    const [user, playgrounds] = await Promise.all(
+        [await User.findById(userId).lean(),
+        await Playground.find({ likes: { $in: userId } }).lean()
         ]
-    ).then((playgrounds) => {
-        return playgrounds[1]
-    })
+    )
+    if (!user) throw new ExistenceError('user not found')
+    return playgrounds
 }

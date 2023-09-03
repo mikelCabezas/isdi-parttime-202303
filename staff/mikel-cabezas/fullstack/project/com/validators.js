@@ -64,9 +64,26 @@ function validateToken(token, explain = 'token') {
     if (token.split('.').length !== 3) throw new ContentError(`${explain} is not valid`)
 }
 function validateUniqueString(uniqueString, explain = 'uniqueString') {
-    console.log('typeof uniqueString in validator', typeof uniqueString)
     if (typeof uniqueString !== 'string') throw new TypeError(`${explain} is not a string`)
     if (uniqueString.length !== 8) throw new ContentError(`${explain} is not valid`)
+}
+function validateArray(array, explain = 'array') {
+    if (!Array.isArray(array)) throw new TypeError(`${explain} is not an array`)
+}
+function validateObject(object, explain = 'object') {
+    if (typeof object !== 'object' && object !== null) throw new TypeError(`${object} is not an object`)
+}
+function validateURL(url, explain = 'url') {
+    const pattern = new RegExp(
+        '^([a-zA-Z]+:\\/\\/)?' + // protocol
+        '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // domain name
+        '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR IP (v4) address
+        '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
+        '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
+        '(\\#[-a-z\\d_]*)?$', // fragment locator
+        'i'
+    );
+    if (pattern.test(url) === false) throw new FormatError(`Invalid ${explain} format`)
 }
 
 module.exports = {
@@ -80,5 +97,8 @@ module.exports = {
     validatePostId,
     validateCallback,
     validateToken,
-    validateUniqueString
+    validateUniqueString,
+    validateArray,
+    validateObject,
+    validateURL
 }

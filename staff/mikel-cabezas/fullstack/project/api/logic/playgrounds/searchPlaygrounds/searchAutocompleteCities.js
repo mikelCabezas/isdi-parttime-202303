@@ -3,9 +3,9 @@ const { User, Playground } = require('../../../data/models')
 const fetch = require('node-fetch');
 
 const {
-    validators: { validateUserId },
+    validators: { validateId, validateToken, validateText },
     errors: { ExistenceError }
-} = require('com')
+} = require('com');
 
 /**
  * 
@@ -18,12 +18,13 @@ const {
  * @throws {ExistenceError} on user not found (async)
  */
 
-module.exports = (token, userId, city) => {
-    validateUserId(userId)
-
-    // token, name, description, sunExposition, elements, images, location
-
-    // let mapsResponse
+module.exports = async (token, userId, city) => {
+    debugger
+    token?.accessToken ? validateToken(token.accessToken) : validateToken(token)
+    validateId(userId)
+    validateText(city)
+    const user = await User.findById(userId)
+    if (!user) throw new ExistenceError('User not found')
 
     return fetch(`https://maps-api.apple.com/v1/searchAutocomplete?q=${city}&lang=es-ES`, {
         method: 'GET',
@@ -33,16 +34,18 @@ module.exports = (token, userId, city) => {
     })
         .then(res => {
             if (res.status !== 200)
-                return res.json().then(({ error: message }) => { throw new Error(message) })
+                return res.json().then(({ error: message }) => { throw new Error(message.message) })
             return res.json()
         })
         .then(mapsResponse => {
-            try {
-                const { results } = mapsResponse
-                return results
-            } catch (error) {
-                console.log(error.message)
-            }
+            const { results } = mapsResponse
+            debugger
+            return results
         })
+        .catch(error => {
+            throw error
+        })
+
+
 
 }

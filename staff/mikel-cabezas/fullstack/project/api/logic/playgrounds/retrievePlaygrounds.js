@@ -1,4 +1,5 @@
 const { User, Playground } = require('../../data/models')
+const mongoose = require('mongoose')
 
 const {
     validators: { validateUserId },
@@ -17,26 +18,25 @@ const {
  */
 module.exports = async (userId, location) => {
     validateUserId(userId)
-    console.log(location)
+    const user = await User.findById(userId)
+    if (!user) throw new ExistenceError('user not found')
+
     const latitude = location.latitude
     const longitude = location.longitude
     const coordinates = [latitude, longitude]
-    try {
-        const playgrounds = Promise.all([
-            Playground.find({
-                location: {
-                    $near: {
-                        $geometry: { type: "Point", coordinates: coordinates },
-                        // $maxDistance: maxDistance
-                        $maxDistance: 10000
-                    }
+    const playgrounds = Promise.all([
+        await Playground.find({
+            location: {
+                $near: {
+                    $geometry: { type: "Point", coordinates: coordinates },
+                    // $maxDistance: maxDistance
+                    $maxDistance: 10000
                 }
-            }).lean()
-        ])
-        return playgrounds
-            // .then(playgrounds => [playgrounds])
-            .then(playgrounds => playgrounds)
-    } catch (error) {
-        console.log(error.message)
-    }
+            }
+        }).lean()
+    ])
+    return playgrounds
+    // .then(playgrounds => [playgrounds])
+    // .then(playgrounds => playgrounds)
+
 }

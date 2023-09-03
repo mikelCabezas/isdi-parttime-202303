@@ -24,25 +24,24 @@ const jwt = require('jsonwebtoken')
  * @throws {ExistenceError} on user not found (async)
 
  */
-module.exports = (userId, currentPassword, newPassword, repeatPassword) => {
+module.exports = async (userId, currentPassword, newPassword, repeatPassword) => {
     validateUserId(userId)
     validatePassword(newPassword)
     validatePassword(repeatPassword)
 
-    return (async () => {
-        const user = await User.findById(userId)
-        if (!user) throw new ExistenceError('user not found')
 
-        const checkOldNewPasswordsMatch = await bcrypt.compare(currentPassword, user.password)
-        if (!checkOldNewPasswordsMatch) throw new ContentError("Current password does not match")
+    const user = await User.findById(userId)
+    if (!user) throw new ExistenceError('user not found')
 
-        const checkOldNewPasswordsNotMatch = await bcrypt.compare(newPassword, user.password)
-        if (!checkOldNewPasswordsNotMatch) throw new ContentError("New password must be different as previous password")
+    const checkOldNewPasswordsMatch = await bcrypt.compare(currentPassword, user.password)
+    if (!checkOldNewPasswordsMatch) throw new ContentError("Current password does not match")
 
-        if (newPassword !== repeatPassword) throw new ContentError("New password and new password confirmation does not match")
+    const checkOldNewPasswordsNotMatch = await bcrypt.compare(newPassword, user.password)
+    if (checkOldNewPasswordsNotMatch) throw new ContentError("New password must be different as previous password")
 
-        const hash = await bcrypt.hash(newPassword, 10)
+    if (newPassword !== repeatPassword) throw new ContentError("New password and new password confirmation does not match")
 
-        return user.updateOne({ password: hash })
-    })
+    const hash = await bcrypt.hash(newPassword, 10)
+
+    return user.updateOne({ password: hash })
 }

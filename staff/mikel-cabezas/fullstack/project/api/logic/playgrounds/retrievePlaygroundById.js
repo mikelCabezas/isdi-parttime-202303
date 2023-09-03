@@ -15,20 +15,18 @@ const {
  * 
  * @throws {ExistenceError} on user not found (async)
  * */
-module.exports = (userId, playgroundId) => {
+module.exports = async (userId, playgroundId) => {
     validateId(userId)
     validateId(playgroundId)
-    return Promise.all([
+    const [user, playground] = await Promise.all([
         User.findById(userId).lean(),
         Playground.findById(playgroundId, '-date -__v').lean()
     ])
-        .then(([user, playground]) => {
-            if (!user) new ExistenceError(`User with id ${userId} not found`)
-            if (!playground) new ExistenceError(`Playground with id ${playgroundId} not found`)
+    if (!user) throw new ExistenceError(`User with id ${userId} not found`)
+    if (!playground) throw new ExistenceError(`Playground with id ${playgroundId} not found`)
 
-            // if (playground.author.toString() !== userId) throw new Error(`Post with id ${playgroundId} does not belong to user with id ${userId}`)
-            // delete playground.author
-            return playground
+    // if (playground.author.toString() !== userId) throw new Error(`Post with id ${playgroundId} does not belong to user with id ${userId}`)
+    // delete playground.author
+    return playground
 
-        })
 }

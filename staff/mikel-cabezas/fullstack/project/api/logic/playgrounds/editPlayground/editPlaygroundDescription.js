@@ -20,33 +20,21 @@ const {
  * 
  * @throws {ExistenceError} on playground not found (async)
  */
-module.exports = (userId, playgroundId, description) => {
-    try {
-        validateId(userId)
-        validateId(playgroundId)
-        validateText(description)
+module.exports = async (userId, playgroundId, description) => {
+    validateId(userId)
+    validateId(playgroundId)
+    validateText(description)
 
-        return Promise.all([
-            User.findById(userId).lean(),
-            Playground.findById(playgroundId)
+    const [user, playground] = await Promise.all([
+        User.findById(userId).lean(),
+        Playground.findById(playgroundId)
+    ])
+    if (!user) throw new ExistenceError('User not found')
+    if (!playground) throw new ExistenceError('Playground not found')
 
-        ])
-            .then(([user, playground]) => {
-                if (!user) throw new ExistenceError('User not found')
-                if (!playground) throw new ExistenceError('Playground not found')
-
-                return playground.updateOne({
-                    description: description
-                    // 'sunExposition.shady': sunExposition.shady,
-                    // 'sunExposition.sunny': sunExposition.sunny,
-                    // 'sunExposition.partial': sunExposition.partial
-                })
-            })
-
-    } catch (error) {
-        console.log(error.message)
-        return error.message
-    }
+    return playground.updateOne({
+        description: description
+    })
 
 }
 

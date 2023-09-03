@@ -14,8 +14,6 @@ module.exports = {
     editPlaygroundDescription: require('./editPlayground/editPlaygroundDescription'),
     editPlaygroundAddImages: require('./editPlayground/editPlaygroundAddImages'),
     retrieveLikedPlaygrounds: require('./retrieveLikedPlaygrounds'),
-    retrieveSavedPosts: require('./retrieveSavedPosts'),
     retrievePlaygroundById: require('./retrievePlaygroundById'),
     toggleLikePlayground: require('./toggleLikePlayground'),
-    toggleSavePost: require('./toggleSavePost')
 }

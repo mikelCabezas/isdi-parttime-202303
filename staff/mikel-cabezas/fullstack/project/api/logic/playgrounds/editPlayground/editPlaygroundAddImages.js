@@ -1,6 +1,6 @@
 const { User, Playground } = require('../../../data/models')
 const {
-    validators: { validateId },
+    validators: { validateId, validateArray, validateURL },
     errors: { ExistenceError }
 } = require('com')
 
@@ -17,26 +17,22 @@ const {
  * 
  * @throws {ExistenceError} on playground not found (async)
  */
-module.exports = (userId, playgroundId, images) => {
-    try {
-        validateId(userId)
-        validateId(playgroundId)
+module.exports = async (userId, playgroundId, images) => {
+    validateId(userId)
+    validateId(playgroundId)
+    validateArray(images)
+    images.map(image => validateURL(image))
 
-        return Promise.all([
-            User.findById(userId).lean(),
-            Playground.findById(playgroundId)
-        ])
-            .then(([user, playground]) => {
-                if (!user) throw new ExistenceError('User not found')
-                if (!playground) throw new ExistenceError('Playground not found')
+    const [user, playground] = await Promise.all([
+        User.findById(userId).lean(),
+        Playground.findById(playgroundId)
+    ])
+    if (!user) throw new ExistenceError('User not found')
+    if (!playground) throw new ExistenceError('Playground not found')
 
-                return playground.updateOne({
-                    $push: { images: images }
-                })
-            })
-    } catch (error) {
-        console.log(error.message)
-        return error.message
-    }
+    return playground.updateOne({
+        $push: { images: images }
+    })
+
 }
 

@@ -1,3 +1,5 @@
+// const booleanRandom = Math.floor(Math.random() * 1)
+// const boolean = booleanRandom === 0 ? false : true
 module.exports = {
     user: () => ({
         // _id: `id-${Math.random()}`,
@@ -15,8 +17,7 @@ module.exports = {
         // _id: `id-${Math.random()}`,
         name: `name-${Math.random()}`,
         description: `description-${Math.random()}`,
-        images: [`image-${Math.random()}`],
-        text: `text-${Math.random()}`,
+        images: [`http://image-${Math.random()}.com`],
         visibility: 'public',
         location: {
             type: 'Point',
@@ -24,13 +25,18 @@ module.exports = {
             street: `street-${Math.random()}`,
             state: `state-${Math.random()}`,
             country: `country-${Math.random()}`,
-            coordinates: [Math.random(), Math.random()]
+            coordinates: [41.216249999999974, 1.7312499999999886]
         },
         elements: [{
             type: `type-${Math.random()}`,
-            age: `age-${Math.random()}`,
+            age: Math.floor(Math.random() * 6) + 1,
             status: `status-${Math.random()}`,
-            accessibility: `accessibility-${Math.random()}`,
-        },]
+            accessibility: false,
+        },],
+        sunExposition: {
+            "shady": false,
+            "sunny": false,
+            "partial": false
+        },
     }),
 }

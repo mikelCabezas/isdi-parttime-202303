@@ -20,34 +20,26 @@ const {
 
 module.exports = (userId, userLocation) => {
     validateUserId(userId)
-    try {
-        const latitude = userLocation[0]
-        const longitude = userLocation[1]
-        const coordinates = [latitude, longitude]
-        return Playground.find(
+    const latitude = userLocation[0]
+    const longitude = userLocation[1]
+    const coordinates = [latitude, longitude]
+
+    return Playground.find(
+        {
+            location:
             {
-                location:
+                $near:
                 {
-                    $near:
-                    {
-                        $geometry: { type: "Point", coordinates: userLocation },
-                        $maxDistance: 20
-                    }
+                    $geometry: { type: "Point", coordinates: userLocation },
+                    $maxDistance: 20
                 }
             }
-        )
-            .then(playgrounds => {
-                [coordinates, playgrounds]
-                debugger
-                if (playgrounds.length > 0) throw new ExistenceError('New playgrounds cannot are near than 20 meters than other.')
-                if (playgrounds.length === 0) true
+        }
+    )
+        .then(playgrounds => {
+            [coordinates, playgrounds]
 
-            })
-            .catch(error => error)
-
-    } catch (error) {
-        console.log(error.message)
-        return error.message
-    }
-
+            if (playgrounds.length > 0) throw new ExistenceError('New playgrounds cannot are near than 20 meters than other.')
+            return true
+        })
 }
