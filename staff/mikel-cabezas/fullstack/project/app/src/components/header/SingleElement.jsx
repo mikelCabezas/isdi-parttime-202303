@@ -10,7 +10,6 @@ import {
 export default function SingleElement({ index, element, handleEditElement, mainColor, onElementPressed }) {
 
     const key = index
-    console.log('element.length', index)
     const handleElementPressed = () => onElementPressed(element.type)
 
     let bgColor

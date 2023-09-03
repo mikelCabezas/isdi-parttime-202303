@@ -1,10 +1,9 @@
-// import { validators } from "../../../com";
-// const { validateToken } = validators
-import { EXPO_PUBLIC_API_URL } from '@env'
+import { validators, utils } from '../../../com'
+const { validateToken } = validators
 
 export default (token, query) => {
     try {
-        // validateToken(token);
+        validateToken(token);
         // alert(EXPO_PUBLIC_API_URL)
         let age, elements, isAccessible, distance, sunExpositionFilter, from
         let sunExposition = []
@@ -35,8 +34,6 @@ export default (token, query) => {
         sunExpositionFilter = `sunExposition=${sunExposition}`
 
         const searchQuery = (sunExpositionFilter + age + elements + isAccessible + from + distance).toString()
-
-        console.log(`process.env.EXPO_PUBLIC_API_URL/playgrounds/filter/searchQuery ${process.env.EXPO_PUBLIC_API_URL}/playgrounds/filter?${searchQuery}`)
 
         return fetch(`${process.env.EXPO_PUBLIC_API_URL}/playgrounds/filter/${searchQuery}`, {
             // return fetch(`${process.env.EXPO_PUBLIC_API_URL}/playgrounds/filter/age=1&elements=2`, {

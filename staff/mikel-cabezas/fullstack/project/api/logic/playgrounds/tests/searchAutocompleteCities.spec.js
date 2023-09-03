@@ -77,7 +77,7 @@ describe('searchAutocompleteCities', () => {
             await searchAutocompleteCities(appleToken, invalidID, 'test_city');
         } catch (error) {
             expect(error).to.be.an.instanceOf(ExistenceError);
-            expect(error.message).to.equal('User not found');
+            expect(error.message).to.equal('user not found');
         }
     });
 });

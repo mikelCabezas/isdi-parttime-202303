@@ -12,7 +12,6 @@ export default function AddElement({ onElementEdited, onCancelEditElement, eleme
     const [selectedStatus, setSelectedStatus] = useState(element.status);
     const [selectedAccessibility, setSelectedAccessibility] = useState();
     useEffect(() => {
-        console.log('element', element)
         if (element.accessibility === true) setSelectedAccessibility('Yes')
         if (element.accessibility === false) setSelectedAccessibility('No')
     }, []);

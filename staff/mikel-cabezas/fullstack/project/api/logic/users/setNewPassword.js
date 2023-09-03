@@ -1,21 +1,16 @@
 const { User } = require('../../data/models')
 const bcrypt = require('bcryptjs')
-
 const {
     validators: { validateName, validateUniqueString, validatePassword },
     errors: { ExistenceError }
 } = require('com')
+
 /**
- * 
- * @param {string} uniqueString the user string
- * @returns {void} does not return anything
- *
- * @throws {TypeError} on non-string name and email (sync)
- * @throws {ContentError} on empty name, email or password (sync)
- * @throws {FormatError} wrong format on email or password (sync)
- * 
- * @throws {DuplicityError} on already existing user with provided credentials (async)
- * 
+ * Updates the password of a user with the given unique string.
+ * @param {string} uniqueString - The unique string of the user to update.
+ * @param {string} newPassword - The new password to set for the user.
+ * @throws {ExistenceError} If the user with the given unique string is not found.
+ * @throws {Error} If there is an error updating the user's password.
  */
 
 module.exports = function updatePassword(uniqueString, newPassword) {

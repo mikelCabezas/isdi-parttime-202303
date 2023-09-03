@@ -1,25 +1,22 @@
 const { User } = require('../../data/models')
-// const randomString = require('../helpers/randomString')
-
 const {
-    validators: { validateName, validateEmail, validatePassword },
+    validators: { validateId },
     errors: { ExistenceError, AuthError }
 } = require('com')
+
 /**
- * 
- * @param {string} userId the user string
- * @returns {void} does not return anything
- *
- * @throws {TypeError} on non-string name and email (sync)
- * @throws {ContentError} on empty name, email or password (sync)
- * @throws {FormatError} wrong format on email or password (sync)
- * 
- * @throws {DuplicityError} on already existing user with provided credentials (async)
- * 
+ * Retrieves a user by their ID and returns their information if they exist and are verified.
+ * @async
+ * @function checkLoggedInUser
+ * @param {string} userId - The ID of the user to retrieve.
+ * @throws {ExistenceError} If the user with the given ID does not exist.
+ * @throws {AuthError} If the user with the given ID exists but is not verified.
+ * @returns {Object} The user's information, including their ID, name, and email.
  */
 
 module.exports = async function checkLoggedInUser(userId) {
-    // TODO validate unique string
+    validateId(userId)
+
     const _user = await User.findById(userId)
     if (!_user) throw new ExistenceError('user not found')
 
@@ -33,5 +30,4 @@ module.exports = async function checkLoggedInUser(userId) {
     }
 
     return user
-
 }

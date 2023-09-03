@@ -110,13 +110,11 @@ export default function App({ }) {
       .then(res => {
         if (res === 200) {
           setServerStatusResponse(true)
-          console.log('server status', res)
           unfreeze()
           return res
         }
         if (res !== 200) {
           setServerStatusResponse(false)
-          console.log('server status'.res)
           throw new Error('Connection error')
         }
 

@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
 import { Text, Image, View, Platform, Linking, Alert } from 'react-native';
-import { TouchableOpacity, TouchableHighlight, TouchableWithoutFeedback, } from '@gorhom/bottom-sheet';
+import { TouchableOpacity } from '@gorhom/bottom-sheet';
 
 import { SHADY, LIKE, LIKE_FILLED, SUNNY, ADD } from '../../../assets/icons';
 import Context from '../../AppContext.js'
@@ -82,6 +82,7 @@ export default function SinglePlayground({ colorScheme, setTopSheetModalColor, s
             setTopSheetModalColor('#111')
             setTopSheetIndicatorColor('#888')
         }
+
         setSnapPointSinglePlayground(1)
     }
     const onEditSunExposition = () => {
@@ -124,13 +125,15 @@ export default function SinglePlayground({ colorScheme, setTopSheetModalColor, s
         setModal()
         refreshLikes()
         setSnapPointSinglePlayground(0)
-        if (colorScheme === 'light')
+        if (colorScheme === 'light') {
             setTopSheetModalColor('#fff')
-        setTopSheetIndicatorColor('#777')
+            setTopSheetIndicatorColor('#777')
+        }
 
-        if (colorScheme === 'dark')
+        if (colorScheme === 'dark') {
             setTopSheetModalColor('#27272A')
-        setTopSheetIndicatorColor('#888')
+            setTopSheetIndicatorColor('#888')
+        }
 
         Alert.alert('Success"', `Thank you! \n Playground updated.`, [
             { text: 'OK', onPress: () => { } },
@@ -138,13 +141,15 @@ export default function SinglePlayground({ colorScheme, setTopSheetModalColor, s
 
     }
     const onCancelEdit = () => {
-        if (colorScheme === 'light')
+        if (colorScheme === 'light') {
             setTopSheetModalColor('#fff')
-        setTopSheetIndicatorColor('#777')
+            setTopSheetIndicatorColor('#777')
+        }
 
-        if (colorScheme === 'dark')
+        if (colorScheme === 'dark') {
             setTopSheetModalColor('#27272A')
-        setTopSheetIndicatorColor('#888')
+            setTopSheetIndicatorColor('#888')
+        }
 
         setModal()
         setSnapPointSinglePlayground(0)
@@ -160,10 +165,9 @@ export default function SinglePlayground({ colorScheme, setTopSheetModalColor, s
                 <View className="w-full px-5 pb-12 bg-white dark:bg-zinc-800  z-40 relative" >
                     <View className="ml-auto mt-1 z-50 flex-row items-center">
                         <Text className="dark:text-zinc-200 text-center mr-2 text-lg">{likes.length}</Text>
-                        <TouchableHighlight
+                        <TouchableOpacity
                             className=""
-                            activeOpacity={1.0}
-                            underlayColor="#fff"
+                            activeOpacity={0.8}
                             onPress={() => {
                                 onUpdate()
                             }}>
@@ -171,17 +175,17 @@ export default function SinglePlayground({ colorScheme, setTopSheetModalColor, s
                                 className={`w-7 h-7 mx-auto `}
                                 source={likes.length > 0 ? LIKE_FILLED : LIKE}
                             />
-                        </TouchableHighlight>
+                        </TouchableOpacity>
 
                     </View>
                     <Text className="dark:text-zinc-200 text-xl font-semibold">{playground.name}</Text>
                     <Text className="pt-1 text-sm max-w-[80vw] text-darkGreen dark:text-mainLime mb-2">{playground.location.street}</Text>
-                    <TouchableHighlight
+                    <TouchableOpacity
                         onPress={handleOpenMap}>
                         <View className={`border border-mainLime bg-mainLime rounded-full mt-1 mb-2`}>
                             <Text className="font-bold text-center text-sm px-5 py-2 w-full">Go to playground</Text>
                         </View>
-                    </TouchableHighlight>
+                    </TouchableOpacity>
                     <View className="flex-row flex-wrap  mb-4">
                         <View className="flex-row w-full mt-3 mb-2">
                             <Text className="dark:text-zinc-200 text-lg font-semibold mr-2">Sun Exposition</Text>

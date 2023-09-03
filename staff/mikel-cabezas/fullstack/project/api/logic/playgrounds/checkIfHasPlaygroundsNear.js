@@ -1,6 +1,4 @@
-
-const { User, Playground } = require('../../data/models')
-const fetch = require('node-fetch');
+const { Playground } = require('../../data/models')
 
 const {
     validators: { validateUserId },
@@ -8,14 +6,10 @@ const {
 } = require('com')
 
 /**
- * 
- * @param {string} userId 
- * @returns {Promise<Object>} returns a promise object contains Z sanatized playgrounds 
-  * 
- * @throws {TypeError} on non-string userId (sync)
- * @throws {ContentError} on empty userId (sync)
- * 
- * @throws {ExistenceError} on user not found (async)
+ * Checks if there are any playgrounds near the user's location.
+ * @param {string} userId - The ID of the user.
+ * @param {Array<number>} userLocation - The location of the user in the form of an array of latitude and longitude.
+ * @returns {Promise<boolean>} - A promise that resolves to true if there are no playgrounds near the user's location, or rejects with an ExistenceError if there are.
  */
 
 module.exports = (userId, userLocation) => {

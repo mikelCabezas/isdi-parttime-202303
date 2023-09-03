@@ -15,9 +15,7 @@ export default function LikedPlaygrounds({ onMarkerPressedHandler }) {
     const [user, setUser] = useState()
 
     useEffect(() => {
-        console.log('Refresh Posts -> render in useEffect')
         try {
-            console.log('   Show all Posts -> render in useEffect onLoad compo')
             retrieveLikedPlaygrounds(TOKEN)
                 .then(playgrounds => {
                     setPlaygrounds(playgrounds)

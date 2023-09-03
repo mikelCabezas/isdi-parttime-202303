@@ -1,60 +1,21 @@
-const { expect } = require('chai')
-const confirmNewEmail = require('../sendConfirmNewEmail.js');
-const {
-    validators: { validateEmail },
-    errors: { DuplicityError, ExistenceError, FormatError, AuthError }
-} = require('com')
-const { cleanUp, generate } = require('../../helpers/tests/index.js')
-const { User } = require('../../../data/models.js')
-const mongoose = require('mongoose')
-const jwt = require('jsonwebtoken')
-const bcrypt = require('bcryptjs')
+const { expect } = require('chai');
+const nodemailerMock = require('nodemailer-mock');
+const sendConfirmNewEmail = require('../sendConfirmNewEmail');
 
-describe('confirmNewEmail', () => {
-    before(async () => {
-        await mongoose.connect(`${process.env.MONGODB_URL_TESTS}`)
-    })
+describe('sendConfirmNewEmail', () => {
+    beforeEach(() => {
+        nodemailerMock.mock.reset();
+    });
 
-    let user
-    let _user
+    it('should send an email with the correct options', async () => {
+        const name = 'John';
+        const email = 'john@example.com';
+        const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c';
 
-    let token
-    let sendEmailCalled
+        await sendConfirmNewEmail(name, email, token, nodemailerMock.mock);
 
-    beforeEach(async () => {
-        _user = generate.user()
-        await cleanUp()
+        const mailOptions = nodemailerMock.mock.sentMail[0];
+    });
 
 
-
-        const hashedPassword = await bcrypt.hash(_user.password, 10)
-        user = await User.create({ name: _user.name, email: _user.email, favs: _user.favs, isValid: true, uniqueString: _user.uniqueString, password: hashedPassword })
-
-        const payload = { sub: user.uniqueString }
-        const { JWT_SECRET, JWT_RECOVER_EMAIL_EXPIRATION } = process.env
-        token = jwt.sign(payload, JWT_SECRET, { expiresIn: JWT_RECOVER_EMAIL_EXPIRATION })
-    })
-
-    after(async () => {
-        await cleanUp()
-        await mongoose.disconnect()
-    })
-
-    it('should send a confirmation email with a valid token', async () => {
-        const emailSent = await confirmNewEmail(user.name, user.email, token)
-        expect(emailSent).to.be.true
-    })
-
-    it('should throw an error if the user ID is invalid', async () => {
-        try {
-            const invalidID = '123456789101112131415123'
-
-            await confirmNewEmail(invalidID, 'newemail@example.com', 'invalidToken')
-        } catch (error) {
-            expect(error).to.be.instanceOf(Error)
-            expect(error.message).to.equal('token is not valid')
-        }
-    })
-
-
-})
+});

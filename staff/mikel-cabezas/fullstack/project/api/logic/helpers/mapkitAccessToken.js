@@ -1,21 +1,14 @@
 require('dotenv').config()
 const fetch = require('node-fetch');
-
 const { validators: { validateToken } } = require('com')
 
 /**
- * 
- * @param {string*} token 
-
- * @returns {Promise<Object>} returns a promise object contains de new post 
- * 
- * // @throws {TypeError} on non-string id, image, title and text (sync)
- * // @throws {ContentError} on empty id, image, title or text  (sync)
- * // @throws {FormatError} wrong format on image (sync)
+ * Fetches a MapKit access token from Apple Maps API using the provided API key.
+ * @returns {Promise<Object>} A Promise that resolves to an object containing the access token.
+ * @throws {Error} If the API request fails or returns an error.
  */
 
 module.exports = () => {
-    // token, name, description, sunExposition, elements, images, location
     const token = process.env.AMK_API_KEY
 
     return fetch(`https://maps-api.apple.com/v1/token`, {
@@ -26,7 +19,7 @@ module.exports = () => {
     })
         .then(res => {
             if (res.status !== 200) {
-                return res.json().then(({ error: message }) => { throw new Error(message) })
+                return res.json().then(({ error: message }) => { throw new Error(message.message) })
             }
             return res.json()
         })

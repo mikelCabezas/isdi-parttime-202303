@@ -1,22 +1,27 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useContext } from "react";
 import { Text, Image, View, TouchableOpacity } from 'react-native';
 import { SUNNY, SHADY } from '../../../../assets/icons';
+import Context from '../../../AppContext'
 
 export default function SunExposition({ playgroundShady, setPlaygroundShady, playgroundSunny, setPlaygroundSunny, playgroundPartial, setPlaygroundPartial }) {
+    const { colorScheme } = useContext(Context)
+    let isDark
+    if (colorScheme === 'dark') isDark = true
     const handleShady = () => {
-        playgroundShady.status ? setPlaygroundShady({ status: false, color: 'bg-mainGray' })
+        playgroundShady.status ? setPlaygroundShady({ status: false, color: isDark ? 'bg-zinc-300' : 'bg-mainGray' })
             : setPlaygroundShady({ status: true, color: 'bg-mainLime' })
     }
 
     const handleSunny = () => {
-        playgroundSunny.status ? setPlaygroundSunny({ status: false, color: 'bg-mainGray' })
+        playgroundSunny.status ? setPlaygroundSunny({ status: false, color: isDark ? 'bg-zinc-300' : 'bg-mainGray' })
             : setPlaygroundSunny({ status: true, color: 'bg-mainYellow' })
     }
 
     const handlePartial = () => {
-        playgroundPartial.status ? setPlaygroundPartial({ status: false, color: 'bg-mainGray' })
+        playgroundPartial.status ? setPlaygroundPartial({ status: false, color: isDark ? 'bg-zinc-300' : 'bg-mainGray' })
             : setPlaygroundPartial({ status: true, color: 'bg-[#38F1A3]' })
     }
+
 
     useEffect(() => {
     }, [playgroundShady, playgroundSunny, playgroundPartial])

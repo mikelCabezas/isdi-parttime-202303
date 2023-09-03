@@ -5,27 +5,21 @@ const {
 } = require('com')
 
 /**
- * 
- * @param {*} userId 
- * @param {*} playgroundId 
- * @returns {Promise<Object>} returns a promise object contains de post with likes updated 
- * 
- * @throws {TypeError} on non-string userId, playgroundId (sync)
- * @throws {ContentError} on empty userId, playgroundId (sync)
- * 
- * @throws {ExistenceError} on post not found (async)
- * 
+ * Toggles the like status of a playground for a user.
+ * @param {string} userId - The ID of the user.
+ * @param {string} playgroundId - The ID of the playground.
+ * @throws {ExistenceError} If the playground or user is not found.
+ * @returns {Promise<Playground>} The updated playground object.
  */
+
 module.exports = async (userId, playgroundId) => {
     validateId(userId)
     validateId(playgroundId)
 
-
     const playground = await Playground.findById(playgroundId)
-
     if (!playground) throw new ExistenceError('playground not found')
-    const user = await User.findById(userId)
 
+    const user = await User.findById(userId)
     if (!user) throw new ExistenceError('user not found')
 
     const indexLikedPost = playground.likes?.indexOf(userId)

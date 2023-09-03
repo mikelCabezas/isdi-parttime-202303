@@ -1,9 +1,8 @@
-// import { validators } from "../../../com";
-// const { validateToken } = validators
+import { validators, utils } from '../../../com'
+const { validateToken } = validators
 
 export default (token, userLocation) => {
-    // validateToken(token);
-    // alert(API_URL)
+    validateToken(token);
 
     return fetch(`${process.env.EXPO_PUBLIC_API_URL}/playgrounds/`, {
         method: 'POST',

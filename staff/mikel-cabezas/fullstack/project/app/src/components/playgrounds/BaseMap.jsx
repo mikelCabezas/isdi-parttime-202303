@@ -61,7 +61,6 @@ export default function BaseMap({ user, onMarkerPressed, searchResult, onHomeHan
     }, [newPlaygroundStatus])
 
     useEffect(() => {
-        console.log('Refresh Posts -> render in useEffect')
         try {
             if (loadCurrentLocation) {
                 retrievePlaygrounds(TOKEN, location)

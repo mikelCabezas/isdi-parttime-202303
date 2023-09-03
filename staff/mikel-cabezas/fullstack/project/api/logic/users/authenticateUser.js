@@ -7,18 +7,14 @@ const bcrypt = require('bcryptjs');
 const { User } = require('../../data/models')
 
 /**
- * 
- * @param {string} email the user email
- * @param {string} password the user password
- * @returns {Promise<string>} the user id 
- * 
- * @throws {ContentError} on empty email or password (sync)
- * @throws {TypeError} on non-strings email or password (sync)
- * @throws {FormatError} wrong format on email or password (sync)
- * 
- * @throws {ExistenceError} on users does not exist (async)
- * @throws {AuthError} on failed correlation on db and provided data in order to authorize this action(async)
+ * Authenticates a user with the given email and password.
+ * @param {string} email - The email of the user to authenticate.
+ * @param {string} password - The password of the user to authenticate.
+ * @throws {ExistenceError} If the user does not exist.
+ * @throws {AuthError} If the user is not valid or the password is incorrect.
+ * @returns {Promise<string>} The ID of the authenticated user.
  */
+
 module.exports = function authenticateUser(email, password) {
     validateEmail(email)
     validatePassword(password)

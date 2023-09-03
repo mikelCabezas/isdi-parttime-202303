@@ -11,9 +11,7 @@ export default function EditElements({ TOKEN, id, colorScheme, setTopSheetModalC
     const [newElements, setNewElements] = useState();
 
     useEffect(() => {
-        console.log('id', id)
         setNewElements(elements)
-        setTopSheetModalColor('#666666')
     }, []);
 
     const onCancelHandleElement = () => {
@@ -23,8 +21,8 @@ export default function EditElements({ TOKEN, id, colorScheme, setTopSheetModalC
             setTopSheetIndicatorColor('#777')
         }
         if (colorScheme === 'dark') {
-            setTopSheetModalColor('#27272A')
-            setTopSheetIndicatorColor('#333')
+            setTopSheetModalColor('#111')
+            setTopSheetIndicatorColor('#888')
         }
     }
     const onNewElement = element => {
@@ -95,7 +93,7 @@ export default function EditElements({ TOKEN, id, colorScheme, setTopSheetModalC
             setTopSheetIndicatorColor('#888')
         }
         if (colorScheme === 'dark') {
-            setTopSheetModalColor('#27272A')
+            setTopSheetModalColor('#070707')
             setTopSheetIndicatorColor('#333')
         }
     }

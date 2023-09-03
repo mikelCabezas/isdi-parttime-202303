@@ -2,30 +2,28 @@ require('dotenv').config()
 const fetch = require('node-fetch');
 
 const { Playground } = require('../../data/models')
-const context = require('../context')
 const { validators: { validateUserId, validateText, validateToken, validateArray, validateURL }, errors: { ExistenceError, ContentError }
 } = require('com')
 
 /**
- * 
- * @param {string*} userId 
- * @param {string*} name 
- * @param {string*} description 
- * @param {string<Array>*} sunExposition
- * @param {string<Array>*} elements
- * @param {string<Array>*} images
- * @param {string*} location 
- * @returns {Promise<Object>} returns a promise object contains de new post 
- * 
- * @throws {TypeError} on non-string id, image, title and text (sync)
- * @throws {ContentError} on empty id, image, title or text  (sync)
- * @throws {FormatError} wrong format on image (sync)
+ * Adds a new playground to the database.
+ * @param {Object} token - The user's access token.
+ * @param {string} userId - The ID of the user adding the playground.
+ * @param {string} name - The name of the playground.
+ * @param {string} description - The description of the playground.
+ * @param {string} sunExposition - The sun exposition of the playground.
+ * @param {Array} elements - The elements of the playground.
+ * @param {Array} images - The images of the playground.
+ * @param {Array} location - The location of the playground.
+ * @returns {Promise<Object>} - The newly created playground object.
+ * @throws {ExistenceError} - If a playground already exists within 20 meters of the new playground.
+ * @throws {ContentError} - If the location array length is not 2.
+ * @throws {Error} - If there is an error with the Apple Maps API.
  */
 
 module.exports = async (token, userId, name, description, sunExposition, elements, images, location) => {
     validateUserId(userId)
     token?.accessToken ? validateToken(token.accessToken) : validateToken(token)
-
 
     validateText(name)
     validateText(description)
@@ -75,7 +73,6 @@ module.exports = async (token, userId, name, description, sunExposition, element
                             visibility: 'public',
                             location: {
                                 coordinates: location,
-                                // dateCreated: Date.now,
                                 city: mapsResponse.results[0].structuredAddress.locality,
                                 street: mapsResponse.results[0].structuredAddress.fullThoroughfare,
                                 state: mapsResponse.results[0].structuredAddress.administrativeArea,

@@ -1,33 +1,27 @@
 const { User, Post } = require('../../data/models')
-const {
-    validators: { validateId, validateText },
-    errors: { ExistenceError }
-} = require('com')
-
 
 /**
- * 
- * @param {string} userId 
- * @param {string} newName 
- * @returns {Promise<Object>} returns a promise object contains de user with the user username updated 
- * 
- * @throws {TypeError} on non-string id and new username (sync)
- * @throws {ContentError} on empty id or new username (sync)
- * @throws {FormatError} wrong format on new username (sync) 
- * 
- * @throws {AuthError} on failed correlation on db and provided data in order to authorize this action (async)
- * @throws {ExistenceError} on user not found (async)
+ * @typedef {Object} ExistenceError
+ * @property {string} message - Error message
+ */
 
+/**
+ * Updates the name of a user with the given ID.
+ * @param {string} userId - The ID of the user to update.
+ * @param {string} newName - The new name to set for the user.
+ * @returns {Promise} A promise that resolves with the updated user object.
+ * @throws {ExistenceError} If the user with the given ID does not exist.
  */
 module.exports = (userId, newName) => {
+    // Validate input parameters
     validateId(userId)
     validateText(newName)
 
+    // Find the user by ID and update their name
     return User.findById(userId)
         .then(user => {
             if (!user) throw new ExistenceError('user not found')
 
             return user.updateOne({ name: newName })
         })
-
 }

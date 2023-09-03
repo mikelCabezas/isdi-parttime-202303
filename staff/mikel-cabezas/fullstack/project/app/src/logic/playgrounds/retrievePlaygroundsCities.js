@@ -1,10 +1,8 @@
-// import { validators } from "../../../com";
-// const { validateToken } = validators
-import { EXPO_PUBLIC_API_URL } from '@env'
+import { validators, utils } from '../../../com'
+const { validateToken } = validators
 
 export default (token, searchQuery) => {
-    // validateToken(token);
-    // alert(API_URL)
+    validateToken(token);
     return fetch(`${process.env.EXPO_PUBLIC_API_URL}/cities/${searchQuery}`, {
         method: 'GET',
         headers: {

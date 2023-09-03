@@ -7,18 +7,14 @@ import SearchResults from "./SearchResults.jsx";
 import * as Animatable from 'react-native-animatable';
 import {
     MENU, FILTER,
-    WHITE_MENU, WHITE_MY_LOCATION
+    WHITE_MENU, WHITE_FILTER
 } from '../../../assets/icons/index.js';
 import retrievePlaygrounds from "../../logic/playgrounds/retrievePlaygrounds.js";
 import retrievePlaygroundsCities from "../../logic/playgrounds/retrievePlaygroundsCities.js";
 
 
 export default function Header({ navigation, onHandleViewPlaygroundsFromCity, handleToggleSidebar, onToggleFilter, setPlaygroundsCount }) {
-
-    if (colorScheme === 'dark') isDark = true
-    let isDark
     const clearTextInput = useRef(null);
-
     const { modal, setModal, colorScheme, TOKEN } = useContext(Context)
     const [text, setChangeText] = React.useState();
     const [searchQuery, setSearchQuery] = React.useState();
@@ -27,6 +23,9 @@ export default function Header({ navigation, onHandleViewPlaygroundsFromCity, ha
     const [data, setData] = React.useState();
     const [timeoutId, setTimeoutId] = useState()
     const [animation, setAnimation] = useState('fadeInDown')
+
+    let isDark
+    if (colorScheme === 'dark') isDark = true
 
     useEffect(() => {
         setIsLoading(true)
@@ -95,7 +94,7 @@ export default function Header({ navigation, onHandleViewPlaygroundsFromCity, ha
                     activeOpacity={1.0}
                     onPress={onToggleSidebar}>
                     <Image
-                        className={`w-8 h-8 m-auto ${isDark ? 'opacity-80' : ''}`}
+                        className={`w-8 h-8 m-auto dark:opacity-80`}
                         source={isDark ? WHITE_MENU : MENU}
                     />
                 </TouchableOpacity>
@@ -105,11 +104,12 @@ export default function Header({ navigation, onHandleViewPlaygroundsFromCity, ha
                             onFocus={onSearchPlayground}
                             clearButtonMode="always"
                             inputMode="text"
-                            className="px-5 py-3 flex-1 dark:text-zinc-200  text-left"
+                            className="px-5 py-3 flex-1 dark:text-zinc-200 text-left"
                             setChangeText={setChangeText}
                             onChangeText={(e) => setSearchQuery(e)}
                             value={text}
                             placeholder="Search playground in..."
+                            placeholderTextColor={`${isDark ? '#a1a1aa' : ''}`}
                             keyboardType="default"
                             ref={clearTextInput}
                             returnKeyType="done"
@@ -122,8 +122,8 @@ export default function Header({ navigation, onHandleViewPlaygroundsFromCity, ha
                     activeOpacity={1.0}
                     onPress={onToggleFilter}>
                     <Image
-                        className="w-7 h-7 m-auto"
-                        source={isDark ? FILTER : FILTER} />
+                        className="w-7 h-7 m-auto dark:opacity-80"
+                        source={isDark ? WHITE_FILTER : FILTER} />
                 </TouchableOpacity>
 
             </View>

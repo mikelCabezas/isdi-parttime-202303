@@ -1,32 +1,23 @@
 const { User } = require('../../data/models')
-// const randomString = require('../helpers/randomString')
 const sendNewPasswordEmail = require('../helpers/sendNewPasswordEmail')
 const retrieveUser = require('./retrieveUser')
 const jwt = require('jsonwebtoken')
-
 const {
     validators: { validateEmail },
     errors: { ExistenceError }
 } = require('com')
+
 /**
- * 
- * @param {string} name the user name 
- * @param {string} email the user email
- * @param {string} password the user password
- * @returns {void} does not return anything
- *
- * @throws {TypeError} on non-string name and email (sync)
- * @throws {ContentError} on empty name, email or password (sync)
- * @throws {FormatError} wrong format on email or password (sync)
- * 
- * @throws {DuplicityError} on already existing user with provided credentials (async)
- * 
+ * Updates the uniqueString field of a user with a new random string, generates a JWT token with the new uniqueString as the payload, and sends an email with the token to the user's email address.
+ * @param {string} email - The email address of the user.
+ * @throws {ExistenceError} If no user is found with the given email address.
+ * @throws {ValidationError} If the email parameter is not a valid email address.
+ * @returns {Promise<boolean>} A Promise that resolves to true if the email was sent successfully.
  */
 
 module.exports = async function forgotPassword(email) {
     try {
         validateEmail(email)
-
         const randomString = () => {
             const length = 8
             let randomString = ''
@@ -39,7 +30,6 @@ module.exports = async function forgotPassword(email) {
             return randomString
         }
         const uniqueString = randomString()
-
 
         const user = await User.findOne({ email })
         if (!user) throw new ExistenceError('user not found')

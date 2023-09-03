@@ -1,21 +1,15 @@
 const { User } = require('../../data/models')
-// const randomString = require('../helpers/randomString')
-
 const {
     validators: { validateUniqueString },
     errors: { ExistenceError }
 } = require('com')
+
 /**
- * 
- * @param {string} uniqueString the user string
- * @returns {void} does not return anything
- *
- * @throws {TypeError} on non-string name and email (sync)
- * @throws {ContentError} on empty name, email or password (sync)
- * @throws {FormatError} wrong format on email or password (sync)
- * 
- * @throws {DuplicityError} on already existing user with provided credentials (async)
- * 
+ * Validates a user by setting their `isValid` property to `true`.
+ * @async
+ * @function
+ * @param {string} uniqueString - The unique string identifier of the user to validate.
+ * @throws {ExistenceError} Throws an error if the user is not found.
  */
 
 module.exports = async function validateUser(uniqueString) {
@@ -24,5 +18,4 @@ module.exports = async function validateUser(uniqueString) {
     if (!user) throw new ExistenceError('user not found')
 
     await user.updateOne({ isValid: true })
-
 }

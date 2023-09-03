@@ -1,20 +1,17 @@
 const { User, Playground } = require('../../data/models')
 const {
-    validators: { validateId, validateUserId, validatePostId },
+    validators: { validateId },
     errors: { ExistenceError }
 } = require('com')
 
 /**
- * 
- * @param {*} userId 
- * @param {*} playgroundId 
- * @returns {Promise<Object>} returns a promise object contains de sanatized post 
- * 
- * @throws {TypeError} on non-string userId and/or playgroundId (sync)
- * @throws {ContentError} on empty userId and/or playgroundId (sync) 
- * 
- * @throws {ExistenceError} on user not found (async)
- * */
+ * Retrieves a playground by its ID.
+ * @param {string} userId - The ID of the user who owns the playground.
+ * @param {string} playgroundId - The ID of the playground to retrieve.
+ * @returns {Promise<Object>} - A Promise that resolves with the playground object.
+ * @throws {ExistenceError} - If either the user or the playground is not found.
+ */
+
 module.exports = async (userId, playgroundId) => {
     validateId(userId)
     validateId(playgroundId)
@@ -25,8 +22,6 @@ module.exports = async (userId, playgroundId) => {
     if (!user) throw new ExistenceError(`User with id ${userId} not found`)
     if (!playground) throw new ExistenceError(`Playground with id ${playgroundId} not found`)
 
-    // if (playground.author.toString() !== userId) throw new Error(`Post with id ${playgroundId} does not belong to user with id ${userId}`)
-    // delete playground.author
     return playground
 
 }

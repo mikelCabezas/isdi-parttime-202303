@@ -29,15 +29,14 @@ export default function SearchResults({ handleCloseModal, retrievedCitiesList, h
 
     const autoComplete = (city) => {
         handleAutocomplete(city)
-        // console.log(search)
     }
 
-    return <View className="bg-mainGray w-full py-1 absolute top-0 mt-[4px] rounded-[22px] ">
+    return <View className="bg-mainGray dark:bg-zinc-700 w-full py-1 absolute top-0 mt-[4px] rounded-[22px] ">
         <View className=" w-full my-5 " />
         {retrievedCitiesList?.length > 0 && retrievedCitiesList?.map((result, index) => {
-            return <View className="pt-3  border-[#d2d2d2] border-t" key={index} >
+            return <View className="pt-3  border-[#d2d2d2] dark:border-zinc-700  border-t" key={index} >
                 <TouchableOpacity activeOpacity={0.7} key={`${index}-touchable`} className="pt-1 pb-3 px-4" onPress={() => autoComplete(result)}>
-                    <Text key={`${index}-text`}> {result}</Text>
+                    <Text className="text-zinc-200" key={`${index}-text`}> {result}</Text>
                 </TouchableOpacity>
             </View>
         })}

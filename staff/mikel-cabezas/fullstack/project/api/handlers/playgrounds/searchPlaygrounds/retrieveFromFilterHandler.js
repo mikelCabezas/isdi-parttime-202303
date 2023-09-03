@@ -4,6 +4,8 @@ const { retrieveFromFilter } = require('../../../logic/playgrounds')
 const { extractUserId, handleErrors } = require('../../helpers')
 
 module.exports = handleErrors((req, res) => {
+    console.log('adkbaskhdasjdasjkd')
+    debugger
     const userId = extractUserId(req)
     const { sunExposition, age, elements, accessible, from, distance } = req.params
     return mapkitAccessToken()
@@ -22,12 +24,14 @@ module.exports = handleErrors((req, res) => {
             }
         })
         .then(location => {
+            if (location?.latitude) {
+                location = [location.latitude, location.longitude]
+            }
             const coordinates = {
                 latitude: location[0],
                 longitude: location[1]
             }
             return retrieveFromFilter(userId, sunExposition, age, elements, accessible, coordinates, distance)
                 .then(playgrounds => res.status(200).send(playgrounds))
-                .catch(error => error.message)
         })
 })

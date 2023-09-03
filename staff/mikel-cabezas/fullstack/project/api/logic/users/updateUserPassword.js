@@ -1,7 +1,5 @@
 const { User } = require('../../data/models')
 const bcrypt = require('bcryptjs')
-
-
 const {
     validators: { validateUserId, validatePassword, validateNewPassword },
     errors: { ExistenceError, ContentError }
@@ -9,21 +7,16 @@ const {
 const jwt = require('jsonwebtoken')
 
 /**
- * 
- * @param {string} userId 
- * @param {string} currentPassword 
- * @param {string} newPassword 
- * @param {string} repeatPassword 
- * @returns {Promise<Object>} returns a promise object contains de user with the user password updated 
- * 
- * @throws {TypeError} on non-string id and current password, new password, and confirm password (sync)
- * @throws {ContentError} on empty id or current password, new password, and confirm password (sync)
- * @throws {FormatError} wrong format on current password, new password, and confirm password (sync)
- * 
- * @throws {AuthError} on failed correlation on db and provided data in order to authorize this action (async)
- * @throws {ExistenceError} on user not found (async)
-
+ * Updates the password of a user with the given ID.
+ * @param {string} userId - The ID of the user to update.
+ * @param {string} currentPassword - The user's current password.
+ * @param {string} newPassword - The new password to set for the user.
+ * @param {string} repeatPassword - The new password repeated to confirm it.
+ * @returns {Promise<object>} - A promise that resolves to the updated user object.
+ * @throws {ExistenceError} - If the user with the given ID does not exist.
+ * @throws {ContentError} - If the current password does not match, the new password is the same as the old one, or the new password and its confirmation do not match.
  */
+
 module.exports = async (userId, currentPassword, newPassword, repeatPassword) => {
     validateUserId(userId)
     validatePassword(newPassword)

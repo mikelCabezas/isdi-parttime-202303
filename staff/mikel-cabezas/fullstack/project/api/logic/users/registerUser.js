@@ -1,33 +1,26 @@
 const { User } = require('../../data/models')
-// const randomString = require('../helpers/randomString')
 const sendRegisterEmail = require('../helpers/sendRegisterEmail')
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs')
-
 const {
     validators: { validateName, validateEmail, validatePassword },
     errors: { DuplicityError, UnknownError }
 } = require('com')
+
 /**
- * 
- * @param {string} name the user name 
- * @param {string} email the user email
- * @param {string} password the user password
- * @returns {void} does not return anything
- *
- * @throws {TypeError} on non-string name and email (sync)
- * @throws {ContentError} on empty name, email or password (sync)
- * @throws {FormatError} wrong format on email or password (sync)
- * 
- * @throws {DuplicityError} on already existing user with provided credentials (async)
- * 
+ * Registers a new user with the given name, email, and password.
+ * @param {string} name - The name of the user.
+ * @param {string} email - The email of the user.
+ * @param {string} password - The password of the user.
+ * @returns {Promise<void>} - A promise that resolves when the user is successfully registered.
+ * @throws {DuplicityError} - If a user with the given email already exists.
+ * @throws {UnknownError} - If an unknown error occurs while registering the user.
  */
 
 module.exports = function registerUser(name, email, password) {
     validateName(name)
     validateEmail(email)
     validatePassword(password)
-
 
     const randomString = () => {
         const length = 8

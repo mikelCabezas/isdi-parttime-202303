@@ -1,26 +1,19 @@
 const { User } = require('../../data/models')
 const {
     validators: { validateUniqueString, validateEmail },
-    errors: { ExistenceError, DuplicityError, AuthError }
+    errors: { ExistenceError, AuthError }
 } = require('com')
 const { } = require('com/errors')
 const jwt = require('jsonwebtoken')
 
 /**
- * 
- * @param {string} uniqueString 
- * @param {string} newEmail 
- * 
- * @returns {Promise<Object>} returns a promise object contains de user with the email updated 
- * 
- * @throws {TypeError} on non-string id and email (sync)
- * @throws {ContentError} on empty id or email (sync)
- * @throws {FormatError} wrong format on email (sync)
- * 
- * @throws {AuthError} on failed correlation on db and provided data in order to authorize this action (async)
- * @throws {DuplicityError} on already existing user with provided credentials (async)
-
+ * Updates the email of a user with the given token and new email.
+ * @param {string} token - The token of the user.
+ * @param {string} newEmail - The new email to update.
+ * @throws {ExistenceError} If the user is not found.
+ * @throws {AuthError} If the user's account is not verified.
  */
+
 module.exports = async (token, newEmail) => {
     try {
         console.log('token in function', token)

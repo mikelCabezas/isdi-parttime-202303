@@ -1,26 +1,23 @@
 const { User } = require('../../data/models')
-// const randomString = require('../helpers/randomString')
 const sendConfirmNewEmail = require('../helpers/sendConfirmNewEmail')
-const retrieveUser = require('./retrieveUser')
 const jwt = require('jsonwebtoken')
 
 const {
     validators: { validateEmail },
     errors: { DuplicityError, ExistenceError, AuthError }
 } = require('com')
+
 /**
- * 
- * @param {string} name the user name 
- * @param {string} email the user email
- * @param {string} password the user password
- * @returns {void} does not return anything
- *
- * @throws {TypeError} on non-string name and email (sync)
- * @throws {ContentError} on empty name, email or password (sync)
- * @throws {FormatError} wrong format on email or password (sync)
- * 
- * @throws {DuplicityError} on already existing user with provided credentials (async)
- * 
+ * Confirms a new email for a user
+ * @async
+ * @function confirmNewEmail
+ * @param {string} userId - The ID of the user to confirm the new email for
+ * @param {string} newEmail - The new email to confirm
+ * @throws {ExistenceError} If the user is not found
+ * @throws {DuplicityError} If the new email is already associated with another user
+ * @throws {AuthError} If the user's account is not verified
+ * @throws {Error} If the email confirmation mail could not be sent
+ * @returns {boolean} Returns true if the email confirmation mail was sent successfully
  */
 
 module.exports = async function confirmNewEmail(userId, newEmail) {

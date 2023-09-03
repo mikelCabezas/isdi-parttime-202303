@@ -1,17 +1,17 @@
 const { User } = require('../../data/models')
-// const randomString = require('../helpers/randomString')
-
 const {
     validators: { validateUniqueString },
     errors: { ExistenceError }
 } = require('com')
+
 /**
- * 
- * @param {string} uniqueString the user string
- * @returns {void} does not return anything
- *
- * @throws {ExistenceError} on non-string name and email (sync)
- * 
+ * Recovers a user's password by setting their `isValid` property to `true`.
+ * @async
+ * @function recoverPassword
+ * @param {string} uniqueString - The unique string associated with the user's account.
+ * @throws {ExistenceError} If the user is not found.
+ * @throws {Error} If there is an error updating the user's `isValid` property.
+ * @returns {boolean} Whether the email was successfully sent or not.
  */
 
 module.exports = async function recoverPassword(uniqueString) {

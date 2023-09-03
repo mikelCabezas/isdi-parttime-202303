@@ -1,15 +1,13 @@
-import { View, StatusBar, Text, Alert, Dimensions, Image, TouchableOpacity, TouchableHighlight, ScrollView } from 'react-native';
-import { useContext, useEffect, useState, useRef, useMemo, useCallback } from 'react';
+import { View, StatusBar, Text, Alert, Dimensions, Image, TouchableOpacity, ScrollView } from 'react-native';
+import { useContext } from 'react';
 import AppContext from "../AppContext.js";
 import Context from '../AppContext.js'
-import BottomSheet from '@gorhom/bottom-sheet';
 
 import { WHITE_CLOSE, CLOSE } from '../../assets/icons';
 
 export default function Home({ user, handleCloseWelcomeMessage }) {
     const { colorScheme } = useContext(Context)
 
-    // const [welcomeMessageStorage, setWelcomeMessageStorage] = useState(false)
     let mainColor
     if (colorScheme === 'dark') {
         mainColor = 'rgb(31 41 55)'
@@ -23,9 +21,9 @@ export default function Home({ user, handleCloseWelcomeMessage }) {
 
     return <>
         <View className="flex-1 w-full h-screen bg-black60 justify-center items-center absolute top-0">
-            <TouchableHighlight onPress={onCloseWelcomeMessage} className="absolute right-2 top-10 z-50 shadow-md shadow-black ">
+            <TouchableOpacity activeOpacity={0.8} onPress={onCloseWelcomeMessage} className="absolute right-2 top-10 z-50 shadow-md shadow-black ">
                 <Image source={WHITE_CLOSE} className="w-10 h-10" />
-            </TouchableHighlight>
+            </TouchableOpacity>
             <View className="w-10/12 max-h-[80vh] p-7 bg-white dark:bg-zinc-800 rounded-2xl">
                 <ScrollView>
                     <Text className="dark:text-zinc-200 text-lg font-semibold">Welcome {user.name}!</Text>

@@ -15,7 +15,7 @@ import retrievePlaygroundsCities from "../../logic/playgrounds/retrievePlaygroun
 import * as Animatable from 'react-native-animatable';
 
 export default function AdvancedSearch({ closeHandle, setPlaygroundsCount, onHandleViewPlaygroundsFromSearch }) {
-    const { TOKEN, currentView, setCurrentView, currentMarker, location, freeze, unfreeze } = useContext(Context)
+    const { TOKEN, colorScheme, setCurrentView, location } = useContext(Context)
     const [playground, setPlayground] = useState()
     const [elements, setElements] = useState([{ status: false, type: 'Slide' }, { status: false, type: 'Rider' }, { status: false, type: 'Swing' }, { status: false, type: 'Double Swing' }, { status: false, type: 'Seesaw' }, { status: false, type: 'Sandbox' }, { status: false, type: 'House' }, { status: false, type: 'Climber' }])
     const [activeAges, setActiveAges] = useState()
@@ -36,6 +36,9 @@ export default function AdvancedSearch({ closeHandle, setPlaygroundsCount, onHan
     const [inputLocation, setInputLocation] = useState();
     const [distance, setDistance] = useState(1);
 
+    let isDark
+    if (colorScheme === 'dark') isDark = true
+
     enableScroll = () => this.setState({ scrollEnabled: true });
     disableScroll = () => this.setState({ scrollEnabled: false });
 
@@ -46,7 +49,6 @@ export default function AdvancedSearch({ closeHandle, setPlaygroundsCount, onHan
         setRetrievedCitiesList()
     }
     const toggleCurrentLocation = () => {
-        console.log('current location on toggle', currentLocation)
         setCurrentLocation(previousState => !previousState)
 
         switch (currentLocation) {
@@ -69,6 +71,7 @@ export default function AdvancedSearch({ closeHandle, setPlaygroundsCount, onHan
             let age
             if (!activeAges) age = null
             if (activeAges?.length > 0) age = activeAges.length
+            debugger
             const query = {
                 sunExposition: [{ shady: playgroundShady }, { sunny: playgroundSunny }, { partial: playgroundPartial }],
                 age: age,
@@ -83,6 +86,7 @@ export default function AdvancedSearch({ closeHandle, setPlaygroundsCount, onHan
             if (!useUserLocation && !inputLocation) {
                 throw new Error(`Set your current location or a city`)
             }
+            debugger
             retrieveFromFilter(TOKEN, query)
                 .then(playgroundsResult => {
                     try {
@@ -155,17 +159,19 @@ export default function AdvancedSearch({ closeHandle, setPlaygroundsCount, onHan
                 if (searchQuery)
                     await retrievePlaygroundsCities(TOKEN, searchQuery).then(data => {
                         if (data.length > 0) {
-                            console.log('data', data)
                             setRetrievedCitiesList(data)
                         } else {
                             setRetrievedCitiesList(['No results were found. Try another city name.'])
                         }
                     })
             } catch (error) {
-                console.log(error.message)
             }
         }, 2000);
         setTimeoutId(newTimeoutId)
+    }
+
+    const handleCancel = () => {
+        closeHandle()
     }
 
     onAutocomplete = (city) => {
@@ -209,6 +215,7 @@ export default function AdvancedSearch({ closeHandle, setPlaygroundsCount, onHan
                                             // autoCompleteType="city"
                                             clearButtonMode="always"
                                             placeholder="City"
+                                            placeholderTextColor={`${isDark ? '#a1a1aa' : ''}`}
                                             className="dark:text-zinc-200 border border-mainGray bg-mainGray dark:border-zinc-700 dark:bg-zinc-700 rounded-full mt-1 mb-0 pl-3 pr-6 py-3 self-start w-full z-10"
                                             inputMode="text"
                                             keyboardType="default"
@@ -269,6 +276,14 @@ export default function AdvancedSearch({ closeHandle, setPlaygroundsCount, onHan
                         onPress={handleQuerySearch} >
                         <View className="font-bold px-6 py-2 self-center rounded-full" >
                             <Text className="font-bold text-lg">Search</Text>
+                        </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        activeOpacity={0.8}
+                        className="mt-4 self-center w-full"
+                        onPress={handleCancel}  >
+                        <View className="px-6  self-center " >
+                            <Text className="dark:text-zinc-200 text-lg">Cancel</Text>
                         </View>
                     </TouchableOpacity>
                 </View>

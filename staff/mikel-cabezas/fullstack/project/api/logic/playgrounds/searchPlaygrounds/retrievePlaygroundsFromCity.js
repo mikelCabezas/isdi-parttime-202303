@@ -1,26 +1,27 @@
-
 const { User, Playground } = require('../../../data/models')
 const fetch = require('node-fetch');
 
 const {
-    validators: { validateUserId },
+    validators: { validateId, validateToken },
     errors: { ExistenceError }
 } = require('com')
 
 /**
- * 
- * @param {string} userId 
- * @returns {Promise<Object>} returns a promise object contains Z sanatized playgrounds 
-  * 
- * @throws {TypeError} on non-string userId (sync)
- * @throws {ContentError} on empty userId (sync)
- * 
- * @throws {ExistenceError} on user not found (async)
+ * Retrieves playgrounds from a city using the Apple Maps API and MongoDB's geospatial query operators.
+ * @param {Object} token - The user's access token.
+ * @param {string} userId - The ID of the user.
+ * @param {string} city - The name of the city to search for playgrounds in.
+ * @returns {Promise<Array>} - A promise that resolves to an array containing the user's coordinates and an array of playgrounds.
+ * @throws {ExistenceError} - If the user with the given ID does not exist.
+ * @throws {Error} - If there is an error with the Apple Maps API request.
  */
 
-module.exports = (token, userId, city) => {
-    validateUserId(userId)
+module.exports = async (token, userId, city) => {
+    validateId(userId)
+    token?.accessToken ? validateToken(token.accessToken) : validateToken(token)
 
+    const user = await User.findById(userId)
+    if (!user) throw new ExistenceError(`user not found`)
     // token, name, description, sunExposition, elements, images, location
 
     // let mapsResponse
@@ -33,45 +34,39 @@ module.exports = (token, userId, city) => {
     })
         .then(res => {
             if (res.status !== 200)
-                return res.json().then(({ error: message }) => { throw new Error(message) })
+                return res.json().then(({ error: message }) => { throw new Error(message.message) })
             return res.json()
         })
         .then(mapsResponse => {
-            try {
-                let longRegion, latRegion, maxDistance
+            let longRegion, latRegion, maxDistance
 
-                const latitude = mapsResponse.results[0].coordinate.latitude
-                const longitude = mapsResponse.results[0].coordinate.longitude
+            const latitude = mapsResponse.results[0].coordinate.latitude
+            const longitude = mapsResponse.results[0].coordinate.longitude
 
-                if (mapsResponse.results[0].displayMapRegion.westLongitude > mapsResponse.results[0].displayMapRegion.eastLongitude)
-                    longRegion = mapsResponse.results[0].displayMapRegion.westLongitude - mapsResponse.results[0].displayMapRegion.eastLongitude
-                else
-                    longRegion = mapsResponse.results[0].displayMapRegion.eastLongitude - mapsResponse.results[0].displayMapRegion.westLongitude
 
-                if (mapsResponse.results[0].displayMapRegion.northLatitude > mapsResponse.results[0].displayMapRegion.southLatitude)
-                    latRegion = mapsResponse.results[0].displayMapRegion.northLatitude - mapsResponse.results[0].displayMapRegion.southLatitude
-                else
-                    latRegion = mapsResponse.results[0].displayMapRegion.southLatitude - mapsResponse.results[0].displayMapRegion.northLatitude
+            mapsResponse.results[0].displayMapRegion.westLongitude > mapsResponse.results[0].displayMapRegion.eastLongitude ? longRegion = mapsResponse.results[0].displayMapRegion.westLongitude - mapsResponse.results[0].displayMapRegion.eastLongitude : longRegion = mapsResponse.results[0].displayMapRegion.eastLongitude - mapsResponse.results[0].displayMapRegion.westLongitude
 
-                if (longRegion > latRegion) maxDistance = longRegion * 111139
-                else maxDistance = latRegion * 111139
+            mapsResponse.results[0].displayMapRegion.northLatitude > mapsResponse.results[0].displayMapRegion.southLatitude ? latRegion = mapsResponse.results[0].displayMapRegion.northLatitude - mapsResponse.results[0].displayMapRegion.southLatitude : latRegion = mapsResponse.results[0].displayMapRegion.southLatitude - mapsResponse.results[0].displayMapRegion.northLatitude
 
-                const coordinates = [latitude, longitude]
+            longRegion > latRegion ? maxDistance = longRegion * 111139 : maxDistance = latRegion * 111139
 
-                return Playground.find({
-                    location: {
-                        $near: {
-                            $geometry: { type: "Point", coordinates: [latitude, longitude] },
-                            $maxDistance: maxDistance
-                            // $maxDistance: 10000
-                        }
+            const coordinates = [latitude, longitude]
+
+            return Playground.find({
+                location: {
+                    $near: {
+                        $geometry: { type: "Point", coordinates: [latitude, longitude] },
+                        $maxDistance: maxDistance
+                        // $maxDistance: 10000
                     }
-                }).lean()
-                    .then(playgrounds => [coordinates, [playgrounds]])
+                }
+            }).lean()
+                .then(playgrounds => [coordinates, [playgrounds]])
+            // .catch(error => {
+            //     throw error
+            // })
 
-            } catch (error) {
-                console.log(error.message)
-            }
+
         })
 
 }

@@ -1,21 +1,16 @@
 const { User } = require('../../data/models')
-// const randomString = require('../helpers/randomString')
-
 const {
     validators: { validateName, validateEmail, validateUniqueString },
     errors: { ExistenceError }
 } = require('com')
+
 /**
- * 
- * @param {string} uniqueString the user string
- * @returns {void} does not return anything
- *
- * @throws {TypeError} on non-string name and email (sync)
- * @throws {ContentError} on empty name, email or password (sync)
- * @throws {FormatError} wrong format on email or password (sync)
- * 
- * @throws {DuplicityError} on already existing user with provided credentials (async)
- * 
+ * Searches for a user in the database by uniqueString.
+ * @async
+ * @function searchUser
+ * @param {string} uniqueString - The unique string of the user to search for.
+ * @throws {ExistenceError} If the user is not found.
+ * @returns {Promise<boolean>} Returns true if the user is found.
  */
 
 module.exports = async function searchUser(uniqueString) {

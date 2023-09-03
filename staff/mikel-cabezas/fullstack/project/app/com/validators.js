@@ -36,8 +36,8 @@ function validateText(text) {
 function validatePassword(password) {
     if (!password) throw new ContentError("Password is empty")
     if (typeof password !== "string") throw new TypeError("Password is not a string");
+    if (password.length < 8) throw new RangeError("Password must be higher than 8 characters");
     if (password === " ") throw new ContentError("Password cannot be a whitespace")
-    if (password.trim().length < 8) throw new RangeError("Password is shorter than 8 characters");
 }
 
 function validateUserId(userId) {
@@ -45,7 +45,7 @@ function validateUserId(userId) {
     if (!userId) throw new ContentError('User is empty')
 }
 
-function validateId(id, explain = 'token') {
+function validateId(id, explain = 'Id') {
     if (typeof id !== 'string') throw new TypeError(`${explain} is not a string`)
     if (!id) throw new ContentError(`${explain} is empty`)
 }
@@ -63,6 +63,28 @@ function validateToken(token, explain = 'token') {
     if (typeof token !== 'string') throw new TypeError(`${explain} is not a string`)
     if (token.split('.').length !== 3) throw new ContentError(`${explain} is not valid`)
 }
+function validateUniqueString(uniqueString, explain = 'uniqueString') {
+    if (typeof uniqueString !== 'string') throw new TypeError(`${explain} is not a string`)
+    if (uniqueString.length !== 8) throw new ContentError(`${explain} is not valid`)
+}
+function validateArray(array, explain = 'array') {
+    if (!Array.isArray(array)) throw new TypeError(`${explain} is not an array`)
+}
+function validateObject(object, explain = 'object') {
+    if (typeof object !== 'object' && object !== null) throw new TypeError(`${object} is not an object`)
+}
+function validateURL(url, explain = 'url') {
+    const pattern = new RegExp(
+        '^([a-zA-Z]+:\\/\\/)?' + // protocol
+        '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // domain name
+        '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR IP (v4) address
+        '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
+        '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
+        '(\\#[-a-z\\d_]*)?$', // fragment locator
+        'i'
+    );
+    if (pattern.test(url) === false) throw new FormatError(`Invalid ${explain} format`)
+}
 
 module.exports = {
     validateName,
@@ -74,5 +96,9 @@ module.exports = {
     validateUserId,
     validatePostId,
     validateCallback,
-    validateToken
+    validateToken,
+    validateUniqueString,
+    validateArray,
+    validateObject,
+    validateURL
 }

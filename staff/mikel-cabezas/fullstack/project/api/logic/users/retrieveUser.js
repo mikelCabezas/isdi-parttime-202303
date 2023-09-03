@@ -5,21 +5,18 @@ const {
 } = require('com')
 
 /**
- * 
- * @param {string} userId user id
- * @returns {Promise<Object>} returns an object with de user
- * 
- * @throws {TypeError} on non-string id (sync)
- * @throws {ContentError} on empty id (sync)
- * 
- * @throws {ExistenceError} on user not found (async)
+ * Retrieves a user by ID.
+ * @async
+ * @function
+ * @param {string} userId - The ID of the user to retrieve.
+ * @throws {ExistenceError} If the user is not found.
+ * @returns {Promise<Object>} The user object without the password and ID fields.
  */
 
 module.exports = async userId => {
     validateUserId(userId)
 
     const user = await User.findById(userId, '-password -_id').lean()
-
     if (!user) throw new ExistenceError('user not found')
 
     return user

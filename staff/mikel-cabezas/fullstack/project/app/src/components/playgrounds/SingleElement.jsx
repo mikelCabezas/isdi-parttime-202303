@@ -56,7 +56,7 @@ export default function SingleElement({ index, element, handleEditElement }) {
     return <TouchableOpacity
         key={index}
         activeOpacity={0.8}
-        className={`border border-${status} rounded-full mb-2 mr-2 bg-mainGray`}
+        className={`border border-${status} rounded-full mb-2 mr-2 bg-mainGray dark:bg-zinc-300`}
         onPress={(handleOnPress)}
     >
         <View className="font-bold px-3 py-0.5 flex-row items-center content-center" key={index}

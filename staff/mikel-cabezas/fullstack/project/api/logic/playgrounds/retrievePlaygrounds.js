@@ -1,21 +1,19 @@
 const { User, Playground } = require('../../data/models')
-const mongoose = require('mongoose')
-
 const {
     validators: { validateUserId },
     errors: { ExistenceError }
 } = require('com')
 
 /**
- * 
- * @param {string} userId 
- * @returns {Promise<Object>} returns a promise object contains de sanatized playgrounds 
-  * 
- * @throws {TypeError} on non-string userId (sync)
- * @throws {ContentError} on empty userId (sync)
- * 
- * @throws {ExistenceError} on user not found (async)
+ * Retrieves playgrounds near a given location.
+ * @param {string} userId - The ID of the user making the request.
+ * @param {Object} location - The location to search for playgrounds near.
+ * @param {number} location.latitude - The latitude of the location.
+ * @param {number} location.longitude - The longitude of the location.
+ * @returns {Promise<Array>} - A promise that resolves to an array of playgrounds near the given location.
+ * @throws {ExistenceError} - If the user with the given ID does not exist.
  */
+
 module.exports = async (userId, location) => {
     validateUserId(userId)
     const user = await User.findById(userId)

@@ -14,9 +14,7 @@ export default function NearbyPlaygrounds({ onMarkerPressedHandler }) {
     const [user, setUser] = useState()
 
     useEffect(() => {
-        console.log('Refresh Posts -> render in useEffect')
         try {
-            console.log('   Show all Posts -> render in useEffect onLoad compo')
             retrievePlaygrounds(TOKEN, location)
                 .then(playgrounds => {
                     setPlaygrounds(playgrounds)

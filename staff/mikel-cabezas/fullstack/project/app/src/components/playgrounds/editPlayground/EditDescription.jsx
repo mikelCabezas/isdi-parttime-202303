@@ -1,14 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { View, Text, TextInput, TouchableOpacity, Alert } from 'react-native';
-import SingleElement from '../SingleElement'
 import editPlayGroundDescription from '../../../logic/playgrounds/editPlayground/editPlaygroundDescription.js'
-import AddElement from "../addPlayground/AddElement.jsx";
-import { SUNNY, SHADY } from '../../../../assets/icons';
+import Context from '../../../AppContext'
+
 
 export default function EditElements({ TOKEN, id, onEdited, onCancelEdit, description }) {
-    const [modal, setModal] = useState()
+    const { colorScheme } = useContext(Context)
     const [playgroundDescription, setPlaygroundDescription] = useState()
 
+    let isDark
+    if (colorScheme === 'dark') isDark = true
 
     useEffect(() => {
         setPlaygroundDescription(description)
@@ -64,6 +65,7 @@ export default function EditElements({ TOKEN, id, onEdited, onCancelEdit, descri
                     onChangeText={setPlaygroundDescription}
                     secureTextEntry
                     placeholder="Description"
+                    placeholderTextColor={`${isDark ? '#a1a1aa' : ''}`}
                     className="dark:text-zinc-200 border border-mainGray bg-mainGray dark:border-zinc-600 dark:bg-zinc-600  rounded-xl mt-1 mb-4 px-2 py-2 self-start w-full h-[85px]"
                     inputMode="text"
                     keyboardType="default"

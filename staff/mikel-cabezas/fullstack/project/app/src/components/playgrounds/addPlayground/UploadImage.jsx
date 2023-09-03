@@ -32,9 +32,6 @@ export default function Upload() {
 
             setReady(true);
             result.assets[0].uri = manipResult.uri
-            console.log('imageResized', imageResized)
-            console.log('manipResult', manipResult)
-
         }
     }
 

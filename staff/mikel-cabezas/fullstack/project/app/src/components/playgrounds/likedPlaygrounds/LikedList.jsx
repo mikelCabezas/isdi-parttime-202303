@@ -1,10 +1,8 @@
 import React, { useEffect, useState, useContext } from "react";
 
-import { Text, Image, View, TouchableHighlight, Modal, Animated } from 'react-native';
+import { Text, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 
-import * as Animatable from 'react-native-animatable';
-import { CLOSE } from '../../../../assets/icons';
 import Context from '../../../AppContext.js'
 
 import { NativeWindStyleSheet } from "nativewind";
@@ -15,16 +13,13 @@ NativeWindStyleSheet.setOutput({
 
 export default function LikedList({ closeHandle, playground, handleMarkerPressedHandler }) {
     const { currentView, setCurrentView } = useContext(Context)
-    // const { currentMarker, setCurrentMarker } = useContext(Context)
     const [animation, setAnimation] = useState('fadeInUp')
 
     const onClose = () => {
         setAnimation('fadeOutDown')
         closeHandle()
-        // alert('hola')
         setAnimation()
     }
-
 
     return <>
         {playground &&

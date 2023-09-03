@@ -1,9 +1,8 @@
-import { View, StatusBar, Alert, Dimensions, Image, TouchableHighlight, Text } from 'react-native';
+import { View, StatusBar, Alert, Dimensions, Image, TouchableOpacity, Text } from 'react-native';
 import { useContext, useEffect, useState, useRef, useMemo, useCallback } from 'react';
 import AppContext from "../AppContext.js";
 const { Provider } = AppContext
 import Context from '../AppContext.js'
-import WelcomeMessage from '../library/WelcomeMessage'
 
 import BottomSheet from '@gorhom/bottom-sheet';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -17,12 +16,15 @@ import Footer from '../components/Footer.jsx';
 import Nearby from '../components/playgrounds/nearby/Nearby.jsx';
 import SinglePlayground from '../components/playgrounds/SinglePlayground.jsx';
 import CreatePlayground from '../components/playgrounds/addPlayground/AddPlayground.jsx';
-import retrieveUser from "../logic/users/retrieveUser"
 import { BaseMap } from '../components/playgrounds/index.js';
+import WelcomeMessage from '../library/WelcomeMessage'
+import FutureVersions from '../library/FutureVersions'
+
+import retrieveUser from "../logic/users/retrieveUser"
 
 import Carousel, { Pagination, PaginationLight } from 'react-native-x-carousel';
 import LikedList from '../components/playgrounds/likedPlaygrounds/LikedList.jsx';
-import UserSettings from '../components/playgrounds/UserSettings.jsx';
+import UserSettings from '../components/UserSettings.jsx';
 import welcomeMessage from '../logic/welcomeMessage.js';
 import checkLoggedInUser from '../logic/users/checkLoggedInUser.js';
 
@@ -173,6 +175,9 @@ export default function Home({ route, navigation, onSendViewPlaygroundsFromCity 
         welcomeMessage()
         setWelcomeMessageStorage(false)
     }
+    const onCloseFutureVersions = () => {
+        setModal()
+    }
 
     const onHome = () => {
         setModal('')
@@ -189,6 +194,11 @@ export default function Home({ route, navigation, onSendViewPlaygroundsFromCity 
     }
     const onWhatsNew = () => {
         setWelcomeMessageStorage(true)
+    }
+    const onFutureVersions = () => {
+        setTimeout(() => {
+            setModal('futureVersions')
+        }, 305);
     }
     const onCreatePlayground = () => {
         setModal('createPlayground')
@@ -290,20 +300,20 @@ export default function Home({ route, navigation, onSendViewPlaygroundsFromCity 
 
     return <>
         <View className="flex-1 bg-white  dark:bg-zinc-800 items-center justify-center">
-            {modal === 'sidebar' && <Sidebar setModal={setModal} likedHandler={onOpenLikedFromSidebar} whatsNewHandler={onWhatsNew} navigation={navigation} user={user} closeHandle={onCloseSidebar} userSettingsHandler={onUserSettingsFromSidebar} />}
+            {modal === 'sidebar' && <Sidebar setModal={setModal} likedHandler={onOpenLikedFromSidebar} futureVersionsHandler={onFutureVersions} whatsNewHandler={onWhatsNew} navigation={navigation} user={user} closeHandle={onCloseSidebar} userSettingsHandler={onUserSettingsFromSidebar} />}
             <BaseMap setAnimation={setAnimation} animation={animation} setPlaygroundsCount={setPlaygroundsCount} onHomeHandler={onHomeHandler} user={user} className="-z-20" onMarkerPressed={markerPressedHandler} searchResult={searchResult} newPlaygroundStatus={newPlaygroundStatus} />
 
             {playgroundsCount && <>
                 <Animatable.View animation={animation} duration={350} className="position absolute top-[10vh]">
-                    <View className=" flex-row justify-center px-4 py-2 mt-5 left-0 w-auto rounded-full bg-white">
-                        <Text className="text-center text-r">{playgroundsCount} playgrounds loaded</Text>
+                    <View className=" flex-row justify-center px-4 py-2 mt-5 left-0 w-auto rounded-full bg-white dark:bg-zinc-800">
+                        <Text className="text-center font-semibold dark:text-zinc-200 ">{playgroundsCount} playgrounds loaded</Text>
                     </View>
                 </Animatable.View>
             </>}
             {!playgroundsCount && <>
                 <Animatable.View animation={animation} duration={350} className="position absolute top-[10vh]">
-                    <View className=" flex-row justify-center px-4 py-2 mt-5 left-0 w-auto rounded-full bg-white">
-                        <Text className="text-center text-r">No playgrounds found in this location!</Text>
+                    <View className=" flex-row justify-center px-4 py-2 mt-5 left-0 w-auto rounded-full bg-white dark:bg-zinc-800">
+                        <Text className="text-center font-semibold dark:text-zinc-200 ">No playgrounds found in this location!</Text>
                     </View>
                 </Animatable.View>
             </>}
@@ -331,9 +341,9 @@ export default function Home({ route, navigation, onSendViewPlaygroundsFromCity 
             </BottomSheet>}
             {modalImages && <>
                 <View className={`absolute w-full  h-full left-0 top-0 bg-black80 items-center justify-center`}>
-                    <TouchableHighlight onPress={onCloseImages} className="absolute right-2 top-10 z-50 shadow-md shadow-black">
+                    <TouchableOpacity activeOpacity={0.8} onPress={onCloseImages} className="absolute right-2 top-10 z-50 shadow-md shadow-black">
                         <Image source={WHITE_CLOSE} className="w-10 h-10" />
-                    </TouchableHighlight>
+                    </TouchableOpacity>
                     <Carousel
                         pagination={PaginationLight}
                         renderItem={renderItem}
@@ -428,6 +438,7 @@ export default function Home({ route, navigation, onSendViewPlaygroundsFromCity 
 
             <StatusBar style="auto" />
             {welcomeMessageStorage && user && loadCurrentLocation && <WelcomeMessage user={user} handleCloseWelcomeMessage={onCloseWelcomeMessage} />}
+            {modal === 'futureVersions' && <FutureVersions user={user} handleCloseonCloseFutureVersions={onCloseFutureVersions} />}
         </View >
     </>
 }

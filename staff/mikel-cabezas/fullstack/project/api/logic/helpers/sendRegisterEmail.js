@@ -1,34 +1,41 @@
 const nodeMailer = require("nodemailer");
 require("dotenv").config()
+/**
+ * Sends a registration confirmation email to the user.
+ * @param {string} name - The name of the user.
+ * @param {string} email - The email address of the user.
+ * @param {string} token - The token to verify the user's account.
+ * @returns {Promise<void>} - A Promise that resolves when the email is sent.
+ */
 
 module.exports = async (name, email, token) => {
-    const transport = nodeMailer.createTransport({
-        host: process.env.HOST,
-        service: 'mail',
-        protocol: 'mail',
-        pool: false,
-        port: 465,
-        secure: true,
-        transportMethod: 'SMTP',
-        requireTLS: true,
-        secureConnection: true,
-        auth: {
-            user: process.env.USERMAIL,
-            pass: process.env.PASS,
-        },
-        tls: {
-            secure: false,
-            ignoreTLS: true,
-            rejectUnauthorized: true
-        }
-    })
+  const transport = nodeMailer.createTransport({
+    host: process.env.HOST,
+    service: 'mail',
+    protocol: 'mail',
+    pool: false,
+    port: 465,
+    secure: true,
+    transportMethod: 'SMTP',
+    requireTLS: true,
+    secureConnection: true,
+    auth: {
+      user: process.env.USERMAIL,
+      pass: process.env.PASS,
+    },
+    tls: {
+      secure: false,
+      ignoreTLS: true,
+      rejectUnauthorized: true
+    }
+  })
 
-    const { API_URL } = process.env
-    const mailOptions = {
-        from: 'Playgrounds Near, <noreply@playgroundsnear.app>',
-        to: email,
-        subject: 'Email confirmation - Playgrounds App',
-        html: `
+  const { API_URL } = process.env
+  const mailOptions = {
+    from: 'Playgrounds Near, <noreply@playgroundsnear.app>',
+    to: email,
+    subject: 'Email confirmation - Playgrounds App',
+    html: `
       <!DOCTYPE html>
       <html lang="en" style="height: 100vh; font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;">
         <head>
@@ -64,12 +71,12 @@ module.exports = async (name, email, token) => {
         </body>
       </html>
     `
-    }
+  }
 
-    try {
-        const info = await transport.sendMail(mailOptions)
-        console.log('Mail sent!', info)
-    } catch (error) {
-        console.log('Mail not sent!', error)
-    }
+  try {
+    const info = await transport.sendMail(mailOptions)
+    console.log('Mail sent!', info)
+  } catch (error) {
+    console.log('Mail not sent!', error)
+  }
 }

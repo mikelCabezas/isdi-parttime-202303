@@ -4,25 +4,28 @@ import { Text, Image, View, TouchableOpacity, Alert, TextInput } from 'react-nat
 import { ScrollView } from 'react-native-gesture-handler';
 
 import * as Animatable from 'react-native-animatable';
-import { CLOSE } from '../../../assets/icons';
-import Context from '../../AppContext.js'
+import { CLOSE } from '../../assets/icons';
+import Context from '../AppContext.js'
 
-import retrieveUser from "../../logic/users/retrieveUser";
-import { validateEmail, validatePassword, validateName } from "../../../com/validators.js";
-import { updateUserEmail } from "../../logic/users/updateUserEmail";
-import { updateUserName } from "../../logic/users/updateUserName";
-import { updateUserPassword } from "../../logic/users/updateUserPassword";
+import retrieveUser from "../logic/users/retrieveUser";
+import { validateEmail, validatePassword, validateName } from "../../com/validators.js";
+import { updateUserEmail } from "../logic/users/updateUserEmail";
+import { updateUserName } from "../logic/users/updateUserName";
+import { updateUserPassword } from "../logic/users/updateUserPassword";
 // import { updateUserEmail, updateUserName, updateUserPassword } from "../../logic/";
 
 
 export default function UserSettings({ closeHandle, handleMarkerPressedHandler }) {
-    const { currentView, setCurrentView, TOKEN } = useContext(Context)
+    const { colorScheme, TOKEN } = useContext(Context)
     const [user, setUser] = useState()
     const [name, setName] = useState()
     const [email, setEmail] = useState()
     const [currentPassword, setCurrentPassword] = useState()
     const [newPassword, setNewPassword] = useState()
     const [repeatPassword, setRepeatPassword] = useState()
+
+    let isDark
+    if (colorScheme === 'dark') isDark = true
 
     useEffect(() => {
         retrieveUser(TOKEN)
@@ -125,6 +128,7 @@ export default function UserSettings({ closeHandle, handleMarkerPressedHandler }
                             autoCapitalize="none"
                             autoCompleteType="email"
                             placeholder={user.name}
+                            placeholderTextColor={`${isDark ? '#a1a1aa' : ''}`}
                             className="dark:text-zinc-200 border border-mainGray bg-mainGray dark:border-zinc-700 dark:bg-zinc-700 rounded-full mt-1 mb-0 px-3 py-2 self-start w-full"
                             inputMode="text"
                             keyboardType="default"
@@ -138,6 +142,7 @@ export default function UserSettings({ closeHandle, handleMarkerPressedHandler }
                             autoCapitalize="none"
                             autoCompleteType="email"
                             placeholder={user.email}
+                            placeholderTextColor={`${isDark ? '#a1a1aa' : ''}`}
                             className="dark:text-zinc-200 border border-mainGray bg-mainGray dark:border-zinc-700 dark:bg-zinc-700 rounded-full mt-1 mb-0 px-3 py-2 self-start w-full "
                             inputMode="text"
                             keyboardType="email-address"
@@ -165,6 +170,7 @@ export default function UserSettings({ closeHandle, handleMarkerPressedHandler }
                             onChangeText={setCurrentPassword}
                             secureTextEntry
                             placeholder="Password"
+                            placeholderTextColor={`${isDark ? '#a1a1aa' : ''}`}
                             className="dark:text-zinc-200 border border-mainGray bg-mainGray dark:border-zinc-700 dark:bg-zinc-700 rounded-full my-1 px-3 py-2 self-start w-full"
                             inputMode="text"
                             keyboardType="default"
@@ -177,6 +183,7 @@ export default function UserSettings({ closeHandle, handleMarkerPressedHandler }
                             onChangeText={setNewPassword}
                             secureTextEntry
                             placeholder="Password"
+                            placeholderTextColor={`${isDark ? '#a1a1aa' : ''}`}
                             className="dark:text-zinc-200 border border-mainGray bg-mainGray dark:border-zinc-700 dark:bg-zinc-700 rounded-full my-1 px-3 py-2 self-start w-full"
                             inputMode="text"
                             keyboardType="default"
@@ -189,6 +196,7 @@ export default function UserSettings({ closeHandle, handleMarkerPressedHandler }
                             onChangeText={setRepeatPassword}
                             secureTextEntry
                             placeholder="Repeat password"
+                            placeholderTextColor={`${isDark ? '#a1a1aa' : ''}`}
                             className="dark:text-zinc-200 border border-mainGray bg-mainGray dark:border-zinc-700 dark:bg-zinc-700 rounded-full my-1 px-3 py-2 self-start w-full"
                             inputMode="text"
                             keyboardType="default"

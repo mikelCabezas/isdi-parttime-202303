@@ -1,39 +1,43 @@
 const nodeMailer = require("nodemailer");
 require("dotenv").config()
 
+/**
+ * Sends an email with a verification link to the specified email address.
+ * @param {string} email - The email address to send the verification link to.
+ * @param {string} token - The verification token to include in the link.
+ */
 
 module.exports = async (email, token) => {
-    try {
-        const transport = nodeMailer.createTransport({
-            host: process.env.HOST,
-            service: 'mail',
-            protocol: 'mail',
-            pool: false,
-            debug: false,
-            logger: false,
-            port: 465,
-            secure: true,
-            transportMethod: 'SMTP',
-            requireTLS: true,
-            secureConnection: true,
-            auth: {
-                user: process.env.USERMAIL,
-                pass: process.env.PASS,
-            },
-            tls: {
-                secure: false,
-                ignoreTLS: true,
-                rejectUnauthorized: true
-            }
-        })
+    const transport = nodeMailer.createTransport({
+        host: process.env.HOST,
+        service: 'mail',
+        protocol: 'mail',
+        pool: false,
+        debug: false,
+        logger: false,
+        port: 465,
+        secure: true,
+        transportMethod: 'SMTP',
+        requireTLS: true,
+        secureConnection: true,
+        auth: {
+            user: process.env.USERMAIL,
+            pass: process.env.PASS,
+        },
+        tls: {
+            secure: false,
+            ignoreTLS: true,
+            rejectUnauthorized: true
+        }
+    })
 
-        let mailOptions
-        let sender = "Playgrounds Near"
-        mailOptions = {
-            from: 'Playgrounds Near, <noreply@playgroundsnear.app>',
-            to: email,
-            subject: 'New email confirmation - Playgrounds App',
-            html: `<!DOCTYPE html>
+    let mailOptions
+    let sender = "Playgrounds Near"
+    mailOptions = {
+        from: 'Playgrounds Near, <noreply@playgroundsnear.app>',
+        to: email,
+        subject: 'New email confirmation - Playgrounds App',
+        html: `<!DOCTYPE html>
             <!DOCTYPE html>
 <html lang="en" style="height: 100vh; font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;">
     <head>
@@ -68,15 +72,11 @@ module.exports = async (email, token) => {
         </div>
     </body>
 </html>`
-        }
-
-        transport.sendMail(mailOptions, function (error, response) {
-            if (error) {
-                console.log(error.message)
-            } else console.log('Mail sent!')
-        })
-    } catch (error) {
-        console.log(error.message)
-        console.log('Mail notsent!')
     }
+
+    transport.sendMail(mailOptions, function (error, response) {
+        if (error) {
+            throw error
+        } // else console.log('Mail sent!')
+    })
 }

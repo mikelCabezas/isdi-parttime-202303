@@ -1,24 +1,26 @@
 const { User, Playground } = require('../../../data/models')
-
 const {
-    validators: { validateUserId },
+    validators: { validateId },
     errors: { ExistenceError }
 } = require('com')
 
 /**
- * 
- * @param {string} userId 
- * @returns {Promise<Object>} returns a promise object contains de sanatized playgrounds 
-  * 
- * @throws {TypeError} on non-string userId (sync)
- * @throws {ContentError} on empty userId (sync)
- * 
- * @throws {ExistenceError} on user not found (async)
+ * Retrieves playgrounds based on filter criteria.
+ * @param {string} userId - The ID of the user making the request.
+ * @param {string} _sunExpositionFilter - The sun exposition filter.
+ * @param {number} age - The age of the playground.
+ * @param {Array} _elements - The elements of the playground.
+ * @param {boolean} accessible - Whether the playground is accessible.
+ * @param {Object} from - The coordinates of the user's location.
+ * @param {number} distance - The maximum distance from the user's location to search for playgrounds.
+ * @returns {Promise<Array>} - A promise that resolves to an array containing the user's location and an array of playgrounds that match the filter criteria.
+ * @throws {Error} - If there is an error retrieving the playgrounds.
  */
+
 module.exports = (userId, _sunExpositionFilter, age, _elements, accessible, from, distance) => {
     try {
-        validateUserId(userId)
-
+        validateId(userId)
+        debugger
         age === 'null' ? age = null : age = age
 
         let isAccessible
@@ -40,6 +42,7 @@ module.exports = (userId, _sunExpositionFilter, age, _elements, accessible, from
         }
 
         let elements
+        debugger
         if (_elements && _elements !== 'null' && _elements !== []) {
             elements = _elements.split(',');
         } else {
@@ -59,18 +62,16 @@ module.exports = (userId, _sunExpositionFilter, age, _elements, accessible, from
             query['elements.age'] = { $lte: age }
         }
         if (isAccessible) {
-            query['elements.accessibility'] = { $lte: isAccessible }
+            query['elements.accessibility'] = isAccessible
         }
 
         if (elements) {
             query['elements.type'] = { $in: elements }
         }
-        if (from) {
-            query['location'] = {
-                $near: {
-                    $geometry: { type: "Point", coordinates: [from.latitude, from.longitude] },
-                    $maxDistance: distance * 1000
-                }
+        query['location'] = {
+            $near: {
+                $geometry: { type: "Point", coordinates: [from.latitude, from.longitude] },
+                $maxDistance: distance * 1000
             }
         }
 
@@ -81,14 +82,10 @@ module.exports = (userId, _sunExpositionFilter, age, _elements, accessible, from
             }, '-__v -dateCreated -lastModify').lean(),
         ])
             .then(([user, playgrounds]) => {
-                if (!user) new ExistenceError(`User with id ${userId} not found`)
-                console.log(playgrounds.length)
+                if (!user) throw new ExistenceError(`User not found`)
                 return [[from.latitude, from.longitude], [playgrounds]]
             })
-            .catch(error => {
-                console.log(error)
-            })
     } catch (error) {
-        console.log(error)
+        throw error
     }
 }

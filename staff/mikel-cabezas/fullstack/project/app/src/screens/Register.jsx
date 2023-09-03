@@ -12,25 +12,22 @@ import BG from '../../assets/bg-login.png'
 import LOGO_SM from '../../assets/logo-sm.png'
 import LOGO from '../../assets/logo.png'
 export default function Login({ navigation }) {
-    const { currentView, setCurrentView, colorScheme } = useContext(Context)
+    const { colorScheme } = useContext(Context)
     const [name, setName] = useState()
     const [email, setEmail] = useState()
     const [password, setPassword] = useState()
     const [repeatPassword, setRepeatPassword] = useState()
     const [url, setUrl] = useState()
     const [passwordToken, setPasswordToken] = useState()
-
+    let isDark
+    if (colorScheme === 'dark') isDark = true
 
     useEffect(() => {
-        console.log(`Linking`, Linking);
-        console.log(`process.env.EXPO_PUPLIC_API`, process.env.EXPO_PUBLIC_API_URL);
 
         Linking.getInitialURL().then((url) => {
-            console.log(`url`, url);
             setUrl(url)
             const index = url.indexOf("=");
             const token = url.slice(index + 1)
-            console.log(token)
             setPasswordToken(token)
         });
 
@@ -89,6 +86,7 @@ export default function Login({ navigation }) {
                             autoCapitalize="none"
                             autoCompleteType="email"
                             placeholder="Name"
+                            placeholderTextColor={`${isDark ? '#a1a1aa' : ''}`}
                             className="dark:text-zinc-200 border border-mainGray bg-mainGray dark:border-zinc-700 dark:bg-zinc-700 rounded-full mt-1 mb-0 px-2 py-2 self-center w-full text-center"
                             inputMode="text"
                             keyboardType="default"
@@ -102,6 +100,7 @@ export default function Login({ navigation }) {
                             autoCapitalize="none"
                             autoCompleteType="email"
                             placeholder="Email"
+                            placeholderTextColor={`${isDark ? '#a1a1aa' : ''}`}
                             className="dark:text-zinc-200 border border-mainGray bg-mainGray dark:border-zinc-700 dark:bg-zinc-700 rounded-full mt-1 mb-0 px-2 py-2 self-center w-full text-center"
                             inputMode="text"
                             keyboardType="email-address"
@@ -114,6 +113,7 @@ export default function Login({ navigation }) {
                             onChangeText={setPassword}
                             secureTextEntry
                             placeholder="Password"
+                            placeholderTextColor={`${isDark ? '#a1a1aa' : ''}`}
                             className="dark:text-zinc-200 border border-mainGray bg-mainGray dark:border-zinc-700 dark:bg-zinc-700 rounded-full my-1 px-2 py-2 self-center w-full text-center"
                             inputMode="text"
                             keyboardType="default"
@@ -126,6 +126,7 @@ export default function Login({ navigation }) {
                             onChangeText={setRepeatPassword}
                             secureTextEntry
                             placeholder="Repeat password"
+                            placeholderTextColor={`${isDark ? '#a1a1aa' : ''}`}
                             className="dark:text-zinc-200 border border-mainGray bg-mainGray dark:border-zinc-700 dark:bg-zinc-700 rounded-full my-1 px-2 py-2 self-center w-full text-center"
                             inputMode="text"
                             keyboardType="default"

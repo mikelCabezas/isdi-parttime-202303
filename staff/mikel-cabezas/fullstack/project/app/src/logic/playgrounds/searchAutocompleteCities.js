@@ -1,10 +1,9 @@
-// import { validators } from "../../../com";
-// const { validateToken } = validators
-import { EXPO_PUBLIC_API_URL } from '@env'
+import { validators, utils } from '../../../com'
+const { validateToken, validateText, validateId } = validators
 
 export default (token, word) => {
-    // validateToken(token);
-    // alert(API_URL)
+    validateToken(token);
+    validateText(word)
     return fetch(`${process.env.EXPO_PUBLIC_API_URL}/searchAutocomplete/${word}&limitToCountries=ES&lang=es-ES`, {
         method: 'GET',
         headers: {

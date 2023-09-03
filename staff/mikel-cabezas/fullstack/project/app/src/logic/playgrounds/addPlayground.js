@@ -1,17 +1,10 @@
-import { EXPO_PUBLIC_API_URL } from '@env'
-
-// import { validators, utils } from 'com'
-// import { isTokenValid } from 'com/utils'
-
-// const { isTokenValid } = utils
-// const { validateToken, validateText } = validators
+import { validators, utils } from '../../../com'
+const { validateToken, validateText } = validators
 
 export default function addPlayground(token, name, description, sunExposition, elements, images, location) {
-    // validateToken(token)
-    // validateText(name)
-    // validateText(description)
-    console.log(process.env.EXPO_PUBLIC_API_URL)
-
+    validateToken(token)
+    validateText(name)
+    validateText(description)
     return fetch(`${process.env.EXPO_PUBLIC_API_URL}/addPlayground`, {
         method: 'POST',
         headers: {

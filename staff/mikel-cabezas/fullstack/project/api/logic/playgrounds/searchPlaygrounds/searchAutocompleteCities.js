@@ -1,4 +1,3 @@
-
 const { User, Playground } = require('../../../data/models')
 const fetch = require('node-fetch');
 
@@ -8,14 +7,14 @@ const {
 } = require('com');
 
 /**
- * 
- * @param {string} userId 
- * @returns {Promise<Object>} returns a promise object contains Z sanatized playgrounds 
-  * 
- * @throws {TypeError} on non-string userId (sync)
- * @throws {ContentError} on empty userId (sync)
- * 
- * @throws {ExistenceError} on user not found (async)
+ * Searches for autocomplete cities using the Apple Maps API.
+ * @param {Object} token - The user's access token.
+ * @param {string} token.accessToken - The user's access token.
+ * @param {string} userId - The ID of the user.
+ * @param {string} city - The name of the city to search for.
+ * @returns {Promise<Array>} - A promise that resolves to an array of search results.
+ * @throws {Error} - If there is an error with the API request.
+ * @throws {ExistenceError} - If the user is not found.
  */
 
 module.exports = async (token, userId, city) => {
@@ -24,7 +23,8 @@ module.exports = async (token, userId, city) => {
     validateId(userId)
     validateText(city)
     const user = await User.findById(userId)
-    if (!user) throw new ExistenceError('User not found')
+    if (!user) throw new ExistenceError(`user not found`)
+
 
     return fetch(`https://maps-api.apple.com/v1/searchAutocomplete?q=${city}&lang=es-ES`, {
         method: 'GET',
@@ -39,7 +39,6 @@ module.exports = async (token, userId, city) => {
         })
         .then(mapsResponse => {
             const { results } = mapsResponse
-            debugger
             return results
         })
         .catch(error => {

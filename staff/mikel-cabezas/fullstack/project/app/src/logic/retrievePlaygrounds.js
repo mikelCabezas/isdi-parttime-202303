@@ -1,10 +1,10 @@
-// import { validators } from "../../../com";
-// const { validateToken } = validators
+import { validators, utils } from '../../com'
+const { validateToken, validateText, validateId } = validators
 import { API_URL } from '@env'
 
 export default token => {
-    // validateToken(token);
-    // alert(API_URL)
+    validateToken(token);
+
     return fetch(`${API_URL}/playgrounds`, {
         method: 'GET',
         headers: {

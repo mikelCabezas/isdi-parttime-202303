@@ -5,21 +5,14 @@ const {
 } = require('com')
 
 /**
- * 
- * @param {string} userId 
- * @param {string} playgroundId 
- * @param {string} title 
- * @param {string} text 
- * @param {string} image 
- * @param {string} visibility 
- * @returns {Promise<Object>} returns a promise object contains de edited playground 
- * 
- * @throws {TypeError} on non-string userId, playgroundId, image, title and text (sync)
- * @throws {ContentError} on empty userId, playgroundId, image, title and text (sync)
- * @throws {FormatError} wrong format on image (sync)
- * 
- * @throws {ExistenceError} on playground not found (async)
+ * Edits the description of a playground.
+ * @param {string} userId - The ID of the user performing the action.
+ * @param {string} playgroundId - The ID of the playground to edit.
+ * @param {string} description - The new description for the playground.
+ * @returns {Promise} A promise that resolves with the result of the update operation.
+ * @throws {ExistenceError} If either the user or the playground is not found.
  */
+
 module.exports = async (userId, playgroundId, description) => {
     validateId(userId)
     validateId(playgroundId)

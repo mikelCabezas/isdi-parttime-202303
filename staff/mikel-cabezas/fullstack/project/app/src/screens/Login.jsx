@@ -17,10 +17,13 @@ import { ScrollView } from "react-native-gesture-handler";
 
 
 export default function Login({ navigation }) {
-    const { currentView, setCurrentView, colorScheme, TOKEN, setTOKEN, isLoggedIn, setIsLoggedIn } = useContext(Context)
+    const { colorScheme, setTOKEN, setIsLoggedIn } = useContext(Context)
     const [email, setEmail] = useState()
     const [password, setPassword] = useState()
     const [message, setMessage] = useState()
+
+    let isDark
+    if (colorScheme === 'dark') isDark = true
 
     useEffect(() => {
         // Linking.getInitialURL().then((messageURL) => {
@@ -88,7 +91,6 @@ export default function Login({ navigation }) {
                         {/* <Text className="dark:text-zinc-200 text-2xl text-center font-semibold">{process.env.EXPO_PUBLIC_API_URL}</Text> */}
 
                         {/* <Text className="dark:text-zinc-200 pt-4 text-xs text-center">{process.env.EXPO_PUBLIC_API_URL}</Text> */}
-                        <Text className="dark:text-zinc-200 text-2xl text-center font-semibold">{process.env.EXPO_PUBLIC_API_URL}-</Text>
                         <Text className="dark:text-zinc-200 text-2xl text-center font-semibold">Login</Text>
                         <Text className="dark:text-zinc-200 pt-4 text-xs text-center">Your email</Text>
                         <TextInput
@@ -99,6 +101,7 @@ export default function Login({ navigation }) {
                             autoCapitalize="none"
                             autoCompleteType="email"
                             placeholder="Email"
+                            placeholderTextColor={`${isDark ? '#a1a1aa' : ''}`}
                             className="dark:text-zinc-200 border border-mainGray bg-mainGray dark:border-zinc-700 dark:bg-zinc-700 rounded-full mt-1 mb-0 px-2 py-2 self-center w-full text-center"
                             inputMode="text"
                             keyboardType="email-address"
@@ -111,6 +114,7 @@ export default function Login({ navigation }) {
                             onChangeText={setPassword}
                             secureTextEntry
                             placeholder="Password"
+                            placeholderTextColor={`${isDark ? '#a1a1aa' : ''}`}
                             className="dark:text-zinc-200 border border-mainGray bg-mainGray dark:border-zinc-700 dark:bg-zinc-700 rounded-full my-1 px-2 py-2 self-center w-full text-center"
                             inputMode="text"
                             keyboardType="default"

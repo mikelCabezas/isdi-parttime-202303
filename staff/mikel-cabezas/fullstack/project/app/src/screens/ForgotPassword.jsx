@@ -9,14 +9,13 @@ import BG from '../../assets/bg-login.png'
 import LOGO_SM from '../../assets/logo-sm.png'
 import LOGO from '../../assets/logo.png'
 export default function Login({ navigation }) {
-    const { currentView, setCurrentView, colorScheme } = useContext(Context)
-    const [name, setName] = useState()
+    const { colorScheme } = useContext(Context)
     const [email, setEmail] = useState()
-    const [password, setPassword] = useState()
-    const [repeatPassword, setRepeatPassword] = useState()
     const [url, setUrl] = useState()
     const [passwordToken, setPasswordToken] = useState()
 
+    let isDark
+    if (colorScheme === 'dark') isDark = true
 
     useEffect(() => {
         Linking.getInitialURL().then((url) => {
@@ -52,10 +51,9 @@ export default function Login({ navigation }) {
 
                 <View className="flex-1 items-center justify-center w-full">
                     <View className="bg-white dark:bg-zinc-800 h-auto px-6 py-7 w-3/4 rounded-3xl">
-                        {/* <Text className="dark:text-zinc-200 text-2xl text-center font-semibold">{url}</Text> */}
                         <Text className="dark:text-zinc-200 text-2xl text-center font-semibold">Forgot password</Text>
-
                         <Text className="dark:text-zinc-200 pt-4 text-xs text-center">Your email</Text>
+
                         <TextInput
                             label="Email"
                             returnKeyType="next"
@@ -64,19 +62,16 @@ export default function Login({ navigation }) {
                             autoCapitalize="none"
                             autoCompleteType="email"
                             placeholder="Email"
+                            placeholderTextColor={`${isDark ? '#a1a1aa' : ''}`}
                             className="dark:text-zinc-200 border border-mainGray bg-mainGray dark:border-zinc-700 dark:bg-zinc-700 rounded-full mt-1 mb-0 px-2 py-2 self-center w-full text-center"
                             inputMode="text"
-                            keyboardType="email-address"
-                        />
+                            keyboardType="email-address" />
 
                         <TouchableOpacity
                             activeOpacity={0.8}
                             className="border border-mainLime bg-mainLime rounded-full mb-1 mt-4 self-center w-auto  text-center"
-                            onPress={handleRegister}
-                        >
-                            <View
-                                className="font-bold text-center  px-6 py-2 self-center rounded-full"
-                            >
+                            onPress={handleRegister} >
+                            <View className="font-bold text-center  px-6 py-2 self-center rounded-full" >
                                 <Text className="font-bold text-center text-lg   self-center rounded-full">Get link</Text>
                             </View>
                         </TouchableOpacity>
@@ -84,13 +79,13 @@ export default function Login({ navigation }) {
                         <TouchableOpacity
                             className="mb-2 self-center w-full text-center"
                             activeOpacity={1}
-                            onPress={handleGoToLogin}
-                        >
-                            <Text
-                                className="dark:text-zinc-200 mt-3 text-xs text-center" >
+                            onPress={handleGoToLogin} >
+                            <Text className="dark:text-zinc-200 mt-3 text-xs text-center" >
                                 Already registered?
-                                <Text className="font-bold">Login</Text></Text>
+                                <Text className="font-bold">Login</Text>
+                            </Text>
                         </TouchableOpacity>
+
                     </View>
                 </View>
             </View>

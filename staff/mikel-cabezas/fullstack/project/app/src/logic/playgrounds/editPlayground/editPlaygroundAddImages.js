@@ -1,15 +1,10 @@
-import { EXPO_PUBLIC_API_URL } from '@env'
-
-// import { validators, utils } from 'com'
-// import { isTokenValid } from 'com/utils'
-
-// const { isTokenValid } = utils
-// const { validateToken, validateText } = validators
+import { validators, utils } from '../../../../com'
+const { validateToken, validateText, validateId } = validators
 
 export default function editPlayGroundExposition(token, playgroundId, images) {
-    // validateToken(token)
-    // validateText(name)
-    // validateText(description)
+    validateToken(token)
+    validateId(playgroundId)
+    validateText(description)
     return fetch(`${process.env.EXPO_PUBLIC_API_URL}/editPlayground/addImages/${playgroundId}`, {
         method: 'PATCH',
         headers: {

@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
 
-import { Text, Image, View, ScrollView, TouchableHighlight, Modal, Animated } from 'react-native';
+import { Text, View } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import { CLOSE } from '../../../../assets/icons';
 import Context from '../../../AppContext.js'
@@ -12,17 +12,7 @@ NativeWindStyleSheet.setOutput({
 });
 
 export default function Nearby({ closeHandle, playground, handleMarkerPressedHandler }) {
-    const { currentView, setCurrentView } = useContext(Context)
-    // const { currentMarker, setCurrentMarker } = useContext(Context)
     const [animation, setAnimation] = useState('fadeInUp')
-
-    const onClose = () => {
-        setAnimation('fadeOutDown')
-        closeHandle()
-        // alert('hola')
-        setAnimation()
-    }
-
     return <>
         {playground &&
             <View className="w-full h-auto max-h-max pl-5 pr-0 pt-1 rounded-[20px] mx-auto " >

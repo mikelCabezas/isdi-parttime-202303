@@ -6,14 +6,13 @@ const {
 } = require('com')
 
 /**
- * 
- * @param {string} userId 
- * @returns {Promise<Object>} returns a promise object contains de sanatized playgrounds 
-  * 
- * @throws {TypeError} on non-string userId (sync)
- * @throws {ContentError} on empty userId (sync)
- * 
- * @throws {ExistenceError} on user not found (async)
+ * Searches for autocomplete cities using the Apple Maps API.
+ * @param {Object} token - The user's access token.
+ * @param {string} token.accessToken - The user's access token.
+ * @param {string} userId - The ID of the user making the request.
+ * @param {string} city - The city to search for.
+ * @returns {Promise<Object>} - A Promise that resolves to an object containing the search results.
+ * @throws {Error} - If the API request fails or the user is not found.
  */
 
 module.exports = async (token, userId, city) => {

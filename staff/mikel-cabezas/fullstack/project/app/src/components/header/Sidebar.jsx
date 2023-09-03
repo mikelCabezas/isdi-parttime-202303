@@ -1,6 +1,9 @@
 import React, { useEffect, useState, useContext } from "react";
 import { Text, View, Image, SafeAreaView, ScrollView, TouchableOpacity } from 'react-native';
-import { MENU, MY_LOCATION, CLOSE, CLOSE_WHITE, LIKES, WHATS_NEW, ACCOUNT, LOGOUT, SHARE, FEEDBACK, FUTURE_VERSIONS } from '../../../assets/icons';
+import {
+    CLOSE, LIKES, WHATS_NEW, ACCOUNT, LOGOUT, SHARE, FEEDBACK, FUTURE_VERSIONS,
+    WHITE_CLOSE, WHITE_LIKES, WHITE_WHATS_NEW, WHITE_ACCOUNT, WHITE_LOGOUT, WHITE_SHARE, WHITE_FEEDBACK, WHITE_FUTURE_VERSIONS
+} from '../../../assets/icons';
 import { NativeWindStyleSheet } from "nativewind";
 import Context from '../../AppContext.js'
 import * as Animatable from 'react-native-animatable';
@@ -11,10 +14,11 @@ NativeWindStyleSheet.setOutput({
     default: "native",
 });
 
-export default function Sidebar({ navigation, closeHandle, user, likedHandler, whatsNewHandler, userSettingsHandler, setModal }) {
-    const { currentView, setCurrentView, isLoggedIn, setIsLoggedIn } = useContext(Context)
+export default function Sidebar({ navigation, closeHandle, user, likedHandler, whatsNewHandler, futureVersionsHandler, userSettingsHandler, setModal }) {
+    const { currentView, setCurrentView, colorScheme, setIsLoggedIn } = useContext(Context)
     const [animation, setAnimation] = useState()
-
+    let isDark
+    if (colorScheme === 'dark') isDark = true
     const onClose = () => {
         setAnimation('fadeOutLeft')
         closeHandle()
@@ -65,7 +69,8 @@ export default function Sidebar({ navigation, closeHandle, user, likedHandler, w
     }
 
     const handleGoToFutureVersions = () => {
-        alert('TODO Go To Future versions')
+        setAnimation('fadeOutLeft')
+        futureVersionsHandler()
     }
     const handleGoToWhatsNew = () => {
         setAnimation('fadeOutLeft')
@@ -89,8 +94,8 @@ export default function Sidebar({ navigation, closeHandle, user, likedHandler, w
                             setCurrentView('home')
                         }}>
                         <Image
-                            className={`w-8 h-8 m-auto `}
-                            source={CLOSE}
+                            className={`w-8 h-8 dark:opacity-80 m-auto `}
+                            source={isDark ? WHITE_CLOSE : CLOSE}
                         />
                     </TouchableOpacity>
                 </View>
@@ -112,8 +117,8 @@ export default function Sidebar({ navigation, closeHandle, user, likedHandler, w
                     }}>
                     <View className="w-12/12 flex-row py-2">
                         <Image
-                            className="w-8 h-8"
-                            source={ACCOUNT}
+                            className="w-8 h-8 dark:opacity-80"
+                            source={isDark ? WHITE_ACCOUNT : ACCOUNT}
                         />
                         <Text className="dark:text-zinc-200 px-4 flex-1 self-center" >
                             My account
@@ -127,8 +132,8 @@ export default function Sidebar({ navigation, closeHandle, user, likedHandler, w
                     onPress={onLiked}>
                     <View className="w-12/12 flex-row py-2">
                         <Image
-                            className="w-8 h-8"
-                            source={LIKES}
+                            className="w-8 h-8 dark:opacity-80"
+                            source={isDark ? WHITE_LIKES : LIKES}
                         />
                         <Text className="dark:text-zinc-200 px-4 flex-1 self-center" >
                             My favorites
@@ -147,7 +152,7 @@ export default function Sidebar({ navigation, closeHandle, user, likedHandler, w
                     }}>
                     <View className="w-12/12 flex-row pt-2 pb-4">
                         <Image
-                            className="w-8 h-8"
+                            className="w-8 h-8 dark:opacity-80"
                             source={ISSUES}
                         />
                         <Text className="px-4 flex-1 self-center" >
@@ -167,8 +172,8 @@ export default function Sidebar({ navigation, closeHandle, user, likedHandler, w
                     }}>
                     <View className="w-12/12 flex-row border-t-[1px] border-t-mainGray dark:border-t-zinc-700 pt-4 pb-2">
                         <Image
-                            className="w-8 h-8"
-                            source={LOGOUT}
+                            className="w-8 h-8 dark:opacity-80"
+                            source={isDark ? WHITE_LOGOUT : LOGOUT}
                         />
                         <Text className="dark:text-zinc-200 px-4 flex-1 self-center" >
                             Logout
@@ -187,8 +192,8 @@ export default function Sidebar({ navigation, closeHandle, user, likedHandler, w
                     }}>
                     <View className="w-12/12 flex-row py-2">
                         <Image
-                            className="w-8 h-8"
-                            source={SHARE}
+                            className="w-8 h-8 dark:opacity-80"
+                            source={isDark ? WHITE_SHARE : SHARE}
                         />
                         <Text className="dark:text-zinc-200 px-4 flex-1 self-center" >
                             Share app with friends
@@ -207,8 +212,8 @@ export default function Sidebar({ navigation, closeHandle, user, likedHandler, w
                     }}>
                     <View className="w-12/12 flex-row py-2 ">
                         <Image
-                            className="w-8 h-8"
-                            source={WHATS_NEW}
+                            className="w-8 h-8 dark:opacity-80"
+                            source={isDark ? WHITE_WHATS_NEW : WHATS_NEW}
                         />
                         <Text className="dark:text-zinc-200 px-4 flex-1 self-center" >
                             Whats new
@@ -229,8 +234,8 @@ export default function Sidebar({ navigation, closeHandle, user, likedHandler, w
                     }}>
                     <View className="w-12/12 flex-row py-2 ">
                         <Image
-                            className="w-8 h-8"
-                            source={FUTURE_VERSIONS}
+                            className="w-8 h-8 dark:opacity-80"
+                            source={isDark ? WHITE_FUTURE_VERSIONS : FUTURE_VERSIONS}
                         />
                         <Text className="dark:text-zinc-200 px-4 flex-1 self-center" >
                             Future versions
@@ -250,8 +255,8 @@ export default function Sidebar({ navigation, closeHandle, user, likedHandler, w
 
                     <View className="w-12/12 flex-row py-2  ">
                         <Image
-                            className="w-8 h-8"
-                            source={FEEDBACK}
+                            className="w-8 h-8 dark:opacity-80"
+                            source={isDark ? WHITE_FEEDBACK : FEEDBACK}
                         />
                         <Text className="dark:text-zinc-200 px-4 flex-1 self-center" >
                             Send feedback

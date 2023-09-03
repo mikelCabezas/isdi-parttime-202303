@@ -19,25 +19,28 @@ import uploadImages from '../../../logic/playgrounds/uploadImages'
 
 
 export default function CreatePlayground({ closeHandle, cancelAddPlayground, setTopSheetIndicatorColor, setTopSheetModalColor }) {
-    const { TOKEN } = useContext(Context)
+    const { colorScheme, TOKEN } = useContext(Context)
+    let isDark
+    if (colorScheme === 'dark') isDark = true
+
     const [playgroundName, setPlaygroundName] = useState()
     const [playgroundDescription, setPlaygroundDescription] = useState()
-    const [playgroundShady, setPlaygroundShady] = useState({ status: false, color: 'bg-mainGray' })
-    const [playgroundSunny, setPlaygroundSunny] = useState({ status: false, color: 'bg-mainGray' })
-    const [playgroundPartial, setPlaygroundPartial] = useState({ status: false, color: 'bg-mainGray' })
-    const [playgroundElements, setPlaygroundElements] = useState([])
 
+    const [fieldsStatusColor, setFieldsStatusColor] = useState(`${isDark ? 'dark:bg-zinc-300' : 'mainGray'}`)
+    const [playgroundShady, setPlaygroundShady] = useState({ status: false, color: isDark ? 'bg-zinc-300' : 'bg-mainGray' })
+    const [playgroundSunny, setPlaygroundSunny] = useState({ status: false, color: isDark ? 'bg-zinc-300' : 'bg-mainGray' })
+    const [playgroundPartial, setPlaygroundPartial] = useState({ status: false, color: isDark ? 'bg-zinc-300' : 'bg-mainGray' })
+
+    const [playgroundElements, setPlaygroundElements] = useState([])
     const [modal, setModal] = useState([]);
     const [editElement, setEditElement] = useState([]);
     const [imagesResized, setImagesResized] = useState([]);
     const [uploading, setUploading] = useState(false);
 
     let [fieldStatus, setFieldStatus] = useState('disabled')
-    const [fieldsStatusColor, setFieldsStatusColor] = useState('mainGray')
 
     const [currentLocation, setCurrentLocation] = useState([])
     useEffect(() => {
-
         (async () => {
             let { status } = await Location.requestForegroundPermissionsAsync();
             if (status !== 'granted') {
@@ -50,17 +53,30 @@ export default function CreatePlayground({ closeHandle, cancelAddPlayground, set
         })();
     }, []);
 
+    useEffect(() => {
+    }, [fieldsStatusColor]);
+
     const onClose = () => closeHandle()
 
     const onAddElement = () => {
         setModal('add-element')
-        setTopSheetModalColor('#666')
-        setTopSheetIndicatorColor('#333')
+        if (isDark) {
+            setTopSheetModalColor('#111')
+            setTopSheetIndicatorColor('#555')
+        } else {
+            setTopSheetModalColor('#666')
+            setTopSheetIndicatorColor('#333')
+        }
     }
     const handleEditElement = elementId => {
         setModal('edit-element')
-        setTopSheetModalColor('#666')
-        setTopSheetIndicatorColor('#333')
+        if (isDark) {
+            setTopSheetModalColor('#111')
+            setTopSheetIndicatorColor('#555')
+        } else {
+            setTopSheetModalColor('#666')
+            setTopSheetIndicatorColor('#333')
+        }
         setEditElement(elementId)
     }
     const onNewElement = (element) => {
@@ -78,8 +94,13 @@ export default function CreatePlayground({ closeHandle, cancelAddPlayground, set
     }
     const onCancelHandleElement = () => {
         setModal('')
-        setTopSheetModalColor('#fff')
-        setTopSheetIndicatorColor('#777')
+        if (isDark) {
+            setTopSheetModalColor('#27272A')
+            setTopSheetIndicatorColor('#888')
+        } else {
+            setTopSheetModalColor('#fff')
+            setTopSheetIndicatorColor('#777')
+        }
     }
     const handleCancel = () => {
         // if(playgroundName.length > 0, playgroundDescription.length > 0, playgroundShady.length > 0, playgroundSunny.length > 0, playgroundPartial.length > 0, playgroundElements.length > 0)
@@ -108,22 +129,6 @@ export default function CreatePlayground({ closeHandle, cancelAddPlayground, set
             console.log(error.message)
         }
     }
-
-    // const uploadImages = async () => {
-    //     try {
-    //         setUploading(true)
-    //         const urlImagesFirebase = Promise.all(imagesResized.map(async (image, index) => {
-    //             const response = await fetch(image.uri)
-    //             const blob = await response.blob()
-    //             const filename = image.uri.substring(image.uri.lastIndexOf('/') + 1)
-    //             const { ref } = await firebase.storage().ref().child(filename).put(blob)
-    //             return await ref.getDownloadURL()
-    //         }))
-    //         urlImagesFirebase.then(data => onCreatePlayground(data))
-    //     } catch (error) {
-    //         console.log(error.message)
-    //     }
-    // }
 
     const uploadImagesHandler = () => {
         setUploading(true)
@@ -157,6 +162,7 @@ export default function CreatePlayground({ closeHandle, cancelAddPlayground, set
                     autoCapitalize="none"
                     autoCompleteType=""
                     placeholder="Name"
+                    placeholderTextColor={`${isDark ? '#a1a1aa' : ''}`}
                     className="dark:text-zinc-200 border border-mainGray bg-mainGray dark:border-zinc-700 dark:bg-zinc-700 rounded-full mt-1 mb-0 px-2 py-2 self-center w-full "
                     inputMode="text"
                     keyboardType="default"
@@ -169,6 +175,7 @@ export default function CreatePlayground({ closeHandle, cancelAddPlayground, set
                     onChangeText={setPlaygroundDescription}
                     secureTextEntry
                     placeholder="Description"
+                    placeholderTextColor={`${isDark ? '#a1a1aa' : ''}`}
                     className="dark:text-zinc-200 border border-mainGray bg-mainGray dark:border-zinc-700 dark:bg-zinc-700 rounded-xl my-1 px-2 py-2 self-start w-full h-[85px]"
                     inputMode="text"
                     keyboardType="default"
@@ -182,7 +189,7 @@ export default function CreatePlayground({ closeHandle, cancelAddPlayground, set
                     })}
                     <TouchableOpacity
                         activeOpacity={0.8}
-                        className={`border border-mainYellow rounded-full bg-mainGray self-center items-center pr-1`}
+                        className={`border border-mainYellow rounded-full bg-mainGray dark:bg-zinc-300 self-center items-center pr-1`}
                         onPress={onAddElement}>
                         <View className="font-bold px-3 py-[8px] flex-row items-center justify-center" >
                             <Image className="w-5 h-5 mr-2" source={ADD} />
