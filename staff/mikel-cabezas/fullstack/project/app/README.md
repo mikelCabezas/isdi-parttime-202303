@@ -6,8 +6,6 @@ This app allow to login (or register if not signed up) for search playgrounds in
 
 View the elements of each park, the recommended age of elements and if the place it's shaded or sun exposed.
 
-Comment and rate parks for help other parents and childs.
-
 <img src="https://media.giphy.com/media/ildLrpK7sOV9ky6NOf/giphy.gif" width="250"/>
 
 Create issues in elements of park.
@@ -27,12 +25,12 @@ In any playground, you can view the elements that are in the park, and view the 
 
 ### Use cases 
 - Edit user information
-- Rate playground 
+- Edit playground 
+- Add photos in playground 
 - Create playground
-- Create issue in playground
-- Add comment to issue
 - Explore playgrounds nearby
-- Search playgrounds
+- Search playgrounds by city
+- Search playgrounds with advanced search
 
 
 ### User stories
@@ -42,14 +40,16 @@ In any playground, you can view the elements that are in the park, and view the 
 - interact with marker in map for open modal with this playground 
 - interact with playground preview in nodal box for open another modal with this playground 
 
-#### Search form
-- Better display for: name, address, elements with ages, its sun exposed or shaded, and image gallery 
-- Interact making a review or rate  
-- create an issue 
+#### Search by city
+- Search by: name location
+- Go directly to city with results
 
-#### User stories, IN CREATE PLAYGROUND
+#### Advanced search
+- Search by: name, location, elements with ages, its sun exposed or shaded, accessibility elements 
+- Go directly to city with results
+
+#### User stories, ON CREATE PLAYGROUND
 - If you discover a playground not entered in the app, you can create it if in around 10 meters does not have an other park. 
-
 
 
 ## TECHINAL DESCRIPTION 
@@ -65,7 +65,6 @@ User
 - Suscription (Input<'select'>)
 - User comments (string)
 - User ratings (string)
-- User issues (string)
 
 
 ### Single Playground 
@@ -84,3 +83,6 @@ User
     - select > two options: sun exposed, shaded
 }
 - Go to button (string)
+
+### Planning in Notion:
+https://www.notion.so/mikelcabezas/58313fd4e62b4b32a73311a4a4524fdb?v=4e7228f7baae4d278ca0787a9b51a382&pvs=4
