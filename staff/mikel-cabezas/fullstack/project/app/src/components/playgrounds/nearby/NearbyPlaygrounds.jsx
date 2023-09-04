@@ -38,12 +38,11 @@ export default function NearbyPlaygrounds({ onMarkerPressedHandler }) {
         }
     }, [])
 
-
     return <>
         <View className=" flex-row relative" >
             <ScrollView horizontal showsHorizontalScrollIndicator={false} className="pr-5">
                 {playgrounds && playgrounds[0].map(playground => {
-                    return <View className="w-[36vw] mr-3 last:mr-12 relative h-full" ><NearbyPlayground
+                    return <View key={playground._id} className="w-[36vw] mr-3 last:mr-12 relative h-full" ><NearbyPlayground
                         key={playground._id}
                         playground={playground}
                         user={user}

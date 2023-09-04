@@ -33,7 +33,6 @@ export default function Sidebar({ navigation, closeHandle, user, likedHandler, w
     }, [])
 
     useEffect(() => {
-        // setAnimation('fadeInRight')
     }, [animation])
 
     const handleGoToMyAccount = () => {
@@ -46,10 +45,6 @@ export default function Sidebar({ navigation, closeHandle, user, likedHandler, w
         setAnimation('fadeOutLeft')
         setCurrentView('home')
         likedHandler()
-    }
-
-    const handleGoToMyIssues = () => {
-        alert('TODO Go To My Issues')
     }
 
     const handleGoToLogout = async () => {
@@ -221,9 +216,7 @@ export default function Sidebar({ navigation, closeHandle, user, likedHandler, w
                     </View>
                 </TouchableOpacity>
 
-
                 <TouchableOpacity
-
                     activeOpacity={0.8}
                     underlayColor="#fff"
                     onPress={() => {

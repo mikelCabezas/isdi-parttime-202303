@@ -4,7 +4,6 @@ import { ScrollView } from 'react-native-gesture-handler';
 
 import Slider from '@react-native-community/slider';
 
-import { SHADY, LIKE, LIKE_FILLED, SUNNY, ADD } from '../../../assets/icons';
 import Context from '../../AppContext.js'
 import SingleElement from './SingleElement'
 import SingleAge from './SingleAge'
@@ -21,10 +20,8 @@ export default function AdvancedSearch({ closeHandle, setPlaygroundsCount, onHan
     const [activeAges, setActiveAges] = useState()
     const ages = [1, 2, 3, 4, 5, 6,]
     const [searchQuery, setSearchQuery] = React.useState();
-    const [timeoutId, setTimeoutId] = useState()
     const [retrievedCitiesList, setRetrievedCitiesList] = useState()
-
-    const [animation, setAnimation] = useState('')
+    const [timeoutId, setTimeoutId] = useState()
 
     const [playgroundShady, setPlaygroundShady] = useState({ status: false, color: 'bg-mainGray' })
     const [playgroundSunny, setPlaygroundSunny] = useState({ status: false, color: 'bg-mainGray' })
@@ -36,6 +33,8 @@ export default function AdvancedSearch({ closeHandle, setPlaygroundsCount, onHan
     const [inputLocation, setInputLocation] = useState();
     const [distance, setDistance] = useState(1);
 
+    const [animation, setAnimation] = useState('')
+
     let isDark
     if (colorScheme === 'dark') isDark = true
 
@@ -45,9 +44,6 @@ export default function AdvancedSearch({ closeHandle, setPlaygroundsCount, onHan
     const toggleAccessible = () => setIsAccessible(previousState => !previousState)
     const toggleUseUserLocation = () => setUseUserLocation(previousState => !previousState)
 
-    const closeCitiesList = () => {
-        setRetrievedCitiesList()
-    }
     const toggleCurrentLocation = () => {
         setCurrentLocation(previousState => !previousState)
 
@@ -71,7 +67,6 @@ export default function AdvancedSearch({ closeHandle, setPlaygroundsCount, onHan
             let age
             if (!activeAges) age = null
             if (activeAges?.length > 0) age = activeAges.length
-            debugger
             const query = {
                 sunExposition: [{ shady: playgroundShady }, { sunny: playgroundSunny }, { partial: playgroundPartial }],
                 age: age,
@@ -86,15 +81,10 @@ export default function AdvancedSearch({ closeHandle, setPlaygroundsCount, onHan
             if (!useUserLocation && !inputLocation) {
                 throw new Error(`Set your current location or a city`)
             }
-            debugger
             retrieveFromFilter(TOKEN, query)
                 .then(playgroundsResult => {
                     try {
                         if (playgroundsResult[1][0].length > 0) {
-                            // freeze()
-                            // setTimeout(() => {
-                            //     unfreeze()
-                            // }, 500);
                             onHandleViewPlaygroundsFromSearch(playgroundsResult)
                             setPlaygroundsCount(playgroundsResult[1][0].length)
                         }
@@ -123,9 +113,6 @@ export default function AdvancedSearch({ closeHandle, setPlaygroundsCount, onHan
                 })
                 .catch(error => alert(error.message))
         } catch (error) {
-            // Alert.alert('Error', `${error.message}`, [
-            //     { text: 'OK', onPress: () => { } },
-            // ]);
             alert(error.message)
         }
     }
@@ -165,6 +152,7 @@ export default function AdvancedSearch({ closeHandle, setPlaygroundsCount, onHan
                         }
                     })
             } catch (error) {
+                console.log(error.message)
             }
         }, 2000);
         setTimeoutId(newTimeoutId)
@@ -175,7 +163,6 @@ export default function AdvancedSearch({ closeHandle, setPlaygroundsCount, onHan
     }
 
     onAutocomplete = (city) => {
-        // alert(city)
         setInputLocation(city)
         setRetrievedCitiesList()
         Keyboard.dismiss();
@@ -200,9 +187,6 @@ export default function AdvancedSearch({ closeHandle, setPlaygroundsCount, onHan
                                     value={currentLocation}
                                 />
                                 {!useUserLocation && <Animatable.View animation={animation} duration={250} className="w-full z-50">
-                                    {/* {retrievedCitiesList && <>
-                                        <TouchableOpacity onPress={closeCitiesList} className="flex-1 w-full h-screen absolute left-0 top-0 bg-red-500z z-[99]" />
-                                    </>} */}
                                     <Text className="dark:text-zinc-200 text-lg w-full font-bold mr-2">Search by city</Text>
 
                                     <View className="z-[100]">
@@ -210,9 +194,7 @@ export default function AdvancedSearch({ closeHandle, setPlaygroundsCount, onHan
                                             label="City"
                                             returnKeyType="next"
                                             value={inputLocation}
-                                            // onChangeText={setInputLocation}
                                             onChangeText={(query) => handleSearch(query)}
-                                            // autoCompleteType="city"
                                             clearButtonMode="always"
                                             placeholder="City"
                                             placeholderTextColor={`${isDark ? '#a1a1aa' : ''}`}
@@ -253,7 +235,7 @@ export default function AdvancedSearch({ closeHandle, setPlaygroundsCount, onHan
                                 value={isAccessible}
                             />
                         </View>
-                        <SunExposition playgroundShady={playgroundShady} setPlaygroundShady={setPlaygroundShady} playgroundSunny={playgroundSunny} setPlaygroundSunny={setPlaygroundSunny} playgroundPartial={playgroundPartial} setPlaygroundPartial={setPlaygroundPartial} />
+                        <SunExposition key="sunExposition-img" playgroundShady={playgroundShady} setPlaygroundShady={setPlaygroundShady} playgroundSunny={playgroundSunny} setPlaygroundSunny={setPlaygroundSunny} playgroundPartial={playgroundPartial} setPlaygroundPartial={setPlaygroundPartial} />
                     </View>
                     <View className="flex flex-wrap flex-row mb-5 -z-10">
                         <Text className="dark:text-zinc-200 text-lg font-semibold w-full">Age</Text>
@@ -267,7 +249,6 @@ export default function AdvancedSearch({ closeHandle, setPlaygroundsCount, onHan
                             return <SingleElement element={element} index={index} mainColor="mainLime" onElementPressed={handleElementPressed} />
                         })}
                     </View>
-
 
                     <TouchableOpacity
                         underlayColor="#ffffff"

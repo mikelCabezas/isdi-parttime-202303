@@ -26,18 +26,6 @@ export default function Login({ navigation }) {
     if (colorScheme === 'dark') isDark = true
 
     useEffect(() => {
-        // Linking.getInitialURL().then((messageURL) => {
-        //     const index = messageURL.indexOf("=");
-        //     console.log(messageURL)
-        //     if (index !== -1) {
-        //         const messageSplitted = messageURL.slice(index + 1).split('-')
-        //         setMessage(messageSplitted.join(' '))
-        //         console.log(message)
-
-        //     }
-        // });
-    }, []);
-    useEffect(() => {
         if (message) {
             Alert.alert('Success', `${message}`, [
                 { text: 'OK', onPress: () => { } },
@@ -152,7 +140,7 @@ export default function Login({ navigation }) {
                             <Text
                                 className="dark:text-zinc-200 mt-3 text-xs text-center">
                                 Not registered?
-                                <Text className="font-bold">Register</Text></Text>
+                                <Text className="font-bold"> Register</Text></Text>
                         </TouchableOpacity>
                     </View>
 

@@ -2,7 +2,7 @@ import { useContext, useState } from "react"
 import Context from "../../../AppContext"
 import { Text, Image, View, TouchableOpacity } from 'react-native';
 
-export default function LikedPlayground({ playground, playground: { name, text, id, images, address, location: { coordinates, city, country, street } }, onToggleLikePost, onToggleSavePost, onEditPostButton, onHideMenuOptions, user, onPostDeleted, onMarkerPressedHandler }) {
+export default function LikedPlayground({ index, playground, playground: { name, text, id, images, address, location: { coordinates, city, country, street } }, onToggleLikePost, onToggleSavePost, onEditPostButton, onHideMenuOptions, user, onPostDeleted, onMarkerPressedHandler }) {
     // const userId = extractSubFromToken(context.token)
     // const userId = extractSubFromToken(context.token)
     const image = images[0]
@@ -27,8 +27,8 @@ export default function LikedPlayground({ playground, playground: { name, text, 
         Linking.openURL(url)
     }
     return <>
-        <TouchableOpacity onPress={markerPressedHandler} activeOpacity={0.8}>
-            <View className="flex flex-row relative" >
+        <TouchableOpacity key={index} onPress={markerPressedHandler} activeOpacity={0.8}>
+            <View key={index} className="flex flex-row relative" >
                 <View className="rounded-xl w-16 h-16 relative overflow-hidden flex justify-center items-center">
                     <Image source={{ uri: image }} className="w-28 h-28 object-contain " />
                 </View>

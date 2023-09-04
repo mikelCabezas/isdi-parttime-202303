@@ -1,31 +1,16 @@
-import React, { useEffect, useState, useContext } from "react";
-import { Keyboard, View, Image, TextInput, TouchableOpacity, Text } from 'react-native';
+import React, { useEffect, useContext } from "react";
+import { View, TouchableOpacity, Text } from 'react-native';
 
 import Context from '../../AppContext.js'
-import * as Animatable from 'react-native-animatable';
-import {
-    MENU, FILTER,
-    WHITE_MENU, WHITE_MY_LOCATION
-} from '../../../assets/icons/index.js';
-
-import retrievePlaygroundsFromCity from "../../logic/playgrounds/retrievePlaygroundsFromCity.js";
-
 
 export default function SearchResults({ handleCloseModal, retrievedCitiesList, handleViewPlaygroundsFromCity, setPlaygroundsCount, handleAutocomplete }) {
+    const { colorScheme } = useContext(Context)
 
     if (colorScheme === 'dark') isDark = true
     let isDark
-    let searchTimeOut
-
-    const { modal, setModal, colorScheme, TOKEN } = useContext(Context)
-    const [animation, setAnimation] = useState('fadeInDown')
 
     useEffect(() => {
     }, [retrievedCitiesList]);
-
-    const onSearchPlayground = () => {
-
-    }
 
     const autoComplete = (city) => {
         handleAutocomplete(city)

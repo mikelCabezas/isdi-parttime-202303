@@ -85,7 +85,6 @@ export default function Login({ navigation }) {
                                 <Text className="font-bold">Login</Text>
                             </Text>
                         </TouchableOpacity>
-
                     </View>
                 </View>
             </View>

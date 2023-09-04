@@ -58,9 +58,6 @@ export default function Home({ route, navigation, onSendViewPlaygroundsFromCity 
     } else if (colorScheme === 'light') {
         mainColor = '#ffffff'
     }
-    // if (overModal && colorScheme === 'light') {
-    //     mainColor = '#666666'
-    // }
 
     useEffect(() => {
 
@@ -72,9 +69,6 @@ export default function Home({ route, navigation, onSendViewPlaygroundsFromCity 
             setTopSheetModalColor('#27272A')
             setTopSheetIndicatorColor('#888')
         }
-        // console.log('params', params)
-        // navigation.getParam('message', 'default value')
-        // const message = JSON.stringify(params)
 
         if (params?.message === 'Success. New email setted') {
             Alert.alert('Success', `New email setted`, [
@@ -92,15 +86,11 @@ export default function Home({ route, navigation, onSendViewPlaygroundsFromCity 
                         ]);
                         setIsLoggedIn(false)
                         await navigation.navigate('Login')
-                        // AsyncStorage.clear();
                         AsyncStorage.getAllKeys()
                             .then(keys => AsyncStorage.multiRemove(keys))
-                            .then(() => alert('success'));
+                        // .then(() => alert('success'));
                     }
                 })
-
-        })();
-        (async () => {
             await retrieveUser(TOKEN)
                 .then(user => {
                     setUser(user)
@@ -134,19 +124,6 @@ export default function Home({ route, navigation, onSendViewPlaygroundsFromCity 
         }
     }, [colorScheme]);
 
-    useEffect(() => {
-
-        // JSON.stringify(navigation.getParam('otherParam', 'default value'))
-        // navigation
-
-        // if (message) {
-        //     Alert.alert('Success', `${message}`, [
-        //         { text: 'OK', onPress: () => { } },
-        //     ]);
-        //     setMessage()
-        // }
-    }, []);
-
     const handleSheetChangesCreate = useCallback((index) => {
         if (newPlaygroundStatus === false && index === -1) {
             confirmCloseModal()
@@ -170,13 +147,19 @@ export default function Home({ route, navigation, onSendViewPlaygroundsFromCity 
         }
     }, [playgroundsCount])
 
+    useEffect(() => {
+    }, [currentMarker])
+
+    const onCloseFutureVersions = () => setModal()
+    const onNearby = () => setModal('nearby')
+    const onLiked = () => setModal('liked')
+    const onWhatsNew = () => setWelcomeMessageStorage(true)
+    const markerPressedHandler = props => setModal('singlePlayground')
+
 
     const onCloseWelcomeMessage = () => {
         welcomeMessage()
         setWelcomeMessageStorage(false)
-    }
-    const onCloseFutureVersions = () => {
-        setModal()
     }
 
     const onHome = () => {
@@ -186,15 +169,7 @@ export default function Home({ route, navigation, onSendViewPlaygroundsFromCity 
             setOnHomeHandler(false)
         }, 50);
     }
-    const onNearby = () => {
-        setModal('nearby')
-    }
-    const onLiked = () => {
-        setModal('liked')
-    }
-    const onWhatsNew = () => {
-        setWelcomeMessageStorage(true)
-    }
+
     const onFutureVersions = () => {
         setTimeout(() => {
             setModal('futureVersions')
@@ -223,10 +198,6 @@ export default function Home({ route, navigation, onSendViewPlaygroundsFromCity 
         setTimeout(() => {
             setNewPlaygroundStatus(false)
         }, 1000);
-    }
-    const markerPressedHandler = props => {
-        // const playground = currentMarker
-        setModal('singlePlayground')
     }
     const onCloseSidebar = () => {
         setTimeout(() => {
@@ -269,13 +240,8 @@ export default function Home({ route, navigation, onSendViewPlaygroundsFromCity 
         if (modal) bottomSheetRef.current.close()
         setSearchResult(results)
     }
-    const handleViewPlaygroundsFromCity = (results) => {
-        setSearchResult(results)
-    }
-
-    const handleToggleSidebar = () => {
-        setModal('sidebar')
-    }
+    const handleViewPlaygroundsFromCity = (results) => setSearchResult(results)
+    const handleToggleSidebar = () => setModal('sidebar')
 
     const onToggleFilter = () => {
         if (modal !== 'searchFilter') {
@@ -286,17 +252,12 @@ export default function Home({ route, navigation, onSendViewPlaygroundsFromCity 
         }
     }
 
-    const onHandleOpenImages = () => {
-        setModalImages(true)
-    }
-    const onMarkerPressedHandler = () => {
-        setModalImages(true)
-    }
+    const onHandleOpenImages = () => setModalImages(true)
+
     const renderItem = data => (
         <View key={data} >
             <Image source={{ uri: data }} resizeMode="cover" style={{ width: width * .98, height: width * 0.7 }} />
-        </View>
-    );
+        </View>)
 
     return <>
         <View className="flex-1 bg-white  dark:bg-zinc-800 items-center justify-center">
@@ -354,7 +315,6 @@ export default function Home({ route, navigation, onSendViewPlaygroundsFromCity 
             </>}
             {modal === 'searchFilter' && <>
                 <BottomSheet
-                    // style={{ backgroundColor: "transparent" }}
                     backgroundStyle={{ backgroundColor: `${topSheetModalColor}` }}
                     handleIndicatorStyle={{ backgroundColor: `${topSheetIndicatorColor}` }}
                     enablePanDownToClose
@@ -434,7 +394,6 @@ export default function Home({ route, navigation, onSendViewPlaygroundsFromCity 
                         setTopSheetIndicatorColor={setTopSheetIndicatorColor}
                         setTopSheetModalColor={setTopSheetModalColor} />
                 </BottomSheet>}
-
 
             <StatusBar style="auto" />
             {welcomeMessageStorage && user && loadCurrentLocation && <WelcomeMessage user={user} handleCloseWelcomeMessage={onCloseWelcomeMessage} />}

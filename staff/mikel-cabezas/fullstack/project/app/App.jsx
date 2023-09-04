@@ -9,9 +9,7 @@ import Loader from "./src/library/Loader.jsx";
 import BG from './assets/bg-login.png'
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
-
 import MainStack from "./src/navigation/MainStack.jsx";
-import { StatusBar } from 'expo-status-bar';
 
 import AppContext from "./src/AppContext.js";
 const { Provider } = AppContext
@@ -25,7 +23,6 @@ const HideKeyboard = ({ children }) => (
 );
 
 export default function App({ }) {
-  // const [view, setView] = useState('home')
   const [TOKEN, setTOKEN] = useState()
   const [isLoggedIn, setIsLoggedIn] = useState()
 
@@ -48,19 +45,18 @@ export default function App({ }) {
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
   const [serverStatusResponse, setServerStatusResponse] = useState(null);
-
   const [loadCurrentLocation, setLoadCurrentLocation] = useState(false)
-
   const [currentMarker, setCurrentMarker] = useState({})
-  let colorScheme = useColorScheme();
-
   const [colorPalette, setColorPalette] = useState()
+  let colorScheme = useColorScheme();
 
   const linking = {
     prefixes: [prefix],
     config: {
       screens: {
-        UserValitionSuccess: "UserValitionSuccess/",
+        UserValidationSuccess: {
+          path: "UserValidationSuccess",
+        },
         Login: {
           path: 'Login/:message',
           parse: {
@@ -82,11 +78,6 @@ export default function App({ }) {
       },
     }
   };
-
-  useEffect(() => {
-
-  }, [])
-  // !serverStatusResponse &&
 
   useEffect(() => {
     try {
@@ -155,7 +146,6 @@ export default function App({ }) {
     {loader && <>
       <View className="absolute top-0 left-0 w-full h-screen z-50">
         <Loader text="Conecting..." details={loaderMessage} background={BG} />
-        {/* <Loader text="Conecting..." details="This could take depending on your internet connection." /> */}
       </View>
     </>}
   </>

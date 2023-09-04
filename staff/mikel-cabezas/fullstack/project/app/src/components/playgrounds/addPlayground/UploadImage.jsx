@@ -59,49 +59,27 @@ export default function Upload() {
 
         setImage(null)
     }
-    // const uploadImage = async () => {
-    //     setUploading(true)
-    //     const response = await fetch(imageResized.uri)
-    //     const blob = response.blob()
-    //     const filename = imageResized.uri.substring(imageResized.uri.lastIndexOf('/') + 1)
-    //     try {
-    //         var ref = firebase.storage().ref().child(filename).put(blob)
-    //         const url = await ref.getDownloadURL()
-    //         console.log(url)
-    //     } catch (e) {
-    //         console.log(e)
-    //     }
-    //     setUploading(false)
-    //     alert(
-    //         'Photo uploaded!'
-    //     );
-    //     setImage(null);
-    // }
-
     const _renderImage = () => (
         <View>
             <Image source={imageResized} className="mx-auto w-48 h-48" />
         </View>
     );
 
-    return (
-        <>
-            <View>
-                <View className="w-full justify-center flex-row">
-                    <Text className="text-center bg-mainLime p-2 mb-2" onPress={pickImage} >
-                        Choose a picture
-                    </Text>
-                </View>
-                {image && <>
-                    <View className="flex justify-center w-full">
-                        <Image source={{ uri: image.uri }} className="mx-auto w-48 h-48 border" />
-                        {ready && image && _renderImage()}
-
-                    </View>
-                </>}
-                {!uploading ? <Button title="Upload" onPress={uploadImage} /> : <ActivityIndicator size="large" />}
-
+    return (<>
+        <View>
+            <View className="w-full justify-center flex-row">
+                <Text className="text-center bg-mainLime p-2 mb-2" onPress={pickImage} >
+                    Choose a picture
+                </Text>
             </View>
-        </>
-    );
+            {image && <>
+                <View className="flex justify-center w-full">
+                    <Image source={{ uri: image.uri }} className="mx-auto w-48 h-48 border" />
+                    {ready && image && _renderImage()}
+
+                </View>
+            </>}
+            {!uploading ? <Button title="Upload" onPress={uploadImage} /> : <ActivityIndicator size="large" />}
+        </View>
+    </>)
 };

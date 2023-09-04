@@ -30,7 +30,6 @@ export default function EditElements({ TOKEN, id, onEdited, onCancelEdit, descri
                 }
             },
         ]);
-
     }
     const handleSave = () => {
         Alert.alert('Confirm', 'These modifications are public. Please verify the authenticity of these alterations and ensure that they do not adversely affect anyone.', [
@@ -69,7 +68,7 @@ export default function EditElements({ TOKEN, id, onEdited, onCancelEdit, descri
                 <Text className="dark:text-zinc-200 text-xl font-semibold mb-2">Add images</Text>
                 <Text className="dark:text-zinc-200 pt-3 text-xs mb-2">Images</Text>
                 <UploadImages setImagesResized={setImagesResized} imagesResized={imagesResized} />
-                {/* <UploadImages setImagesResized={setImagesResized} imagesResized={imagesResized} closeOnPlaygroundCreated={onCreatePlayground} /> */}
+
                 <View className="pr-6 mt-2">
                     {!uploading ?
                         <TouchableOpacity
@@ -81,11 +80,11 @@ export default function EditElements({ TOKEN, id, onEdited, onCancelEdit, descri
                             </View>
                         </TouchableOpacity>
                         : <ActivityIndicator size="large" />}
+
                     <TouchableOpacity
                         activeOpacity={0.8}
                         className="mt-4 self-center w-full"
-                        onPress={handleCancel}
-                    >
+                        onPress={handleCancel} >
                         <View className="px-6  self-center " >
                             <Text className="dark:text-zinc-200 text-lg">Cancel</Text>
                         </View>
@@ -93,7 +92,5 @@ export default function EditElements({ TOKEN, id, onEdited, onCancelEdit, descri
                 </View>
             </View>
         </View>}
-
-
     </>
 }

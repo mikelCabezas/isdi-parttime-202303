@@ -1,35 +1,14 @@
-import { useContext, useEffect, useState } from "react"
+import { useContext } from "react"
 import Context from "../../../AppContext"
 import { Text, Image, View, TouchableOpacity } from 'react-native';
 
-// import { utils } from '../../../com'
-
-// const { extractSubFromToken } = utils
-
 export default function NearbyPlayground({ playground, playground: { name, text, id, images, address, location: { coordinates, city, country, street } }, onToggleLikePost, onToggleSavePost, onEditPostButton, onHideMenuOptions, user, onPostDeleted, onMarkerPressedHandler }) {
-    // const userId = extractSubFromToken(context.token)
-    // const userId = extractSubFromToken(context.token)
     const image = images[0]
-
-    const [userData, setUserData] = useState(user)
     const { setCurrentMarker } = useContext(Context)
 
     const markerPressedHandler = () => {
         setCurrentMarker(playground)
         onMarkerPressedHandler()
-    }
-    const handleOpenMap = () => {
-        // openMap({ latitude: playground.location.coordinates[0], longitude: playground.location.coordinates[1] })
-        // createMapLink({ start, latitude: playground.location.coordinates[0], longitude: playground.location.coordinates[1], zoom: 20 })
-
-        const scheme = Platform.select({ ios: 'maps:0,0?q=', android: 'geo:0,0?q=' })
-        const latLng = `${playground.location.coordinates[0]},${playground.location.coordinates[1]}`
-        const label = playground.name
-        const url = Platform.select({
-            ios: `${scheme}?address=${latLng}`,
-            android: `${scheme}${latLng}`
-        });
-        Linking.openURL(url)
     }
     return <>
         <TouchableOpacity activeOpacity={0.8} key={id} onPress={markerPressedHandler} underlayColor="#fff">

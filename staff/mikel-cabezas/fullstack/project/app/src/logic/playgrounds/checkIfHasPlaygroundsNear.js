@@ -13,7 +13,6 @@ export default function checkIfHasPlaygroundsNear(token, userLocation) {
         },
         body: JSON.stringify({ userLocation })
     }).then(res => {
-        debugger
         if (res.status !== 200)
             return res.json().then(({ error: message }) => { throw new Error(message) })
 

@@ -1,23 +1,19 @@
 import * as React from 'react';
 import { USER_LOCATION, MY_LOCATION, WHITE_MY_LOCATION } from '../../../assets/icons';
 import BG from '../../../assets/bg-login.png'
-import { Image, TouchableOpacity, Alert, Keyboard, View, Text } from 'react-native';
+import { Image, TouchableOpacity, Alert, Keyboard } from 'react-native';
 import MapView, { Marker, Callout } from 'react-native-maps'
 import { useRef, useContext, useState, useEffect } from 'react';
-import { NativeWindStyleSheet } from "nativewind";
 import Playgrounds from './Playgrounds.jsx';
 import AppContext from "../../AppContext.js"
 const { Provider } = AppContext
 import Context from '../../AppContext'
 import retrievePlaygrounds from "../../logic/playgrounds/retrievePlaygrounds"
-import * as Animatable from 'react-native-animatable';
-
 import Loader from '../../library/Loader'
-
 
 export default function BaseMap({ user, onMarkerPressed, searchResult, onHomeHandler, setPlaygroundsCount, newPlaygroundStatus, setAnimation }) {
     const mapRef = useRef(null);
-    const { TOKEN, colorScheme, currentMarker, location, loadCurrentLocation, freeze, unfreeze, setloaderTitle, setloaderMessage } = useContext(Context)
+    const { TOKEN, colorScheme, currentMarker, location, loadCurrentLocation, freeze, unfreeze } = useContext(Context)
     const [playgrounds, setPlaygrounds] = useState()
 
     let isDark
@@ -97,15 +93,6 @@ export default function BaseMap({ user, onMarkerPressed, searchResult, onHomeHan
         }
     }, [loadCurrentLocation])
 
-
-    // useEffect(() => {
-    //     if (loadCurrentLocation) {
-
-    //     }
-    // }, [loadCurrentLocation])
-
-
-
     useEffect(() => {
         if (searchResult) {
             setPlaygrounds(searchResult[1])
@@ -141,15 +128,9 @@ export default function BaseMap({ user, onMarkerPressed, searchResult, onHomeHan
         mapRef.current.animateToRegion(onCurrentMarkerRegion, 1 * 1000);
     }
 
-
-
-
-
     useEffect(() => {
         if (currentMarker.location) {
             const onCurrentMarkerRegion = {
-                // latitude: currentMarker.location.coordinates[0] - 0.0065,
-                // longitude: currentMarker.location.coordinates[1] - 0.0001,
                 latitude: currentMarker.location.coordinates[0] - (((50 / 2) + 25) / 10000),
                 longitude: currentMarker.location.coordinates[1] - 0.0001,
                 latitudeDelta: 0.01,
@@ -159,15 +140,12 @@ export default function BaseMap({ user, onMarkerPressed, searchResult, onHomeHan
         }
     }, [currentMarker])
 
-
-
     return <>
         {/* <Image className="w-full h-screen top-0 absolute" source={BG} /> */}
-        <Loader text="Loading..." details="Fetching your location" />
+        <Loader text="Loading..." details="Fetching your location" background={BG} />
         {loadCurrentLocation && <MapView
             ref={mapRef}
             showsUserLocation={true}
-            // followsUserLocation={true}
             onPress={() => { Keyboard.dismiss() }}
             onRegionChange={() => { Keyboard.dismiss() }}
             className="w-full h-[120%] top-[-10%] absolute"
@@ -176,25 +154,18 @@ export default function BaseMap({ user, onMarkerPressed, searchResult, onHomeHan
                 longitude: location.longitude,
                 latitudeDelta: 0.0922,
                 longitudeDelta: 0.0421,
-            }}
-        >
+            }}>
+
             <Marker
                 tooltip={false}
                 key={-1}
                 width={48}
                 coordinate={location} >
                 <Image source={USER_LOCATION} className="w-[38px] h-[45px] object-contain" />
-                <Callout tooltip >
-
-                </Callout>
+                <Callout tooltip />
             </Marker>
 
-
-
-            {playgrounds && <>
-                <Playgrounds user={user} playgrounds={playgrounds} onMarkerPressedHandler={onMarkerPressedHandler} />
-            </>}
-
+            {playgrounds && <Playgrounds user={user} playgrounds={playgrounds} onMarkerPressedHandler={onMarkerPressedHandler} />}
         </MapView>}
         <TouchableOpacity className="bg-white dark:bg-zinc-800 p-1.5 rounded-full absolute right-4 bottom-[75px] mb-4"
             activeOpacity={0.8}
@@ -203,6 +174,5 @@ export default function BaseMap({ user, onMarkerPressed, searchResult, onHomeHan
                 className={`w-8 h-8 m-auto ${isDark ? 'opacity-80' : ''}`}
                 source={isDark ? WHITE_MY_LOCATION : MY_LOCATION} />
         </TouchableOpacity>
-
     </>
 }

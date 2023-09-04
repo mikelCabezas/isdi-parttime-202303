@@ -8,59 +8,65 @@ import SingleElement from './SingleElement'
 import { toggleLikePlayground } from "../../logic/playgrounds/toggleLikePlayground";
 import retrievePlaygroundById from "../../logic/playgrounds/retrievePlaygroundById";
 import { EditSunExposition, EditElements, EditDescription, AddImages } from "./editPlayground/";
-import createMapLink from 'react-native-open-maps';
+import retrieveUser from "../../logic/users/retrieveUser";
 import { ScrollView } from 'react-native-gesture-handler';
 export default function SinglePlayground({ colorScheme, setTopSheetModalColor, setTopSheetIndicatorColor, setSnapPointSinglePlayground, setSinglePlaygroundImages, onHandleOpenImages }) {
-    const { currentView, setCurrentView, currentMarker, setCurrentMarker, TOKEN } = useContext(Context)
+    const { currentMarker, TOKEN } = useContext(Context)
     const [modal, setModal] = useState()
     const [playground, setPlayground] = useState()
     const [shady, setShady] = useState('bg-mainGray')
     const [sunny, setSunny] = useState('bg-mainGray')
     const [partial, setPartial] = useState('bg-mainGray')
     const [likes, setLikes] = useState(false)
+    const [isLiked, setIsLiked] = useState(false)
 
     useEffect(() => {
-        retrievePlaygroundById(TOKEN, currentMarker._id)
-            .then(playground => {
-                setPlayground(playground)
-                setLikes(playground.likes)
-                playground.sunExposition.shady ? setShady('bg-mainLime') : setShady('bg-mainGray')
-                playground.sunExposition.sunny ? setSunny('bg-mainYellow') : setSunny('bg-mainGray')
-                playground.sunExposition.partial ? setPartial('bg-[#38F1A3]') : setPartial('bg-mainGray'
-                )
-            })
-            .catch(error => error.message)
+        refreshPlayground()
     }, [])
 
     useEffect(() => {
-    }, [likes])
+        refreshPlayground()
+    }, [isLiked])
+
+    useEffect(() => {
+        refreshPlayground()
+    }, [currentMarker])
 
     const onUpdate = async () => {
         await toggleLikePlayground(TOKEN, playground._id)
             .then(() => {
-                refreshLikes()
+                refreshPlayground()
             })
+    }
+    const refreshPlayground = async () => {
+        try {
+            const playground = await retrievePlaygroundById(TOKEN, currentMarker._id)
+            setPlayground(playground)
+            setLikes(playground.likes)
+            playground.sunExposition.shady ? setShady('bg-mainLime') : setShady('bg-mainGray')
+            playground.sunExposition.sunny ? setSunny('bg-mainYellow') : setSunny('bg-mainGray')
+            playground.sunExposition.partial ? setPartial('bg-[#38F1A3]') : setPartial('bg-mainGray')
+
+            const user = await retrieveUser(TOKEN)
+            const like = playground.likes.some(_user => _user === user._id)
+            if (like) {
+                setIsLiked(true)
+            } else setIsLiked(false)
+
+        } catch (error) {
+            Alert.alert('Error', `${error.message}`, [
+                { text: 'OK', onPress: () => { } },
+            ]);
+        }
+
     }
 
-    const refreshLikes = () => {
-        retrievePlaygroundById(TOKEN, currentMarker._id)
-            .then(playground => {
-                setLikes(playground.likes)
-                setPlayground(playground)
-                playground.sunExposition.shady ? setShady('bg-mainLime') : setShady('bg-mainGray')
-                playground.sunExposition.sunny ? setSunny('bg-mainYellow') : setSunny('bg-mainGray')
-                playground.sunExposition.partial ? setPartial('bg-[#38F1A3]') : setPartial('bg-mainGray'
-                )
-            })
-            .catch(error => error.message)
-    }
 
     const handleOpenMap = () => {
         // openMap({ latitude: playground.location.coordinates[0], longitude: playground.location.coordinates[1] })
         // createMapLink({ start, latitude: playground.location.coordinates[0], longitude: playground.location.coordinates[1], zoom: 20 })
         const scheme = Platform.select({ ios: 'maps:0,0?q=', android: 'geo:0,0?q=' })
         const latLng = `${playground.location.coordinates[0]},${playground.location.coordinates[1]}`
-        const label = playground.name
         const url = Platform.select({
             ios: `${scheme}?address=${latLng}`,
             android: `${scheme}${latLng}`
@@ -123,7 +129,7 @@ export default function SinglePlayground({ colorScheme, setTopSheetModalColor, s
     }
     const onEdited = () => {
         setModal()
-        refreshLikes()
+        refreshPlayground()
         setSnapPointSinglePlayground(0)
         if (colorScheme === 'light') {
             setTopSheetModalColor('#fff')
@@ -155,9 +161,8 @@ export default function SinglePlayground({ colorScheme, setTopSheetModalColor, s
         setSnapPointSinglePlayground(0)
     }
     let sunExposition = false
-    if (shady === 'bg-mainLime' || sunny === 'bg-main' || partial === 'bg-mainLime') {
+    if (shady === 'bg-mainLime' || sunny === 'bg-main' || partial === 'bg-mainLime')
         sunExposition = true
-    }
 
     return <View className="h-full bg-red-500z relative flex-column justify-between items-center bg-[blue]">
         {playground && <>
@@ -173,8 +178,7 @@ export default function SinglePlayground({ colorScheme, setTopSheetModalColor, s
                             }}>
                             <Image
                                 className={`w-7 h-7 mx-auto `}
-                                source={likes.length > 0 ? LIKE_FILLED : LIKE}
-                            />
+                                source={isLiked ? LIKE_FILLED : LIKE} />
                         </TouchableOpacity>
 
                     </View>
@@ -186,6 +190,7 @@ export default function SinglePlayground({ colorScheme, setTopSheetModalColor, s
                             <Text className="font-bold text-center text-sm px-5 py-2 w-full">Go to playground</Text>
                         </View>
                     </TouchableOpacity>
+
                     <View className="flex-row flex-wrap  mb-4">
                         <View className="flex-row w-full mt-3 mb-2">
                             <Text className="dark:text-zinc-200 text-lg font-semibold mr-2">Sun Exposition</Text>
@@ -203,6 +208,7 @@ export default function SinglePlayground({ colorScheme, setTopSheetModalColor, s
                                     <Text className="font-bold text-center text-sm rounded-full">Shady</Text>
                                 </View>
                             </View>
+
                             <View
                                 className={`border border-mainYellow rounded-full ${sunny}`}
                                 onPress={() => { handleShady() }}>
@@ -211,6 +217,7 @@ export default function SinglePlayground({ colorScheme, setTopSheetModalColor, s
                                     <Text className="font-bold text-center text-sm rounded-full">Sunny</Text>
                                 </View>
                             </View>
+
                             <View
                                 className={`border border-[#38F1A3] rounded-full ${partial}`}
                                 onPress={() => { handleShady() }}>
@@ -219,13 +226,16 @@ export default function SinglePlayground({ colorScheme, setTopSheetModalColor, s
                                     <Text className="font-bold text-center text-sm rounded-full">Partial</Text>
                                 </View>
                             </View>
+
                         </View>
+
                     </View>
                     <View className="flex-row flex-wrap mb-4">
                         <View className="flex-row w-full mt-3 mb-2">
                             <Text className="dark:text-zinc-200 text-lg font-semibold mr-3">Elements</Text>
                             <TouchableOpacity activeOpacity={0.8} onPress={onEditElements}><View className="my-auto px-2 mr-3 rounded-full"><Text className="text-darkGreen dark:text-mainLime text-xs font-semibold mt-1">Edit elements</Text></View></TouchableOpacity>
                         </View>
+
                         {playground.elements.length !== 0 ? playground.elements.map((element, index) => {
                             return <SingleElement element={element} index={index} />
                         }) :
@@ -233,9 +243,7 @@ export default function SinglePlayground({ colorScheme, setTopSheetModalColor, s
                                 <Text className="dark:text-zinc-200 mb-1.5 font-semibold w-full">There are no elements yet...</Text>
                                 <TouchableOpacity
                                     activeOpacity={0.8}
-                                    className="border border-mainLime  rounded-full mb-1 mt-2 mr-2 bg-mainGray"
-                                // onPress={() => { }}
-                                >
+                                    className="border border-mainLime  rounded-full mb-1 mt-2 mr-2 bg-mainGray"  >
                                     <View className="font-bold px-3 py-0.5 flex-row items-center border border-mainLime  rounded-full mb-1 mt-2 mr-2 bg-mainGray">
                                         <Text className={`font-bold text-center text-sm`}>Add one!</Text>
 
@@ -243,6 +251,7 @@ export default function SinglePlayground({ colorScheme, setTopSheetModalColor, s
                                             <Image className="h-6 w-6 object-cover" source={ADD} />
                                         </View>
                                     </View>
+
                                 </TouchableOpacity>
                             </View>
                         }
@@ -251,18 +260,26 @@ export default function SinglePlayground({ colorScheme, setTopSheetModalColor, s
                         <View className="flex-row w-full mt-3 mb-2">
                             <Text className="dark:text-zinc-200 text-lg font-semibold mr-3">Description</Text>
                             {playground.description && playground.description === '-' &&
-                                <TouchableOpacity onPress={onEditDescription} className=""><View className="my-auto px-2 mr-3 rounded-full"><Text className="text-darkGreen dark:text-mainLime text-xs font-semibold mt-1">Add description</Text></View></TouchableOpacity>
-                            }
+                                <TouchableOpacity onPress={onEditDescription} className="">
+                                    <View className="my-auto px-2 mr-3 rounded-full">
+                                        <Text className="text-darkGreen dark:text-mainLime text-xs font-semibold mt-1">Add description</Text>
+                                    </View>
+                                </TouchableOpacity>}
+
                             {playground.description && playground.description !== '-' &&
-                                <TouchableOpacity onPress={onEditDescription} className=""><View className="my-auto px-2 mr-3 rounded-full"><Text className="text-darkGreen dark:text-mainLime text-xs font-semibold mt-1">Edit description</Text></View></TouchableOpacity>
-                            }
+                                <TouchableOpacity onPress={onEditDescription} className="">
+                                    <View className="my-auto px-2 mr-3 rounded-full">
+                                        <Text className="text-darkGreen dark:text-mainLime text-xs font-semibold mt-1">Edit description</Text>
+                                    </View>
+                                </TouchableOpacity>}
+
                         </View>
                         {playground.description && playground.description !== '-' &&
                             <Text className="dark:text-zinc-200 text-lgs font-normal">{playground.description}</Text>
                         }
                     </View>
 
-                    <View className="flex-row w-full mt-3 mb-2">
+                    <View className="flex-row w-full mb-2">
                         <Text className="dark:text-zinc-200 text-lg font-semibold mr-3">Images</Text>
                         <TouchableOpacity onPress={onAddImages} className=""><View className="my-auto px-2 mr-3 rounded-full"><Text className="text-darkGreen dark:text-mainLime text-xs font-semibold mt-1">Add images</Text></View></TouchableOpacity>
                     </View>
@@ -274,8 +291,7 @@ export default function SinglePlayground({ colorScheme, setTopSheetModalColor, s
                                     activeOpacity={0.8}
                                     className="border border-mainLime  rounded-full mb-1 mt-2 mr-2 bg-mainGray"
                                     onPress={handleOpenImages}
-                                    key={index}
-                                >
+                                    key={index} >
                                     <Image
                                         className="w-36 h-40 object-cover rounded-2xl"
                                         key={index}
@@ -289,14 +305,12 @@ export default function SinglePlayground({ colorScheme, setTopSheetModalColor, s
                     <View className="mb-36" />
                 </View>
             </ScrollView>
+
             {modal === 'edit-sun-exposition' && <EditSunExposition TOKEN={TOKEN} id={playground._id} sunExposition={playground.sunExposition} onEdited={onEdited} onCancelEdit={onCancelEdit} setTopSheetModalColor={setTopSheetModalColor} setTopSheetIndicatorColor={setTopSheetIndicatorColor} colorScheme={colorScheme} />}
             {modal === 'edit-element' && <EditElements TOKEN={TOKEN} id={playground._id} elements={playground.elements} onEdited={onEdited} onCancelEdit={onCancelEdit} setTopSheetModalColor={setTopSheetModalColor} setTopSheetIndicatorColor={setTopSheetIndicatorColor} colorScheme={colorScheme} />}
             {modal == 'edit-description' && <EditDescription TOKEN={TOKEN} id={playground._id} description={playground.description} onEdited={onEdited} onCancelEdit={onCancelEdit} setTopSheetModalColor={setTopSheetModalColor} setTopSheetIndicatorColor={setTopSheetIndicatorColor} colorScheme={colorScheme} />}
             {modal == 'add-images' && <AddImages TOKEN={TOKEN} id={playground._id} onEdited={onEdited} onCancelEdit={onCancelEdit} setTopSheetModalColor={setTopSheetModalColor} setTopSheetIndicatorColor={setTopSheetIndicatorColor} colorScheme={colorScheme} />}
-        </>
-        }
-
-
+        </>}
 
     </View >
 }

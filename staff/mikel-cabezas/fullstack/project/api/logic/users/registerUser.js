@@ -30,10 +30,13 @@ module.exports = function registerUser(name, email, password) {
             const character = Math.floor((Math.random() * 10) + 1)
             randomString += character
         }
+        if (randomString.length === 9) randomString.slice(0, -1)
         return randomString
     }
     const isValid = false
     const uniqueString = randomString()
+
+    console.log('uniqueString.length', uniqueString.length)
 
     return (async () => {
         try {

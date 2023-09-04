@@ -3,7 +3,6 @@ import { View, Text, TextInput, TouchableOpacity, Alert } from 'react-native';
 import editPlayGroundDescription from '../../../logic/playgrounds/editPlayground/editPlaygroundDescription.js'
 import Context from '../../../AppContext'
 
-
 export default function EditElements({ TOKEN, id, onEdited, onCancelEdit, description }) {
     const { colorScheme } = useContext(Context)
     const [playgroundDescription, setPlaygroundDescription] = useState()
@@ -48,8 +47,6 @@ export default function EditElements({ TOKEN, id, onEdited, onCancelEdit, descri
         ]);
     }
 
-
-
     useEffect(() => {
     }, [playgroundDescription])
 
@@ -92,7 +89,5 @@ export default function EditElements({ TOKEN, id, onEdited, onCancelEdit, descri
                 </TouchableOpacity>
             </View>
         </View>}
-
-
     </>
 }

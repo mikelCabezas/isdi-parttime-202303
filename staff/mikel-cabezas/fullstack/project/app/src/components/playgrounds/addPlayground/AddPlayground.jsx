@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext, useRef } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { ActivityIndicator, Text, Image, View, TouchableOpacity, TextInput, Alert } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 
@@ -14,7 +14,6 @@ import SingleElement from '../SingleElement'
 import SunExposition from './SunExposition'
 
 import addPlayground from '../../../logic/playgrounds/addPlayground'
-import { firebase } from '../../../config/firebase.js'
 import uploadImages from '../../../logic/playgrounds/uploadImages'
 
 
@@ -26,20 +25,24 @@ export default function CreatePlayground({ closeHandle, cancelAddPlayground, set
     const [playgroundName, setPlaygroundName] = useState()
     const [playgroundDescription, setPlaygroundDescription] = useState()
 
-    const [fieldsStatusColor, setFieldsStatusColor] = useState(`${isDark ? 'dark:bg-zinc-300' : 'mainGray'}`)
     const [playgroundShady, setPlaygroundShady] = useState({ status: false, color: isDark ? 'bg-zinc-300' : 'bg-mainGray' })
     const [playgroundSunny, setPlaygroundSunny] = useState({ status: false, color: isDark ? 'bg-zinc-300' : 'bg-mainGray' })
     const [playgroundPartial, setPlaygroundPartial] = useState({ status: false, color: isDark ? 'bg-zinc-300' : 'bg-mainGray' })
 
     const [playgroundElements, setPlaygroundElements] = useState([])
     const [modal, setModal] = useState([]);
+
     const [editElement, setEditElement] = useState([]);
+
     const [imagesResized, setImagesResized] = useState([]);
     const [uploading, setUploading] = useState(false);
 
+    const [currentLocation, setCurrentLocation] = useState([])
+
+    const [fieldsStatusColor, setFieldsStatusColor] = useState(`${isDark ? 'dark:bg-zinc-300' : 'mainGray'}`)
     let [fieldStatus, setFieldStatus] = useState('disabled')
 
-    const [currentLocation, setCurrentLocation] = useState([])
+
     useEffect(() => {
         (async () => {
             let { status } = await Location.requestForegroundPermissionsAsync();
@@ -103,7 +106,6 @@ export default function CreatePlayground({ closeHandle, cancelAddPlayground, set
         }
     }
     const handleCancel = () => {
-        // if(playgroundName.length > 0, playgroundDescription.length > 0, playgroundShady.length > 0, playgroundSunny.length > 0, playgroundPartial.length > 0, playgroundElements.length > 0)
         cancelAddPlayground()
         setTopSheetModalColor('#fff')
         setTopSheetIndicatorColor('#777')
@@ -216,8 +218,7 @@ export default function CreatePlayground({ closeHandle, cancelAddPlayground, set
             <TouchableOpacity
                 activeOpacity={0.8}
                 className="mt-4 self-center w-full  mb-20"
-                onPress={handleCancel}
-            >
+                onPress={handleCancel} >
                 <View className="px-6  self-center " >
                     <Text className="dark:text-zinc-200 text-lg">Cancel</Text>
                 </View>

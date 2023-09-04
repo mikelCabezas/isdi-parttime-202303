@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import { Text, Image, View, TouchableOpacity } from 'react-native';
 
 import {
@@ -48,10 +47,6 @@ export default function CreatePlayground({ key, element, handleEditElement }) {
     const age = assignElementAge(element.age)
     const type = assignElementType(element.type)
     const status = assignElementStatus(element.status)
-
-    const handleOnPress = () => {
-        if (handleEditElement()) handleEditElement(element.id)
-    }
 
     return <TouchableOpacity
         key={key}

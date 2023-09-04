@@ -1,16 +1,12 @@
 import React, { useEffect, useState, useContext } from "react";
-
 import { View, Text, TextInput, Image, TouchableOpacity, Alert, ScrollView } from 'react-native';
 import Context from '../AppContext.js'
 import * as Linking from 'expo-linking';
 import registerUser from '../logic/users/registerUser.js'
 
 import { validateEmail, validatePassword, validateName } from "../../com/validators.js";
-
-
 import BG from '../../assets/bg-login.png'
-import LOGO_SM from '../../assets/logo-sm.png'
-import LOGO from '../../assets/logo.png'
+
 export default function Login({ navigation }) {
     const { colorScheme } = useContext(Context)
     const [name, setName] = useState()
@@ -30,10 +26,6 @@ export default function Login({ navigation }) {
             const token = url.slice(index + 1)
             setPasswordToken(token)
         });
-
-        // Linking.parse().then((url) => {
-        //     console.log(`url`, url);
-        // });
     }, []);
     const handleRegister = () => {
         try {
@@ -60,9 +52,7 @@ export default function Login({ navigation }) {
 
 
     }
-    const handleForgetPassword = () => {
-        alert('TODO Forget Password')
-    }
+
     const handleGoToLogin = () => {
         navigation.navigate('Login')
     }
@@ -136,9 +126,7 @@ export default function Login({ navigation }) {
                             className="border border-mainLime bg-mainLime rounded-full mb-1 mt-4 self-center w-auto  text-center"
                             onPress={handleRegister}
                         >
-                            <View
-                                className="font-bold text-center  px-6 py-2 self-center rounded-full"
-                            >
+                            <View className="font-bold text-center  px-6 py-2 self-center rounded-full" >
                                 <Text className="font-bold text-center text-lg   self-center rounded-full">Create account</Text>
                             </View>
                         </TouchableOpacity>
@@ -151,7 +139,7 @@ export default function Login({ navigation }) {
                             <Text
                                 className="dark:text-zinc-200 mt-3 text-xs text-center" >
                                 Already registered?
-                                <Text className="font-bold">Login</Text></Text>
+                                <Text className="font-bold"> Login</Text></Text>
                         </TouchableOpacity>
                     </View>
                 </View>

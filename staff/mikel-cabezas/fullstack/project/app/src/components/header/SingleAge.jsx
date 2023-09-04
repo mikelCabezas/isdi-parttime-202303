@@ -7,11 +7,11 @@ export default function SingleAge({ index, age, activeAges, onAgePressed }) {
     active ? bgColor = 'bg-mainLime' : bgColor = 'bg-mainGray'
 
     return <TouchableOpacity
-        key={index}
+        key={index + 'container'}
         activeOpacity={0.8}
         className={`border border-mainLime ${bgColor}  rounded-full mb-1 mt-2 mr-2`}
         onPress={() => onAgePressed(age)}>
-        <View className="font-bold px-3 py-0.5 flex-row items-center" key={index}>
+        <View className="font-bold px-3 py-0.5 flex-row items-center" key={index + 'view'}>
             <Text className={`font-bold text-center text-sm`}>+{age}</Text>
         </View>
     </TouchableOpacity>

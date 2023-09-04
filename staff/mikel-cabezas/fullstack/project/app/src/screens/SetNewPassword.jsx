@@ -2,7 +2,6 @@ import React, { useEffect, useState, useContext } from "react";
 
 import { View, Text, TextInput, Image, TouchableOpacity, Alert, ScrollView } from 'react-native';
 import Context from '../AppContext.js'
-import * as Linking from 'expo-linking';
 import { updateNewPassword } from "../logic/users/updateNewPassword.js";
 import searchUser from "../logic/users/searchUser.js";
 
@@ -10,9 +9,6 @@ import BG from '../../assets/bg-login.png'
 import LOGO_SM from '../../assets/logo-sm.png'
 import LOGO from '../../assets/logo.png'
 export default function Login({ route, navigation }) {
-    const { currentView, setCurrentView, colorScheme } = useContext(Context)
-    const [name, setName] = useState()
-    const [email, setEmail] = useState()
     const [password, setPassword] = useState()
     const [repeatPassword, setRepeatPassword] = useState()
     const [url, setUrl] = useState()
@@ -43,30 +39,6 @@ export default function Login({ route, navigation }) {
                     })
                 })
         }
-        // Linking.getInitialURL().then((url) => {
-        //     debugger
-        //     if (!url) {
-        //         navigation.navigate('Login')
-        //     }
-        //     const index = url.indexOf("=");
-        //     const token = url.slice(index + 1)
-
-        //     searchUser(token)
-        //         .then(() => {
-        //             debugger
-        //             setUrl(url)
-        //             setPasswordToken(token)
-        //         })
-        //         .catch(error => {
-        //             console.log(error.message)
-        //             alert('Invalid Token')
-        //             // navigation.navigate('Login')
-        //             navigation.reset({
-        //                 index: 0,
-        //                 routes: [{ name: 'Login' }],
-        //             })
-        //         })
-        // });
     }, []);
     const handleSetNewPassword = () => {
         try {
@@ -94,7 +66,6 @@ export default function Login({ route, navigation }) {
                 <Image className="w-full h-screen top-0 absolute" source={BG} />
                 <View className="flex-1 items-center justify-center w-full">
                     <View className="bg-white dark:bg-zinc-800 h-auto px-6 py-7 w-3/4 rounded-3xl">
-                        {/* <Text className="dark:text-zinc-200 text-2xl text-center font-semibold">{passwordToken}</Text> */}
                         <Text className="dark:text-zinc-200 text-2xl text-center font-semibold">Set new password</Text>
                         <Text className="dark:text-zinc-200 pt-4 text-xs text-center">New password</Text>
                         <TextInput
@@ -136,7 +107,7 @@ export default function Login({ route, navigation }) {
                             <Text
                                 className="dark:text-zinc-200 mt-3 text-xs text-center" >
                                 Already registered?
-                                <Text className="font-bold">Login</Text></Text>
+                                <Text className="font-bold"> Login</Text></Text>
                         </TouchableOpacity>
                     </View>
                 </View>

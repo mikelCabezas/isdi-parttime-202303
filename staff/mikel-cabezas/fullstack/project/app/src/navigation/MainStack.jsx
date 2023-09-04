@@ -3,7 +3,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import React, { useEffect, useState, useContext } from 'react'
 import Home from '../screens/Home'
 import Login from '../screens/Login'
-import UserValitionSuccess from '../screens/UserValitionSuccess'
+import UserValidationSuccess from '../screens/UserValidationSuccess'
 import Register from '../screens/Register'
 import ForgotPassword from '../screens/ForgotPassword'
 import SetNewPassword from '../screens/SetNewPassword'
@@ -11,7 +11,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import AppContext from "../AppContext.js";
 const { Provider } = AppContext
 import Context from '../AppContext.js'
-
 
 const Stack = createNativeStackNavigator()
 export default function MainStack() {
@@ -64,8 +63,8 @@ export default function MainStack() {
                     component={Login}
                 />
                 <Stack.Screen
-                    name='UserValitionSuccess'
-                    component={UserValitionSuccess}
+                    name='UserValidationSuccess'
+                    component={UserValidationSuccess}
                 />
                 <Stack.Screen
                     name='Register'
@@ -85,10 +84,7 @@ export default function MainStack() {
                     component={Home}
                 />}
             </Stack.Navigator>
-
         </>}
-
     </>
     )
-
 }

@@ -1,13 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, Image, TouchableOpacity, Alert } from 'react-native';
-import SingleElement from '../SingleElement'
 import editPlaygroundSunExposition from '../../../logic/playgrounds/editPlayground/editPlaygroundSunExposition.js'
-import AddElement from "../addPlayground/AddElement.jsx";
 import { SUNNY, SHADY } from '../../../../assets/icons';
 
 export default function EditElements({ TOKEN, id, onEdited, onCancelEdit, sunExposition }) {
-    const [modal, setModal] = useState()
-
     const [playgroundShady, setPlaygroundShady] = useState()
     const [playgroundSunny, setPlaygroundSunny] = useState()
     const [playgroundPartial, setPlaygroundPartial] = useState()
@@ -31,7 +27,6 @@ export default function EditElements({ TOKEN, id, onEdited, onCancelEdit, sunExp
                 }
             },
         ]);
-
     }
     const handleSave = () => {
         const sunExposition = { shady: playgroundShady.status, sunny: playgroundSunny.status, partial: playgroundPartial.status }
@@ -84,6 +79,7 @@ export default function EditElements({ TOKEN, id, onEdited, onCancelEdit, sunExp
                             <Text className="font-bold text-center text-sm rounded-full">Shady</Text>
                         </View>
                     </TouchableOpacity>
+
                     <TouchableOpacity
                         activeOpacity={0.8}
                         className={`border border-mainYellow rounded-full mb-1 mt-2 mr-1.5z ${playgroundSunny.color}`}
@@ -93,6 +89,7 @@ export default function EditElements({ TOKEN, id, onEdited, onCancelEdit, sunExp
                             <Text className="font-bold text-center text-sm rounded-full">Sunny</Text>
                         </View>
                     </TouchableOpacity>
+
                     <TouchableOpacity
                         activeOpacity={0.8}
                         className={`border border-[#38F1A3] rounded-full mb-1 mt-2 ${playgroundPartial.color}`}
@@ -103,6 +100,7 @@ export default function EditElements({ TOKEN, id, onEdited, onCancelEdit, sunExp
                         </View>
                     </TouchableOpacity>
                 </View >
+
                 <TouchableOpacity
                     // disabled={fieldStatus}
                     activeOpacity={0.8}

@@ -58,7 +58,6 @@ export default function EditElements({ TOKEN, id, colorScheme, setTopSheetModalC
                 }
             },
         ]);
-
     }
     const handleSave = () => {
         Alert.alert('Confirm', 'These modifications are public. Please verify the authenticity of these alterations and ensure that they do not adversely affect anyone.', [
@@ -122,6 +121,7 @@ export default function EditElements({ TOKEN, id, colorScheme, setTopSheetModalC
                         </View>
                     </TouchableOpacity>
                 </View>
+
                 <TouchableOpacity
                     // disabled={fieldStatus}
                     activeOpacity={0.8}
@@ -135,8 +135,7 @@ export default function EditElements({ TOKEN, id, colorScheme, setTopSheetModalC
                 <TouchableOpacity
                     activeOpacity={0.8}
                     className="mt-4 self-center w-full"
-                    onPress={handleCancel}
-                >
+                    onPress={handleCancel} >
                     <View className="px-6  self-center " >
                         <Text className="dark:text-zinc-200 text-lg">Cancel</Text>
                     </View>
@@ -145,7 +144,5 @@ export default function EditElements({ TOKEN, id, colorScheme, setTopSheetModalC
         </View>}
 
         {modal === 'add-element' && <AddElement onElementCreated={onNewElement} id={newElements.length} onCancelAddElement={onCancelHandleElement} setTopSheetModalColor={setTopSheetModalColor} colorScheme={colorScheme} setTopSheetIndicatorColor={setTopSheetIndicatorColor} />}
-        {/* {modal === 'edit-element' && <EditElement element={playgroundElements[editElement]} onCancelEdit={onCancelHandleElement} />} */}
-        {/* onEdited={onEditElement} */}
     </>
 }

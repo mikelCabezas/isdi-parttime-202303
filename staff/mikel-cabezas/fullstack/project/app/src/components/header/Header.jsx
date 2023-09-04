@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext, useRef } from "react";
-import { Keyboard, View, Image, TextInput, TouchableOpacity, Text } from 'react-native';
+import { View, Image, TextInput, TouchableOpacity } from 'react-native';
 
 import Context from '../../AppContext.js'
 import SearchResults from "./SearchResults.jsx";
@@ -9,19 +9,15 @@ import {
     MENU, FILTER,
     WHITE_MENU, WHITE_FILTER
 } from '../../../assets/icons/index.js';
-import retrievePlaygrounds from "../../logic/playgrounds/retrievePlaygrounds.js";
 import retrievePlaygroundsCities from "../../logic/playgrounds/retrievePlaygroundsCities.js";
 
-
-export default function Header({ navigation, onHandleViewPlaygroundsFromCity, handleToggleSidebar, onToggleFilter, setPlaygroundsCount }) {
+export default function Header({ onHandleViewPlaygroundsFromCity, handleToggleSidebar, onToggleFilter, setPlaygroundsCount }) {
     const clearTextInput = useRef(null);
     const { modal, setModal, colorScheme, TOKEN } = useContext(Context)
     const [text, setChangeText] = React.useState();
     const [searchQuery, setSearchQuery] = React.useState();
     const [loading, setIsLoading] = React.useState();
-    const [isTyping, setIsTyping] = React.useState([]);
     const [data, setData] = React.useState();
-    const [timeoutId, setTimeoutId] = useState()
     const [animation, setAnimation] = useState('fadeInDown')
 
     let isDark
@@ -34,12 +30,6 @@ export default function Header({ navigation, onHandleViewPlaygroundsFromCity, ha
     const onToggleSidebar = () => {
         handleToggleSidebar()
     }
-
-    // useEffect(() => {
-    //     clearTimeout(isTyping)
-    //     setData()
-    //     setModal('simpleSearch')
-    // }, [searchQuery])
 
     useEffect(() => {
     }, [data]);
@@ -56,8 +46,6 @@ export default function Header({ navigation, onHandleViewPlaygroundsFromCity, ha
         }, 300)
     }
 
-    const simpleSearchRegion = (search) => {
-    }
     useEffect(() => {
         const delayId = setTimeout(() => {
             (async () => {
@@ -77,15 +65,18 @@ export default function Header({ navigation, onHandleViewPlaygroundsFromCity, ha
     }, [searchQuery]);
 
     return <>
-        {modal === 'simpleSearch' && data?.length > 0 && <View className="flex-1 w-full h-screen justify-center items-center absolute top-0">
-            <TouchableOpacity activeOpacity={1} onPress={handleCloseModal}>
-                <View className="bg-tranparent flex-1 h-screen w-screen" />
-            </TouchableOpacity>
-            <Animatable.View animation={animation} duration={250} key={-2} className="flex w-11/12 bg-white dark:bg-zinc-800 absolute top-12 m-auto pt-8 pb-3 flex-1 rounded-[22px] text-left">
-                <View className="py-2 border-b-[1px] border-mainGray dark:border-zinc-600" key={-1} />
-                <SearchResults data={data} handleViewPlaygroundsFromCity={onHandleViewPlaygroundsFromCity} setPlaygroundsCount={setPlaygroundsCount} handleCloseModal={handleCloseModal} />
-            </Animatable.View>
-        </View>
+        {modal === 'simpleSearch' && data?.length > 0 && <>
+            <View className="flex-1 w-full h-screen justify-center items-center absolute top-0">
+                <TouchableOpacity activeOpacity={1} onPress={handleCloseModal}>
+                    <View className="bg-tranparent flex-1 h-screen w-screen" />
+                </TouchableOpacity>
+
+                <Animatable.View animation={animation} duration={250} key={-2} className="flex w-11/12 bg-white dark:bg-zinc-800 absolute top-12 m-auto pt-8 pb-3 flex-1 rounded-[22px] text-left">
+                    <View className="py-2 border-b-[1px] border-mainGray dark:border-zinc-600" key={-1} />
+                    <SearchResults data={data} handleViewPlaygroundsFromCity={onHandleViewPlaygroundsFromCity} setPlaygroundsCount={setPlaygroundsCount} handleCloseModal={handleCloseModal} />
+                </Animatable.View>
+            </View>
+        </>
         }
         <View className="absolute w-full justify-center flex top-12 content-center">
             <View className="w-11/12 bg-white dark:bg-zinc-800  rounded-full left-0 m-auto flex flex-row px-4 h-12">
@@ -98,6 +89,7 @@ export default function Header({ navigation, onHandleViewPlaygroundsFromCity, ha
                         source={isDark ? WHITE_MENU : MENU}
                     />
                 </TouchableOpacity>
+
                 <View className="flex-1">
                     <TouchableOpacity className="flex-1" >
                         <TextInput
@@ -117,6 +109,7 @@ export default function Header({ navigation, onHandleViewPlaygroundsFromCity, ha
                     </TouchableOpacity>
 
                 </View>
+
                 <TouchableOpacity
                     className={`p-[2px]`}
                     activeOpacity={1.0}

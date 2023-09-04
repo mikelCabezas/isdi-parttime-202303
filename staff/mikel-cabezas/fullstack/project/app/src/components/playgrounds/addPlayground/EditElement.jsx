@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, Image, TouchableOpacity, Alert } from 'react-native';
-import Context from '../../../AppContext.js'
 import { Picker } from 'react-native-wheel-pick';
 import { DROPDOWN } from "../../../../assets/icons/index.js";
 
@@ -11,10 +10,15 @@ export default function AddElement({ onElementEdited, onCancelEditElement, eleme
     const [selectedAge, setSelectedAge] = useState(element.age);
     const [selectedStatus, setSelectedStatus] = useState(element.status);
     const [selectedAccessibility, setSelectedAccessibility] = useState();
+
     useEffect(() => {
-        if (element.accessibility === true) setSelectedAccessibility('Yes')
-        if (element.accessibility === false) setSelectedAccessibility('No')
+        if (element.accessibility === true)
+            setSelectedAccessibility('Yes')
+
+        if (element.accessibility === false)
+            setSelectedAccessibility('No')
     }, []);
+
     const handleEdit = () => {
         try {
             if (!selectedType || !selectedAge || !selectedStatus || !selectedAccessibility || selectedType === 'Set element' || selectedAge === 'Set age' || selectedStatus === 'Set status' || selectedAccessibility === 'Set accessibility') {
@@ -31,24 +35,13 @@ export default function AddElement({ onElementEdited, onCancelEditElement, eleme
             console.log(error.message)
         }
     }
-    const handleCancel = () => {
-        onCancelEditElement()
-    }
-    const onElementType = () => {
-        setModal('type')
-    }
-    const onElementAge = () => {
-        setModal('age')
-    }
-    const onElementStatus = () => {
-        setModal('status')
-    }
-    const onElementAccessibility = () => {
-        setModal('accessibility')
-    }
-    const onCloseModal = () => {
-        setModal()
-    }
+    const handleCancel = () => onCancelEditElement()
+    const onElementType = () => setModal('type')
+    const onElementAge = () => setModal('age')
+    const onElementStatus = () => setModal('status')
+    const onElementAccessibility = () => setModal('accessibility')
+    const onCloseModal = () => setModal()
+
     return <>
         {modal && <View className="flex-1  bg-black60 items-center justify-center absolute w-[100vw] h-[100vh] z-[51] top-[-12vh] ">
             <View className="w-full absolute bottom-[152px] right-0 z-50 flex-row  justify-end py-6 px-5">
@@ -56,6 +49,7 @@ export default function AddElement({ onElementEdited, onCancelEditElement, eleme
                     <Text className=" p-1.5 font-bold" onPress={onCloseModal}>OK</Text>
                 </TouchableOpacity>
             </View>
+
             {modal === 'type' && <Picker
                 className="w-full bg-white h-56 text-bold rounded-[20px] absolute bottom-0 pb-[20px]"
                 textColor="black"
@@ -63,6 +57,7 @@ export default function AddElement({ onElementEdited, onCancelEditElement, eleme
                 pickerData={['Set element', 'Slide', 'Swing', 'Double Swing', 'Seesaw', 'Rider', 'Sandbox', 'House', 'Climber']}
                 onValueChange={label => { setSelectedType(label) }}
             />}
+
             {modal === 'age' && <Picker
                 className="w-full bg-white h-56 text-bold rounded-[20px] absolute bottom-0 pb-[20px]"
                 textColor="black"
@@ -70,13 +65,14 @@ export default function AddElement({ onElementEdited, onCancelEditElement, eleme
                 pickerData={['Set age', '+1', '+2', '+3', '+4', '+5', '+6']}
                 onValueChange={label => { setSelectedAge(label) }}
             />}
+
             {modal === 'status' && <Picker
                 className="w-full bg-white h-56 text-bold rounded-[20px] absolute bottom-0 pb-[20px]"
                 textColor="Set status"
                 pickerData={['Set status', 'Good', 'Acceptable', 'Warn', 'Dangerous']}
                 onValueChange={label => { setSelectedStatus(label) }}
-            />
-            }
+            />}
+
             {modal === 'accessibility' && <Picker
                 className="w-full bg-white h-56 text-bold rounded-[20px] absolute bottom-0 pb-[20px]"
                 textColor="Set accessibility"
@@ -98,6 +94,7 @@ export default function AddElement({ onElementEdited, onCancelEditElement, eleme
                         <Image className="w-5 h-5 flex-2" source={DROPDOWN} />
                     </View>
                 </TouchableOpacity>
+
                 <TouchableOpacity activeOpacity={0.8} onPress={onElementAge}>
                     <Text className="dark:text-zinc-200 pt-4 text-xs ">Age</Text>
                     <View className="dark:text-zinc-200 border border-mainGray bg-mainGray dark:border-zinc-700 dark:bg-zinc-700 rounded-full mt-1 mb-0 px-4 py-2 self-center w-full flex-row justify-between items-center" >
@@ -105,6 +102,7 @@ export default function AddElement({ onElementEdited, onCancelEditElement, eleme
                         <Image className="w-5 h-5 flex-2" source={DROPDOWN} />
                     </View>
                 </TouchableOpacity>
+
                 <TouchableOpacity activeOpacity={0.8} onPress={onElementStatus}>
                     <Text className="dark:text-zinc-200 pt-4 text-xs ">Status</Text>
                     <View className="dark:text-zinc-200 border border-mainGray bg-mainGray dark:border-zinc-700 dark:bg-zinc-700 rounded-full mt-1 mb-0 px-4 py-2 self-center w-full flex-row justify-between items-center" >
@@ -112,6 +110,7 @@ export default function AddElement({ onElementEdited, onCancelEditElement, eleme
                         <Image className="w-5 h-5 flex-2" source={DROPDOWN} />
                     </View>
                 </TouchableOpacity>
+
                 <TouchableOpacity activeOpacity={0.8} onPress={onElementAccessibility}>
                     <Text className="dark:text-zinc-200 pt-4 text-xs ">Accessibility</Text>
                     <View className="dark:text-zinc-200 border border-mainGray bg-mainGray dark:border-zinc-700 dark:bg-zinc-700 rounded-full mt-1 mb-0 px-4 py-2 self-center w-full flex-row justify-between items-center" >
@@ -123,17 +122,16 @@ export default function AddElement({ onElementEdited, onCancelEditElement, eleme
                 <TouchableOpacity
                     activeOpacity={0.8}
                     className="border border-mainLime bg-mainLime rounded-full mt-4 self-center w-full  "
-                    onPress={handleEdit}
-                >
+                    onPress={handleEdit} >
                     <View className="font-bold px-6 py-2 self-center rounded-full" >
                         <Text className="font-bold text-lg">Edit</Text>
                     </View>
                 </TouchableOpacity>
+
                 <TouchableOpacity
                     activeOpacity={0.8}
                     className="mt-4 self-center w-full"
-                    onPress={handleCancel}
-                >
+                    onPress={handleCancel} >
                     <View className="px-6  self-center " >
                         <Text className="dark:text-zinc-200 text-lg">Cancel</Text>
                     </View>

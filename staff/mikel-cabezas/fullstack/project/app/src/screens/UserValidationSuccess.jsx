@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import { useEffect } from "react";
 import { Alert } from "react-native";
 export default function UserValitionSuccess({ navigation }) {
     useEffect(() => {

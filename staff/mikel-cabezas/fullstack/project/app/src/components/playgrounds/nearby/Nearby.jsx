@@ -1,18 +1,9 @@
-import React, { useEffect, useState, useContext } from "react";
-
+import React, { useState } from "react";
 import { Text, View } from 'react-native';
-import * as Animatable from 'react-native-animatable';
-import { CLOSE } from '../../../../assets/icons';
-import Context from '../../../AppContext.js'
 
-import { NativeWindStyleSheet } from "nativewind";
 import NearbyPlaygrounds from "./NearbyPlaygrounds";
-NativeWindStyleSheet.setOutput({
-    default: "native",
-});
 
-export default function Nearby({ closeHandle, playground, handleMarkerPressedHandler }) {
-    const [animation, setAnimation] = useState('fadeInUp')
+export default function Nearby({ playground, handleMarkerPressedHandler }) {
     return <>
         {playground &&
             <View className="w-full h-auto max-h-max pl-5 pr-0 pt-1 rounded-[20px] mx-auto " >

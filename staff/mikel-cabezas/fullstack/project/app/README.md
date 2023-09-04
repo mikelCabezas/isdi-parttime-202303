@@ -27,7 +27,7 @@ In any playground, you can view the elements that are in the park, and view the 
 - Edit user information
 - Edit playground 
 - Add photos in playground 
-- Create playground
+- Add playground
 - Explore playgrounds nearby
 - Search playgrounds by city
 - Search playgrounds with advanced search
@@ -48,8 +48,9 @@ In any playground, you can view the elements that are in the park, and view the 
 - Search by: name, location, elements with ages, its sun exposed or shaded, accessibility elements 
 - Go directly to city with results
 
-#### User stories, ON CREATE PLAYGROUND
-- If you discover a playground not entered in the app, you can create it if in around 10 meters does not have an other park. 
+#### Create Playground
+- If you discover a playground not entered in the app, you can create it. 
+- If in 10 meters near has an other park, you cannot add new playground. 
 
 
 ## TECHINAL DESCRIPTION 

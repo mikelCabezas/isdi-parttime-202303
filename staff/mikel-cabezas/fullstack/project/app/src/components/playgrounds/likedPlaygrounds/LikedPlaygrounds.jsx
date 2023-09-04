@@ -7,7 +7,6 @@ import AppContext from "../../../AppContext.js";
 const { Provider } = AppContext
 import Context from '../../../AppContext'
 
-
 export default function LikedPlaygrounds({ onMarkerPressedHandler }) {
     const { TOKEN } = useContext(Context)
 
@@ -52,7 +51,7 @@ export default function LikedPlaygrounds({ onMarkerPressedHandler }) {
                     {playgrounds.map(playground => {
                         return <View className="relative mb-3" >
                             <LikedPlayground
-                                key={playground._id}
+                                index={playground._id}
                                 playground={playground}
                                 user={user}
                                 onMarkerPressedHandler={onMarkerPressedHandler}
@@ -63,8 +62,6 @@ export default function LikedPlaygrounds({ onMarkerPressedHandler }) {
             }
 
         </View>
-
-        {/* </View> */}
     </>
 
 }
