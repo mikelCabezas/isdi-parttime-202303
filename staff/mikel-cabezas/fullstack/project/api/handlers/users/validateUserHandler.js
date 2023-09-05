@@ -7,7 +7,7 @@ module.exports = handleErrors(async (req, res) => {
     const payload = jwt.verify(token, process.env.JWT_SECRET)
     const { sub: uniqueString } = payload
 
-    validateUser(uniqueString)
+    // validateUser(uniqueString)
 
     await res.redirect(`${process.env.SCHEMA}/UserValidationSuccess`)
 })

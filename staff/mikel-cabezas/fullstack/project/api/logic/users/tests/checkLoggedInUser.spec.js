@@ -30,7 +30,7 @@ describe('checkLoggedInUser', () => {
 
     it('should find a user by ID', async () => {
         const userRegistered = await User.findOne({ email: user.email })
-        const retrievedUser = await checkLoggedInUser(userRegistered._id)
+        const retrievedUser = await checkLoggedInUser(userRegistered.id)
 
         expect(retrievedUser).to.exist
         expect(retrievedUser.name).to.equal(user.name)
@@ -55,7 +55,7 @@ describe('checkLoggedInUser', () => {
             await user.updateOne({ isValid: false })
 
             const userRegistered = await User.findOne({ email: user.email })
-            await checkLoggedInUser(userRegistered._id)
+            await checkLoggedInUser(userRegistered.id)
 
 
         } catch (error) {

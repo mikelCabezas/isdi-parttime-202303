@@ -1,5 +1,10 @@
 const { User, Post } = require('../../data/models')
 
+const {
+    validators: { validateId, validateText },
+    errors: { ExistenceError }
+} = require('com')
+
 /**
  * @typedef {Object} ExistenceError
  * @property {string} message - Error message
@@ -12,16 +17,12 @@ const { User, Post } = require('../../data/models')
  * @returns {Promise} A promise that resolves with the updated user object.
  * @throws {ExistenceError} If the user with the given ID does not exist.
  */
-module.exports = (userId, newName) => {
-    // Validate input parameters
+module.exports = async (userId, newName) => {
     validateId(userId)
     validateText(newName)
 
-    // Find the user by ID and update their name
-    return User.findById(userId)
-        .then(user => {
-            if (!user) throw new ExistenceError('user not found')
+    const user = await User.findById(userId)
+    if (!user) throw new ExistenceError('user not found')
 
-            return user.updateOne({ name: newName })
-        })
+    return user.updateOne({ name: newName })
 }
