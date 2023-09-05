@@ -31,6 +31,9 @@ module.exports = function registerUser(name, email, password) {
             randomString += character
         }
         if (randomString.length === 9) randomString.slice(0, -1)
+        if (randomString.length === 10) randomString.slice(0, -2)
+        if (randomString.length === 11) randomString.slice(0, -3)
+        if (randomString.length === 12) randomString.slice(0, -4)
         return randomString
     }
     const isValid = false
