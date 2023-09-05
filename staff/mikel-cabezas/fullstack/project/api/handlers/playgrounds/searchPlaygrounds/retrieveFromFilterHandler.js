@@ -4,8 +4,6 @@ const { retrieveFromFilter } = require('../../../logic/playgrounds')
 const { extractUserId, handleErrors } = require('../../helpers')
 
 module.exports = handleErrors((req, res) => {
-    console.log('adkbaskhdasjdasjkd')
-    debugger
     const userId = extractUserId(req)
     const { sunExposition, age, elements, accessible, from, distance } = req.params
     return mapkitAccessToken()

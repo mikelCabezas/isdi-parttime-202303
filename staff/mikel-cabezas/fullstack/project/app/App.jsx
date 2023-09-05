@@ -145,7 +145,7 @@ export default function App({ }) {
     </HideKeyboard>
     {loader && <>
       <View className="absolute top-0 left-0 w-full h-screen z-50">
-        <Loader text="Conecting..." details={loaderMessage} background={BG} />
+        <Loader text="Conecting..." details={loaderMessage} background={BG} colorScheme={colorScheme} />
       </View>
     </>}
   </>

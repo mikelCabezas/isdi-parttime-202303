@@ -279,8 +279,8 @@ export default function Home({ route, navigation, onSendViewPlaygroundsFromCity 
                 </Animatable.View>
             </>}
 
-            <Header setPlaygroundsCount={setPlaygroundsCount} handleToggleSidebar={handleToggleSidebar} onToggleFilter={onToggleFilter} handleCloseModals={onCloseModal} onHandleViewPlaygroundsFromCity={handleViewPlaygroundsFromCity} />
-            <Footer likedHandler={onLiked} nearbyHandler={onNearby} createPlaygroundHandler={onCreatePlayground} homeHandler={onHome} />
+            {loadCurrentLocation && <Header setPlaygroundsCount={setPlaygroundsCount} handleToggleSidebar={handleToggleSidebar} onToggleFilter={onToggleFilter} handleCloseModals={onCloseModal} onHandleViewPlaygroundsFromCity={handleViewPlaygroundsFromCity} />}
+            {loadCurrentLocation && <Footer likedHandler={onLiked} nearbyHandler={onNearby} createPlaygroundHandler={onCreatePlayground} homeHandler={onHome} />}
             {modal === 'singlePlayground' && <BottomSheet
                 backgroundStyle={{ backgroundColor: `${topSheetModalColor}` }}
                 handleIndicatorStyle={{ backgroundColor: `${topSheetIndicatorColor}` }}
@@ -330,7 +330,6 @@ export default function Home({ route, navigation, onSendViewPlaygroundsFromCity 
                         setTopSheetIndicatorColor={setTopSheetIndicatorColor}
                         setTopSheetModalColor={setTopSheetModalColor} />
                 </BottomSheet>
-
             </>}
 
             {modal === 'nearby' && <BottomSheet BottomSheet

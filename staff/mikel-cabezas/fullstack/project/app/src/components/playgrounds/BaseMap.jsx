@@ -141,8 +141,7 @@ export default function BaseMap({ user, onMarkerPressed, searchResult, onHomeHan
     }, [currentMarker])
 
     return <>
-        {/* <Image className="w-full h-screen top-0 absolute" source={BG} /> */}
-        <Loader text="Loading..." details="Fetching your location" background={BG} />
+        <Loader text="Loading..." details="Fetching your location" background={BG} colorScheme={colorScheme} />
         {loadCurrentLocation && <MapView
             ref={mapRef}
             showsUserLocation={true}

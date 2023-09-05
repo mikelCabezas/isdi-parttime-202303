@@ -1,5 +1,5 @@
 module.exports = {
-    serverStatusHandler: require('./helpers/serverStatusHandler'),
+    serverStatus: require('./helpers/serverStatus'),
 
     registerUserHandler: require('./users/registerUserHandler'),
     searchUserHandler: require('./users/searchUserHandler'),

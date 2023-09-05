@@ -4,7 +4,7 @@ require('dotenv').config()
 const express = require('express')
 const bodyParser = require('body-parser')
 const cors = require('cors')
-const { serverStatusHandler,
+const { serverStatus,
     registerUserHandler, retrieveUserHandler, authenticateUserHandler, forgotPasswordHandler, updateUserImageHandler, updateUserNameHandler, updateUserPasswordHandler, validateUserHandler, setNewPasswordHandler, recoverPasswordHandler, searchUserHandler, confirmNewUserEmailHandler, updateUserEmailHandler, checkLoggedInUserHandler,
     checkIfHasPlaygroundsNearHandler, addPlaygroundHandler, editPlaygroundSunExpositionHandler, editPlaygroundAddImagesHandler, editPlaygroundDescriptionHandler, editPlaygroundElementsHandler, retrieveCitiesFromDatabaseHandler, retrieveFromFilterHandler, retrieveCityFromSearchHandler, retrievePlaygroundsFromCityHandler, retrievePlaygroundsHandler, retrieveLikedPlaygroundsHandler, retrievePlaygroundByIdHandler, toggleLikePlaygroundHandler, searchAutocompleteCitiesHandler } = require('./handlers')
 const mongoose = require('mongoose')
@@ -16,7 +16,7 @@ mongoose.connect(process.env.MONGODB_URL)
 
         api.use(cors())
 
-        api.get('/serverStatus', serverStatusHandler)
+        api.get('/serverStatus', serverStatus)
 
         api.get('/user/status', checkLoggedInUserHandler)
 
