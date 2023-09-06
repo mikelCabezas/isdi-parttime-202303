@@ -8,6 +8,7 @@ module.exports = handleErrors(async (req, res) => {
     const { sub: uniqueString } = payload
 
     // validateUser(uniqueString)
-
-    await res.redirect(`${process.env.SCHEMA}/UserValidationSuccess`)
+    const userValidated = await validateUser(uniqueString)
+    if (userValidated)
+        await res.redirect(`${process.env.SCHEMA}/UserValidationSuccess`)
 })

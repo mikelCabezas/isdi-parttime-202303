@@ -28,12 +28,16 @@ module.exports = function registerUser(name, email, password) {
 
         for (let i = 0; i < length; i++) {
             const character = Math.floor((Math.random() * 10) + 1)
+            if (character.length === 2) randomString.slice(0, -2)
+            if (character.length === 3) randomString.slice(0, -3)
+
             randomString += character
         }
+        debugger
         if (randomString.length === 9) randomString.slice(0, -1)
-        if (randomString.length === 10) randomString.slice(0, -2)
-        if (randomString.length === 11) randomString.slice(0, -3)
-        if (randomString.length === 12) randomString.slice(0, -4)
+        // if (randomString.length === 10) randomString.slice(0, -2)
+        // if (randomString.length === 11) randomString.slice(0, -3)
+        // if (randomString.length === 12) randomString.slice(0, -4)
         return randomString
     }
     const isValid = false

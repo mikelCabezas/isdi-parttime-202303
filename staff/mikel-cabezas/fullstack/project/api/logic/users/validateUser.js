@@ -17,5 +17,5 @@ module.exports = async function validateUser(uniqueString) {
     const user = await User.findOne({ uniqueString: uniqueString })
     if (!user) throw new ExistenceError('user not found')
 
-    await user.updateOne({ isValid: true })
+    return user.updateOne({ isValid: true })
 }
