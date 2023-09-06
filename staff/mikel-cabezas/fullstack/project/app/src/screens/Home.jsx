@@ -60,6 +60,9 @@ export default function Home({ route, navigation, onSendViewPlaygroundsFromCity 
     }
 
     useEffect(() => {
+        if (loadCurrentLocation) {
+            setModal()
+        }
 
         if (colorScheme === 'light') {
             setTopSheetModalColor('#fff')
@@ -107,6 +110,7 @@ export default function Home({ route, navigation, onSendViewPlaygroundsFromCity 
                     })
             })();
         }
+
     }, [])
 
     useEffect(() => {
@@ -147,8 +151,7 @@ export default function Home({ route, navigation, onSendViewPlaygroundsFromCity 
         }
     }, [playgroundsCount])
 
-    useEffect(() => {
-    }, [currentMarker])
+
 
     const onCloseFutureVersions = () => setModal()
     const onNearby = () => setModal('nearby')
@@ -264,14 +267,14 @@ export default function Home({ route, navigation, onSendViewPlaygroundsFromCity 
             {modal === 'sidebar' && <Sidebar setModal={setModal} likedHandler={onOpenLikedFromSidebar} futureVersionsHandler={onFutureVersions} whatsNewHandler={onWhatsNew} navigation={navigation} user={user} closeHandle={onCloseSidebar} userSettingsHandler={onUserSettingsFromSidebar} />}
             <BaseMap setAnimation={setAnimation} animation={animation} setPlaygroundsCount={setPlaygroundsCount} onHomeHandler={onHomeHandler} user={user} className="-z-20" onMarkerPressed={markerPressedHandler} searchResult={searchResult} newPlaygroundStatus={newPlaygroundStatus} />
 
-            {playgroundsCount && <>
+            {loadCurrentLocation && playgroundsCount && <>
                 <Animatable.View animation={animation} duration={350} className="position absolute top-[10vh]">
                     <View className=" flex-row justify-center px-4 py-2 mt-5 left-0 w-auto rounded-full bg-white dark:bg-zinc-800">
                         <Text className="text-center font-semibold dark:text-zinc-200 ">{playgroundsCount} playgrounds loaded</Text>
                     </View>
                 </Animatable.View>
             </>}
-            {!playgroundsCount && <>
+            {loadCurrentLocation && !playgroundsCount && <>
                 <Animatable.View animation={animation} duration={350} className="position absolute top-[10vh]">
                     <View className=" flex-row justify-center px-4 py-2 mt-5 left-0 w-auto rounded-full bg-white dark:bg-zinc-800">
                         <Text className="text-center font-semibold dark:text-zinc-200 ">No playgrounds found in this location!</Text>

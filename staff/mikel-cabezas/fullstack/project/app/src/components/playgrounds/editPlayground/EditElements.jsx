@@ -63,7 +63,7 @@ export default function EditElements({ TOKEN, id, colorScheme, setTopSheetModalC
         Alert.alert('Confirm', 'These modifications are public. Please verify the authenticity of these alterations and ensure that they do not adversely affect anyone.', [
             {
                 text: 'Cancel',
-                onPress: () => bottomSheetRef.current.snapToIndex(1),
+                onPress: () => { },
                 style: 'cancel',
             },
             {

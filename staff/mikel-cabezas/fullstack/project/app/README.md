@@ -87,3 +87,7 @@ User
 
 ### Planning in Notion:
 https://www.notion.so/mikelcabezas/58313fd4e62b4b32a73311a4a4524fdb?v=4e7228f7baae4d278ca0787a9b51a382&pvs=4
+
+### Coverage
+
+<img src="https://mikelcabezas.com/isdi/img/coverage.png" width="750"/>

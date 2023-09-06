@@ -166,12 +166,12 @@ export default function BaseMap({ user, onMarkerPressed, searchResult, onHomeHan
 
             {playgrounds && <Playgrounds user={user} playgrounds={playgrounds} onMarkerPressedHandler={onMarkerPressedHandler} />}
         </MapView>}
-        <TouchableOpacity className="bg-white dark:bg-zinc-800 p-1.5 rounded-full absolute right-4 bottom-[75px] mb-4"
+        {loadCurrentLocation && <TouchableOpacity className="bg-white dark:bg-zinc-800 p-1.5 rounded-full absolute right-4 bottom-[75px] mb-4"
             activeOpacity={0.8}
             onPress={() => onCurrentLocation()}>
             <Image
                 className={`w-8 h-8 m-auto ${isDark ? 'opacity-80' : ''}`}
                 source={isDark ? WHITE_MY_LOCATION : MY_LOCATION} />
-        </TouchableOpacity>
+        </TouchableOpacity>}
     </>
 }

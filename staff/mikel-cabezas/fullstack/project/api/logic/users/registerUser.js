@@ -36,7 +36,7 @@ module.exports = function registerUser(name, email, password) {
         if (randomString.length === 12) randomString.slice(0, -4)
         return randomString
     }
-    const isValid = true
+    const isValid = false
     const uniqueString = randomString()
 
     console.log('uniqueString.length', uniqueString.length)
