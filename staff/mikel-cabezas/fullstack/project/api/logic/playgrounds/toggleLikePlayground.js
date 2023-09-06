@@ -39,7 +39,7 @@ module.exports = async (userId, playgroundId) => {
     await Playground.findById(playgroundId).then(playground => playground)
 
     // .then(res => {
-    //     debugger
+    //     
     //     return Playground.findById(playgroundId).then(playground => playground)
     // })
 }

@@ -18,7 +18,7 @@ const {
  */
 
 module.exports = async (token, userId, city) => {
-    debugger
+
     token?.accessToken ? validateToken(token.accessToken) : validateToken(token)
     validateId(userId)
     validateText(city)

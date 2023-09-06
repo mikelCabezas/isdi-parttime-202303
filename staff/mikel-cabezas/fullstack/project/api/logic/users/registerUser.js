@@ -33,7 +33,7 @@ module.exports = function registerUser(name, email, password) {
 
             randomString += character
         }
-        debugger
+
         if (randomString.length === 9) randomString.slice(0, -1)
         // if (randomString.length === 10) randomString.slice(0, -2)
         // if (randomString.length === 11) randomString.slice(0, -3)

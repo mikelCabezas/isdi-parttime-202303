@@ -93,9 +93,10 @@ export default function AdvancedSearch({ closeHandle, setPlaygroundsCount, onHan
                                 {
                                     text: 'Close',
                                     onPress: () => {
-                                        bottomSheetRef.current.close()
-                                        setModal('')
-                                        setCurrentView('')
+                                        closeHandle()
+                                        // bottomSheetRef.current.close()
+                                        // setModal('')
+                                        // setCurrentView('')
                                     },
                                     style: 'cancel',
                                 },

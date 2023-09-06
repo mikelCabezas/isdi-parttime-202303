@@ -46,7 +46,7 @@ describe('searchAutocompleteCities', () => {
     it('should return an object with results property', async () => {
         const city = 'Vila';
         const response = await searchAutocompleteCities(appleToken, user.id, city);
-        debugger
+
         expect(response).to.be.an('array');
     });
 
@@ -61,7 +61,7 @@ describe('searchAutocompleteCities', () => {
 
     it('should throw a TypeError if the userId is not valid', async () => {
         const invalidID = 123;
-        debugger
+
         try {
             await searchAutocompleteCities(appleToken, invalidID, 'test_city');
         } catch (error) {
@@ -72,7 +72,7 @@ describe('searchAutocompleteCities', () => {
 
     it('should throw an ExistenceError if the user does not exist', async () => {
         const invalidID = '123456789101112131415123'
-        debugger
+
         try {
             await searchAutocompleteCities(appleToken, invalidID, 'test_city');
         } catch (error) {

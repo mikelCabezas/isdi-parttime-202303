@@ -20,7 +20,7 @@ const {
 module.exports = (userId, _sunExpositionFilter, age, _elements, accessible, from, distance) => {
     try {
         validateId(userId)
-        debugger
+
         age === 'null' ? age = null : age = age
 
         let isAccessible
@@ -42,7 +42,7 @@ module.exports = (userId, _sunExpositionFilter, age, _elements, accessible, from
         }
 
         let elements
-        debugger
+
         if (_elements && _elements !== 'null' && _elements !== []) {
             elements = _elements.split(',');
         } else {

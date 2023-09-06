@@ -188,7 +188,7 @@ describe('retrieveFromFilter', () => {
         try {
             await retrieveFromFilter(invalidID, sunExpositionFilter, age, elements, accessible, from, distance)
         } catch (error) {
-            debugger
+
             expect(error).to.be.an.instanceOf(ExistenceError)
             expect(error.message).to.equal(`User not found`)
         }

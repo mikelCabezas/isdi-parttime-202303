@@ -8,7 +8,7 @@ describe('mapkitAccessToken', () => {
         const result = await mapkitAccessToken();
 
         expect(result).to.be.an('object');
-        debugger
+
         expect(result).to.has.property('accessToken');
     });
 
