@@ -24,11 +24,13 @@ In any playground, you can view the elements that are in the park, and view the 
 ## Functional description
 
 ### Use cases 
-- Edit user information
+- Create user
+- Edit user
 - Edit playground 
 - Add photos in playground 
 - Add playground
 - Explore playgrounds nearby
+- View liked playgrounds
 - Search playgrounds by city
 - Search playgrounds with advanced search
 
