@@ -60,9 +60,32 @@ export default function Home({ route, navigation, onSendViewPlaygroundsFromCity 
     }
 
     useEffect(() => {
+        (async () => {
+            debugger
+            try {
+                if (TOKEN) await checkLoggedInUser(TOKEN)
+
+                const user = await retrieveUser(TOKEN)
+                setUser(user)
+                if (!user || !user._id && user !== null) {
+                    throw new Error('This user does not exist')
+                }
+
+            } catch (error) {
+                setIsLoggedIn(false)
+                await navigation.navigate('Login')
+                AsyncStorage.getAllKeys()
+                    .then(keys => AsyncStorage.multiRemove(keys))
+
+                Alert.alert('Error', error.message, [
+                    { text: 'OK', onPress: () => { } },
+                ]);
+            }
+        })();
         if (loadCurrentLocation) {
             setModal()
         }
+
 
         if (colorScheme === 'light') {
             setTopSheetModalColor('#fff')
@@ -80,25 +103,7 @@ export default function Home({ route, navigation, onSendViewPlaygroundsFromCity 
             setModal('userSettings')
         }
 
-        (async () => {
-            if (TOKEN) await checkLoggedInUser(TOKEN)
-                .catch(async user => {
-                    if (!user || !user._id && user !== null) {
-                        Alert.alert('Error', `This user does not exist`, [
-                            { text: 'OK', onPress: () => { } },
-                        ]);
-                        setIsLoggedIn(false)
-                        await navigation.navigate('Login')
-                        AsyncStorage.getAllKeys()
-                            .then(keys => AsyncStorage.multiRemove(keys))
-                        // .then(() => alert('success'));
-                    }
-                })
-            await retrieveUser(TOKEN)
-                .then(user => {
-                    setUser(user)
-                })
-        })();
+
 
         if (!welcomeMessageStorage) {
             (async () => {

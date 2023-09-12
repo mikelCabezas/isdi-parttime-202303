@@ -50,11 +50,10 @@ export default function SingleElement({ index, element, handleEditElement }) {
 
     const handleOnPress = () => handleEditElement(element._ID_)
 
-    return <TouchableOpacity
+    return <View
         key={index}
-        activeOpacity={0.8}
         className={`border border-${status} rounded-full mb-2 mr-2 bg-mainGray dark:bg-zinc-300`}
-        onPress={(handleOnPress)} >
+    >
         <View className="font-bold px-3 py-0.5 flex-row items-center content-center" key={index} >
             <Image className="w-5 h-5 mr-2 object-contain" source={type} />
             <Text className={`font-bold text-center text-sm align-middle my-1.5`}>{element.type}</Text>
@@ -65,5 +64,5 @@ export default function SingleElement({ index, element, handleEditElement }) {
                 <Image className="h-6 w-6 object-cover" source={age} />
             </View>}
         </View>
-    </TouchableOpacity>
+    </View>
 }

@@ -4,18 +4,20 @@ import UploadImages from '../addPlayground/UploadImages'
 import editPlaygroundAddImages from '../../../logic/playgrounds/editPlayground/editPlaygroundAddImages.js'
 import uploadImages from "../../../logic/playgrounds/uploadImages";
 
-export default function EditElements({ TOKEN, id, onEdited, onCancelEdit, description }) {
+export default function EditElements({ TOKEN, id, onEdited, onCancelEdit }) {
     const [imagesResized, setImagesResized] = useState([]);
     const [newImages, setNewImages] = useState([]);
-    const [playgroundDescription, setPlaygroundDescription] = useState()
     const [uploading, setUploading] = useState(false);
 
-    useEffect(() => {
-        setPlaygroundDescription(description)
-    }, []);
+    const uploadImagesHandler = () => {
+        return uploadImages(imagesResized)
+            .then(images => {
+                return setNewImages(images)
+            })
+            .catch(error => console.log(error.message))
 
-    useEffect(() => {
-    }, [playgroundDescription])
+
+    }
 
     const handleCancel = () => {
         Alert.alert('Confirm', 'Do you want to discard changes?', [
@@ -35,32 +37,26 @@ export default function EditElements({ TOKEN, id, onEdited, onCancelEdit, descri
         Alert.alert('Confirm', 'These modifications are public. Please verify the authenticity of these alterations and ensure that they do not adversely affect anyone.', [
             {
                 text: 'Cancel',
-                onPress: () => bottomSheetRef.current.snapToIndex(1),
+                onPress: () => { },
                 style: 'cancel',
             },
             {
                 text: 'Save', onPress: async () => {
-                    await uploadImagesHandler()
-                    await editPlaygroundAddImages(TOKEN, id, newImages)
-                    await onEdited()
-                    await alert('finish!')
-                        .catch(error => console.log(error))
+                    try {
+                        await uploadImagesHandler()
+                        debugger
+                        await editPlaygroundAddImages(TOKEN, id, newImages)
+                        onEdited()
+                    } catch (error) {
+                        console.log(error.message)
+
+                    }
                 }
             },
         ]);
     }
 
-    const uploadImagesHandler = () => {
-        try {
-            // setUploading(true)
-            return uploadImages(imagesResized)
-                .then(data => {
-                    setNewImages(data)
-                })
-        } catch (error) {
-            console.log(error.message)
-        }
-    }
+
 
     return <>
         {<View className="flex-1 bg-black60  items-center justify-center z-50 absolute w-full h-full">

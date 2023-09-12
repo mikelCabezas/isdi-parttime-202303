@@ -27,17 +27,12 @@ module.exports = function registerUser(name, email, password) {
         let randomString = ''
 
         for (let i = 0; i < length; i++) {
-            const character = Math.floor((Math.random() * 10) + 1)
-            if (character.length === 2) randomString.slice(0, -2)
-            if (character.length === 3) randomString.slice(0, -3)
+            const character = Math.floor((Math.random() * 10))
+            if (character.length > 1) character = 0
 
             randomString += character
         }
 
-        if (randomString.length === 9) randomString.slice(0, -1)
-        // if (randomString.length === 10) randomString.slice(0, -2)
-        // if (randomString.length === 11) randomString.slice(0, -3)
-        // if (randomString.length === 12) randomString.slice(0, -4)
         return randomString
     }
     const isValid = false

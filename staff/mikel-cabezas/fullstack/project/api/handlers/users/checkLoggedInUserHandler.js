@@ -6,6 +6,7 @@ const { extractUserId } = require('../helpers')
 
 module.exports = handleErrors(async (req, res) => {
     const userId = extractUserId(req)
+    debugger
     checkLoggedInUser(userId)
         .then(() => {
             res.status(200).send()

@@ -13,7 +13,7 @@ export default (token) => {
     })
         .then(res => {
             if (res.status !== 200)
-                return res.json().then(({ error: message }) => { throw new Error(message) })
+                return res.json().then(({ error: message }) => { throw new Error('This user does not exist') })
             return
         })
 

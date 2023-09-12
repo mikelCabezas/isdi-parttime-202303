@@ -4,7 +4,6 @@ const { validateToken, validateText, validateId } = validators
 export default function editPlayGroundExposition(token, playgroundId, images) {
     validateToken(token)
     validateId(playgroundId)
-    validateText(description)
     return fetch(`${process.env.EXPO_PUBLIC_API_URL}/editPlayground/addImages/${playgroundId}`, {
         method: 'PATCH',
         headers: {
@@ -13,6 +12,7 @@ export default function editPlayGroundExposition(token, playgroundId, images) {
         },
         body: JSON.stringify({ images })
     }).then(res => {
+        debugger
         if (res.status !== 200)
             return res.json().then(({ error: message }) => { throw new Error(message) })
         // return res.json()
